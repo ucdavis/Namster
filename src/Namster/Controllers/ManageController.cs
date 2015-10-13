@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using System.Security.Principal;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
-using Namster;
 using Namster.Models;
 using Namster.Services;
+using Namster.ViewModels.Manage;
 
 namespace Namster.Controllers
 {
