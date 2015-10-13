@@ -1,0 +1,10 @@
+{
+  "AppSettings": {
+    "SiteTitle": "Namster"
+  },
+  "Data": {
+    "DefaultConnection": {
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-Namster-b0278b59-8519-44d6-a663-ae7a0d604e32;Trusted_Connection=True;MultipleActiveResultSets=true"
+    }
+  }
+}
