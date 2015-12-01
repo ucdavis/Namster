@@ -33,12 +33,13 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
     return gulp.src([paths.jsx, "!" + paths.minJs], { base: "." })
+        .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ["react"]
         }))
-        .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(concat(paths.concatJsDest))
+        .pipe(sourcemaps.write("."))
         .pipe(gulp.dest("."));
 });
 
