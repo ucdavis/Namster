@@ -5,7 +5,8 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    browserify = require('gulp-browserify');
 
 var paths = {
     webroot: "./wwwroot/"
@@ -30,6 +31,10 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
+        .pipe(browserify({
+            insertGlobals: true,
+            debug: !gulp.env.production
+        }))
         .pipe(concat(paths.concatJsDest))
         .pipe(uglify())
         .pipe(gulp.dest("."));
