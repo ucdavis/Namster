@@ -6,13 +6,15 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    browserify = require('gulp-browserify');
+    babel = require("gulp-babel"),
+    sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
     webroot: "./wwwroot/"
 };
 
 paths.js = paths.webroot + "js/**/*.js";
+paths.jsx = paths.webroot + "js/**/*.jsx";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
@@ -30,13 +32,13 @@ gulp.task("clean:css", function (cb) {
 gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-        .pipe(browserify({
-            insertGlobals: true,
-            debug: !gulp.env.production
+    return gulp.src([paths.jsx, "!" + paths.minJs], { base: "." })
+        .pipe(babel({
+            presets: ["react"]
         }))
-        .pipe(concat(paths.concatJsDest))
+        .pipe(sourcemaps.init())
         .pipe(uglify())
+        .pipe(concat(paths.concatJsDest))
         .pipe(gulp.dest("."));
 });
 
