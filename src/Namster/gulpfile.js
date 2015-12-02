@@ -5,13 +5,16 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    babel = require("gulp-babel"),
+    sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
     webroot: "./wwwroot/"
 };
 
 paths.js = paths.webroot + "js/**/*.js";
+paths.jsx = paths.webroot + "js/**/*.jsx";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
@@ -29,9 +32,14 @@ gulp.task("clean:css", function (cb) {
 gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-        .pipe(concat(paths.concatJsDest))
+    return gulp.src([paths.jsx, "!" + paths.minJs], { base: "." })
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ["react"]
+        }))
         .pipe(uglify())
+        .pipe(concat(paths.concatJsDest))
+        .pipe(sourcemaps.write("."))
         .pipe(gulp.dest("."));
 });
 
