@@ -13,7 +13,7 @@ namespace Namster.Services
 
     public class SearchService : ISearchService
     {
-        private static readonly Uri ConnectionString = new Uri(CloudConfigurationManager.GetSetting("ElasticSearchUrl");
+        private static readonly Uri ConnectionString = new Uri(CloudConfigurationManager.GetSetting("ElasticSearchUrl"));
         private static readonly string IndexName = CloudConfigurationManager.GetSetting("SearchIndexName");
         private readonly ElasticClient _client;
 
