@@ -1,4 +1,4 @@
-﻿/// <binding Clean='clean' />
+﻿/// <binding BeforeBuild='min' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -12,6 +12,7 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     babel = require("gulp-babel"),
+    webpack = require('gulp-webpack'),
     sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
@@ -39,36 +40,32 @@ gulp.task("clean:css", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
-gulp.task("min:js", function () {
-    var jsx = gulp.src([paths.jsx])
+gulp.task("min:js", function() {
+    return gulp.src([paths.jsx], { base: "." })
         .pipe(debug({ title: 'jsx:' }))
         .pipe(sourcemaps.init())            // start source maps
         .pipe(babel({                       // compile jsx
-            presets: ["react"]
-        }));
-
-    // grap other js files
-    var js = gulp.src([paths.js, "!" + paths.jsx, "!" + paths.concatJsDest, "!" + paths.concatJsMinDest], { base: "." })
-        .pipe(debug({ title: 'js:' }))
-        .pipe(sourcemaps.init());
-
-    return merge(jsx, js)
-        .pipe(concat(paths.concatJsDest))       // concat to site.js
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest("."))
-        .pipe(uglify())
-        .pipe(concat(paths.concatJsMinDest))    // concat to site.min.js
-        .pipe(gulp.dest("."));
+            presets: ["react", "es2015"]
+        }))
+        .pipe(webpack({
+            entry: {
+                search: paths.webroot + "js/views/search/main.js"
+            },
+            output: {
+                filename: '[name].js'
+            }
+        }))
+        .pipe(gulp.dest(paths.webroot + "js/dist"));
 });
 
 gulp.task("min:css", function () {
     return gulp.src([paths.sass])
         .pipe(sourcemaps.init())            // start source maps
         .pipe(sass())                       // compile sass
-        .pipe(sourcemaps.write())           // create sourcemaps
         .pipe(rename({                      // with new directory, filename ext
             dirname: paths.css,
             extname: '.css'}))      
+        .pipe(sourcemaps.write())           // create sourcemaps
         .pipe(gulp.dest("."))               // write out compiled files     
         .pipe(concat(paths.concatCssDest))  // concat + min
         .pipe(cssmin())
