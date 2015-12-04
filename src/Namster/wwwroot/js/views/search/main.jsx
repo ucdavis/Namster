@@ -15,10 +15,11 @@ export class SearchMain extends React.Component {
     }
 
     onChange(event) {
+        // clear out results, update state
+        this.setState({results: null});
         this.setState({query: event.target.value});
-        this.setState({searching: !!event.target.value});
 
-        // cancel existing request
+        // cancel any existing request
         if (this._request) {
             this._request.abort();
         }
@@ -32,6 +33,7 @@ export class SearchMain extends React.Component {
     // delay start search by 500 ms
     _resetSearch() {
         clearTimeout (this._searchTimer);
+        this.setState({searching: true});
         this._searchTimer = setTimeout(this._startSearch.bind(this), 500);
     }
 
@@ -40,15 +42,24 @@ export class SearchMain extends React.Component {
         self._request = $.get('/search/query?term=' + self.state.query)
             .success(function(data) {
                 self.setState({results: data});
+            })
+            .done(function() {
+                self.setState({searching: false});
             });
     }
 
     render() {
         var value = this.state.value;
 
-        var content = <SearchInProgress />;
-        if (this.state.results){
+        var content = null;
+        if (this.state.searching) {
+            content = <SearchInProgress />;
+        }
+        else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
+        }
+        else {
+            // content = <NoResults />;
         }
 
         return (
