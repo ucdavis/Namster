@@ -82,7 +82,7 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("build", ["min:css", "webpack:build"]);
 
 gulp.task("watch:js", function() {
     gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
