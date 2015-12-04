@@ -40,24 +40,10 @@ gulp.task("clean:css", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
-gulp.task("compile:jsx", function() {
-    return gulp.src([paths.jsx], { base: "." })
-        .pipe(debug({ title: 'jsx:' }))
-        .pipe(sourcemaps.init())            // start source maps
-        .pipe(babel({                       // compile jsx
-            presets: ["react", "es2015"]
-        }))
-        //.pipe(sourcemaps.write())
-        .pipe(rename({                      // compiled filename ext
-            extname: '.js'
-        }))
-        .pipe(gulp.dest("."));
-});
-
-gulp.task("webpack:build", ["compile:jsx"], function (callback) {
+gulp.task("webpack:build", function (callback) {
     webpack({
         entry: {
-            search: paths.webroot + "js/views/search/main.js"
+            search: paths.webroot + "js/views/search/main.jsx"
         },
         output: {
             path: paths.webroot + 'js/dist/',
@@ -65,7 +51,13 @@ gulp.task("webpack:build", ["compile:jsx"], function (callback) {
         },
         module: {
             loaders: [
-                { test: /\.js$/, loader: 'babel-loader' }
+                {
+                    test: /\.jsx?$/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['react', 'es2015']
+                    }
+                }
             ]
         }
     }, function(err, stats) {
