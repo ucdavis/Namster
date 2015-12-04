@@ -1,6 +1,6 @@
 //import $ from 'jquery';
-import { SearchResultList } from './results';
-import { SearchInProgress } from './components'
+import { SearchResultList } from './results.jsx';
+import { SearchInProgress } from './components.jsx'
 
 export class SearchMain extends React.Component {
     constructor(props) {
@@ -45,6 +45,12 @@ export class SearchMain extends React.Component {
 
     render() {
         var value = this.state.value;
+
+        var content = <SearchInProgress />;
+        if (this.state.results){
+            content =  <SearchResultList results={this.state.results} />;
+        }
+
         return (
           <div>
               <div className="form-group">
@@ -52,8 +58,7 @@ export class SearchMain extends React.Component {
                   <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
               </div>
             <hr/>
-            <SearchResultList results={this.state.results} />
-            <SearchInProgress shown={this.state.searching} />
+            {content}
           </div>
         );
     }
