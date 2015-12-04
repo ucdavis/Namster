@@ -1,8 +1,5 @@
-﻿var data = [{ id: 123, title: "abc" }, { id: 456, title: "def" }, { id: 789, title: "ghi" }];
-
-var Nam = React.createClass({
+﻿var Nam = React.createClass({
     render: function () {
-        console.log(this.props);
         return (
             <li>testing: {this.props.data.id} -- {this.props.data.title}</li>
         );
@@ -13,7 +10,7 @@ var NamList = React.createClass({
     render: function () {
         var namNodes = this.props.data.map(function(nam) {
             return (
-                <Nam data={nam} />
+                <Nam key={nam.id} data={nam} />
             );
         });
         return (
@@ -23,17 +20,34 @@ var NamList = React.createClass({
 });
 
 var ListView = React.createClass({
+    getInitialState: function () {
+        return {
+            data: [{ id: 123, title: "abc" }, { id: 456, title: "def" }, { id: 789, title: "ghi" }],
+            spinning: true
+        };
+    },
+    componentDidMount: function () {
+        var self = this;
+        window.setTimeout(function () {
+            self.setState({ spinning: false });
+        }, 1000);
+    },
     render: function() {
+        var content = <NamList data={this.state.data} />;
+        if (this.state.spinning) {
+            content = <span>Spinner a spining</span>;
+        }
+
         return (
             <div>
                 <h1>Showing NAMs for CA&ES Dean's Office</h1>
-                <NamList data={this.props.data} />
+                {content}
             </div>
         );
     }
 });
 
 ReactDOM.render(
-    <ListView data={data} />,
+    <ListView />,
     document.getElementById('example')
 );
