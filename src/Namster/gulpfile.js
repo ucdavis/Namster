@@ -11,7 +11,6 @@ var gulp = require("gulp"),
     sass = require("gulp-sass"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    babel = require("gulp-babel"),
     webpack = require('webpack'),
     sourcemaps = require('gulp-sourcemaps');
 
@@ -82,7 +81,7 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("build", ["min:css", "webpack:build"]);
 
 gulp.task("watch:js", function() {
     gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
