@@ -1,22 +1,22 @@
 ﻿var Nam = React.createClass({
-    filterBuilding: function (e) {
+    filterBuilding: function (type, e) {
         e.preventDefault();
-        this.props.onFilter(this.props.data);
+        this.props.onFilter(type, this.props.data);
     },
     render: function () {
         return (
             <tr>
                 <td>{this.props.data.id}</td>
-                <td><a href="#" onClick={this.filterBuilding}>{this.props.data.title}</a></td>
-                <td>{this.props.data.title}</td>
+                <td><a href="#" onClick={this.filterBuilding.bind(this, 'building')}>{this.props.data.title}</a></td>
+                <td><a href="#" onClick={this.filterBuilding.bind(this, 'department')}>{this.props.data.title}</a></td>
             </tr>
         );
     }
 });
 
 var NamList = React.createClass({
-    handleFilter: function (nam) {
-        this.props.onFilter(nam);
+    handleFilter: function (type, nam) {
+        this.props.onFilter(type, nam);
     },
     render: function () {
         var self = this;
@@ -59,9 +59,9 @@ var ListView = React.createClass({
             self.setState({ spinning: false });
         }, 1000);
     },
-    handleFilter : function(nam) {
+    handleFilter : function(type, nam) {
         this.loadNamData();
-        console.log(nam);
+        console.log(type, nam);
     },
     render: function () {
         var content = <NamList onFilter={this.handleFilter} data={this.state.data} />;
