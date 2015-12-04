@@ -1,5 +1,6 @@
 //import $ from 'jquery';
 import { SearchResultList } from './results';
+import { SearchInProgress } from './components'
 
 export class SearchMain extends React.Component {
     constructor(props) {
@@ -9,14 +10,34 @@ export class SearchMain extends React.Component {
             query: props.query || '',
             results: props.results || []
         };
+
+        this._searchTimer = 0;
     }
 
     onChange(event) {
         this.setState({query: event.target.value});
+        this.setState({searching: !!event.target.value});
+
+        // cancel existing request
+        if (this._request) {
+            this._request.abort();
+        }
+
+        // check if we should start a new one
+        if (!!event.target.value && event.target.value.length > 2) {
+            this._resetSearch();
+        }
     }
-    onSubmit(event) {
+
+    // delay start search by 500 ms
+    _resetSearch() {
+        clearTimeout (this._searchTimer);
+        this._searchTimer = setTimeout(this._startSearch.bind(this), 500);
+    }
+
+    _startSearch() {
         var self = this;
-        var req = $.get('/search/query?term=' + self.state.query)
+        self._request = $.get('/search/query?term=' + self.state.query)
             .success(function(data) {
                 self.setState({results: data});
             });
@@ -30,9 +51,9 @@ export class SearchMain extends React.Component {
                   <label className="control=label" htmlFor="query">Search</label>
                   <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
               </div>
-              <button type="submit" className="btn btn-default" onClick={this.onSubmit.bind(this)}>Search</button>
             <hr/>
             <SearchResultList results={this.state.results} />
+            <SearchInProgress shown={this.state.searching} />
           </div>
         );
     }
