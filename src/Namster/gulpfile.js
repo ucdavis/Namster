@@ -11,7 +11,6 @@ var gulp = require("gulp"),
     sass = require("gulp-sass"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    babel = require("gulp-babel"),
     webpack = require('webpack'),
     sourcemaps = require('gulp-sourcemaps');
 
