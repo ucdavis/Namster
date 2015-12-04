@@ -12,7 +12,7 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     babel = require("gulp-babel"),
-    webpack = require('gulp-webpack'),
+    webpack = require('webpack'),
     sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
@@ -40,22 +40,40 @@ gulp.task("clean:css", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
-gulp.task("min:js", function() {
+gulp.task("compile:jsx", function() {
     return gulp.src([paths.jsx], { base: "." })
         .pipe(debug({ title: 'jsx:' }))
         .pipe(sourcemaps.init())            // start source maps
         .pipe(babel({                       // compile jsx
             presets: ["react", "es2015"]
         }))
-        .pipe(webpack({
-            entry: {
-                search: paths.webroot + "js/views/search/main.js"
-            },
-            output: {
-                filename: '[name].js'
-            }
+        //.pipe(sourcemaps.write())
+        .pipe(rename({                      // compiled filename ext
+            extname: '.js'
         }))
-        .pipe(gulp.dest(paths.webroot + "js/dist"));
+        .pipe(gulp.dest("."));
+});
+
+gulp.task("webpack:build", ["compile:jsx"], function (callback) {
+    webpack({
+        entry: {
+            search: paths.webroot + "js/views/search/main.js"
+        },
+        output: {
+            path: paths.webroot + 'js/dist/',
+            filename: '[name].js'
+        },
+        module: {
+            loaders: [
+                { test: /\.js$/, loader: 'babel-loader' }
+            ]
+        }
+    }, function(err, stats) {
+        util.log('[webpack:build]', stats.toString({
+            colors: true
+        }));
+        callback();
+    });
 });
 
 gulp.task("min:css", function () {
@@ -73,3 +91,7 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+gulp.task("watch:js", function() {
+    gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
+});
