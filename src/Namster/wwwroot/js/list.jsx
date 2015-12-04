@@ -1,20 +1,43 @@
 ﻿var Nam = React.createClass({
+    filterBuilding: function (e) {
+        e.preventDefault();
+        this.props.onFilter(this.props.data);
+    },
     render: function () {
         return (
-            <li>testing: {this.props.data.id} -- {this.props.data.title}</li>
+            <tr>
+                <td>{this.props.data.id}</td>
+                <td><a href="#" onClick={this.filterBuilding}>{this.props.data.title}</a></td>
+                <td>{this.props.data.title}</td>
+            </tr>
         );
     }
 });
 
 var NamList = React.createClass({
+    handleFilter: function (nam) {
+        this.props.onFilter(nam);
+    },
     render: function () {
-        var namNodes = this.props.data.map(function(nam) {
+        var self = this;
+        var namNodes = self.props.data.map(function(nam) {
             return (
-                <Nam key={nam.id} data={nam} />
+                <Nam onFilter={self.handleFilter} key={nam.id} data={nam} />
             );
         });
         return (
-            <ul>{namNodes}</ul>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Building</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {namNodes}
+                </tbody>
+            </table>
         );
     }
 });
@@ -27,13 +50,21 @@ var ListView = React.createClass({
         };
     },
     componentDidMount: function () {
+        this.loadNamData();
+    },
+    loadNamData : function() {
         var self = this;
+        self.setState({ spinning: true });
         window.setTimeout(function () {
             self.setState({ spinning: false });
         }, 1000);
     },
-    render: function() {
-        var content = <NamList data={this.state.data} />;
+    handleFilter : function(nam) {
+        this.loadNamData();
+        console.log(nam);
+    },
+    render: function () {
+        var content = <NamList onFilter={this.handleFilter} data={this.state.data} />;
         if (this.state.spinning) {
             content = <span>Spinner a spining</span>;
         }
