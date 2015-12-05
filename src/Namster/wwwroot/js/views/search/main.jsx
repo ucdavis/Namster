@@ -64,9 +64,11 @@ export class SearchMain extends React.Component {
 
         return (
           <div>
-              <div className="form-group">
-                  <label className="control=label" htmlFor="query">Search</label>
-                  <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
+              <div className="input-group" id="search-box">
+                <span className="input-group-btn">
+                  <button className="btn btn-default" type="button"><i className="fa fa-search"></i></button>
+                </span>
+                <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
               </div>
             <hr/>
             {content}

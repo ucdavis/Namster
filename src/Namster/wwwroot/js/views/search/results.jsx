@@ -1,12 +1,14 @@
 export class SearchResult extends React.Component {
     render() {
         return (
-            <div className="panel panel-default">
-              <div className="panel-body">
-                <h2>{this.props.result.NamNumber}</h2>
-                <p>This is where more information goes.</p>
+            <a href="/nam/{this.props.result.}">
+              <div className="panel panel-default">
+                <div className="panel-body">
+                  <h2>{this.props.result.NamNumber}</h2>
+                  <p>This is where more information goes.</p>
+                </div>
               </div>
-            </div>
+            </a>
         )
     }
 }
