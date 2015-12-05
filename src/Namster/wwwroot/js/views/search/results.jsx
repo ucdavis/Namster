@@ -1,7 +1,12 @@
 export class SearchResult extends React.Component {
     render() {
         return (
-            <li>{this.props.result.NamNumber}</li>
+            <div className="panel panel-default">
+              <div className="panel-body">
+                <h2>{this.props.result.NamNumber}</h2>
+                <p>This is where more information goes.</p>
+              </div>
+            </div>
         )
     }
 }
@@ -9,11 +14,11 @@ export class SearchResult extends React.Component {
 export class SearchResultList extends React.Component {
     render() {
         return (
-            <ul>
+            <div>
               {this.props.results.map(function(result) {
                  return <SearchResult key={result.NamNumber} result={result} />;
               })}
-            </ul>
+            </div>
         )
     }
 }
