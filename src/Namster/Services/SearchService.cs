@@ -1,6 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
-using Microsoft.Azure;
 using Namster.Models;
 using Nest;
 
@@ -13,8 +13,6 @@ namespace Namster.Services
 
     public class SearchService : ISearchService
     {
-        private static readonly Uri ConnectionString = new Uri(CloudConfigurationManager.GetSetting("ElasticSearchUrl"));
-        private static readonly string IndexName = CloudConfigurationManager.GetSetting("SearchIndexName");
         private readonly ElasticClient _client;
 
         private readonly Action<HighlightDescriptor<DataNam>> _highlightDescription =
@@ -25,9 +23,12 @@ namespace Namster.Services
                     f => f.OnField(x => x.Department).PreTags("<mark>").PostTags("</mark>"),
                     f => f.OnField(x => x.Division).PreTags("<mark>").PostTags("</mark>"));
 
-        public SearchService()
+        public SearchService(IConfiguration configuration)
         {
-            var settings = new ConnectionSettings(ConnectionString, IndexName);
+            var connectionString = new Uri(configuration["Search:Url"]);
+            var indexName = configuration["Search:IndexName"];
+
+            var settings = new ConnectionSettings(connectionString, indexName);
             _client = new ElasticClient(settings);
 
         }
