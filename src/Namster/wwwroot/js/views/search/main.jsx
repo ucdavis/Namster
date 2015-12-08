@@ -1,17 +1,28 @@
 //import $ from 'jquery';
+//import { Router, Route, Link } from 'react-router'
+
 import { SearchResultList } from './results.jsx';
 import { SearchInProgress } from './components.jsx'
+
+import { getParameterByName } from '../../functions/location'
 
 export class SearchMain extends React.Component {
     constructor(props) {
         super(props);
 
+        // check url
+        var term = getParameterByName('term');
+
         this.state = {
-            query: props.query || '',
+            query: props.query || term || '',
             results: props.results || []
         };
 
         this._searchTimer = 0;
+
+        if (this.state.query){
+          this._resetSearch();
+        }
     }
 
     onChange(event) {
@@ -42,6 +53,7 @@ export class SearchMain extends React.Component {
         self._request = $.get('/search/query?term=' + self.state.query)
             .success(function(data) {
                 self.setState({results: data});
+                window.history.pushState({"results":data},"Search Results", "/search/?term=" + self.state.query);
             })
             .done(function() {
                 self.setState({searching: false});
