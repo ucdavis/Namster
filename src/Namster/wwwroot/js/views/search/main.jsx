@@ -1,24 +1,36 @@
 //import $ from 'jquery';
+//import { Router, Route, Link } from 'react-router'
+
 import { SearchResultList } from './results.jsx';
 import { SearchInProgress } from './components.jsx'
+
+import { getParameterByName } from '../../functions/location'
 
 export class SearchMain extends React.Component {
     constructor(props) {
         super(props);
 
+        // check url
+        var term = getParameterByName('term');
+
         this.state = {
-            query: props.query || '',
+            query: props.query || term || '',
             results: props.results || []
         };
 
         this._searchTimer = 0;
+
+        if (this.state.query){
+          this._resetSearch();
+        }
     }
 
     onChange(event) {
+        // clear out results, update state
+        this.setState({results: null});
         this.setState({query: event.target.value});
-        this.setState({searching: !!event.target.value});
 
-        // cancel existing request
+        // cancel any existing request
         if (this._request) {
             this._request.abort();
         }
@@ -32,6 +44,7 @@ export class SearchMain extends React.Component {
     // delay start search by 500 ms
     _resetSearch() {
         clearTimeout (this._searchTimer);
+        this.setState({searching: true});
         this._searchTimer = setTimeout(this._startSearch.bind(this), 500);
     }
 
@@ -40,22 +53,34 @@ export class SearchMain extends React.Component {
         self._request = $.get('/search/query?term=' + self.state.query)
             .success(function(data) {
                 self.setState({results: data});
+                window.history.pushState({"results":data},"Search Results", "/search/?term=" + self.state.query);
+            })
+            .done(function() {
+                self.setState({searching: false});
             });
     }
 
     render() {
         var value = this.state.value;
 
-        var content = <SearchInProgress />;
-        if (this.state.results){
+        var content = null;
+        if (this.state.searching) {
+            content = <SearchInProgress />;
+        }
+        else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
+        }
+        else {
+            // content = <NoResults />;
         }
 
         return (
           <div>
-              <div className="form-group">
-                  <label className="control=label" htmlFor="query">Search</label>
-                  <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
+              <div className="input-group" id="search-box">
+                <span className="input-group-btn">
+                  <button className="btn btn-default" type="button"><i className="fa fa-search"></i></button>
+                </span>
+                <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
               </div>
             <hr/>
             {content}

@@ -51,9 +51,13 @@ namespace Namster
 
             services.AddMvc();
 
+            // Add app configuration
+            services.AddInstance<IConfiguration>(Configuration);
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ISearchService, SearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
