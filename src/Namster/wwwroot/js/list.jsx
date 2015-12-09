@@ -26,7 +26,7 @@ var NamList = React.createClass({
             );
         });
         return (
-            <table className="table">
+            <table id="datanams" className="table">
                 <thead>
                     <tr>
                         <th>Number</th>
@@ -49,8 +49,14 @@ var ListView = React.createClass({
             spinning: true
         };
     },
-    componentDidMount: function () {
+    componentWillMount: function () {
         this.loadNamData();
+    },
+    componentDidMount: function () {
+        console.log("did mount");
+    },
+    componentDidUpdate: function () {
+        $('#datanams').dataTable();
     },
     loadNamData : function() {
         var self = this;
