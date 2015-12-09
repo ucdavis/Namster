@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='min' Clean='clean' />
+﻿/// <binding Clean='clean' ProjectOpened='webpack-dev-server' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -11,8 +11,10 @@ var gulp = require("gulp"),
     sass = require("gulp-sass"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    webpack = require('webpack'),
-    sourcemaps = require('gulp-sourcemaps');
+    webpack = require("webpack"),
+    sourcemaps = require("gulp-sourcemaps");
+
+var webpackConfig = require("./webpack.config.js");
 
 var paths = {
     webroot: "./wwwroot/"
@@ -39,31 +41,26 @@ gulp.task("clean:css", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
-gulp.task("webpack:build", function (callback) {
-    webpack({
-        entry: {
-            search: paths.webroot + "js/views/search/main.jsx"
-        },
-        output: {
-            path: paths.webroot + 'js/dist/',
-            filename: '[name].js'
-        },
-        module: {
-            loaders: [
-                {
-                    test: /\.jsx?$/,
-                    loader: 'babel-loader',
-                    query: {
-                        presets: ['react', 'es2015']
-                    }
-                }
-            ]
-        }
-    }, function(err, stats) {
-        util.log('[webpack:build]', stats.toString({
+
+gulp.task("build:js", function (callback) {
+    var myConfig = Object.create(webpackConfig);
+
+    webpack(myConfig, function(err, stats) {
+        util.log('[build:js]', stats.toString({
             colors: true
         }));
         callback();
+    });
+});
+
+gulp.task("watch:webpack", function() {
+    var myConfig = Object.create(webpackConfig);
+    myConfig.watch = true;
+
+    webpack(myConfig, function (err, stats) {
+        util.log('[watch:webpack]', stats.toString({
+            colors: true
+        }));
     });
 });
 
@@ -81,8 +78,10 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("build", ["min:css", "webpack:build"]);
-
-gulp.task("watch:js", function() {
-    gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
+gulp.task("watch:css", function() {
+    gulp.watch([paths.sass], ["min:css"]);
 });
+
+gulp.task("watch", ["watch:css", "watch:webpack"]);
+
+gulp.task("build", ["min:css", "build:js"]);
