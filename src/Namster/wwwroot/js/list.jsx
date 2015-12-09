@@ -61,9 +61,11 @@ var ListView = React.createClass({
     loadNamData : function() {
         var self = this;
         self.setState({ spinning: true });
-        window.setTimeout(function () {
+        $.getJSON('/search/filter?field=building&term=EVERSN', function (data) {
+            console.log(data);
             self.setState({ spinning: false });
-        }, 1000);
+
+        });
     },
     handleFilter : function(type, nam) {
         this.loadNamData();
