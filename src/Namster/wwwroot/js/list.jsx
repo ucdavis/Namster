@@ -6,9 +6,9 @@
     render: function () {
         return (
             <tr>
-                <td>{this.props.data.id}</td>
-                <td><a href="#" onClick={this.filterBuilding.bind(this, 'building')}>{this.props.data.title}</a></td>
-                <td><a href="#" onClick={this.filterBuilding.bind(this, 'department')}>{this.props.data.title}</a></td>
+                <td>{this.props.data.NamNumber}</td>
+                <td><a href="#" onClick={this.filterBuilding.bind(this, 'building') }>{this.props.data.Building}</a></td>
+                <td><a href="#" onClick={this.filterBuilding.bind(this, 'department') }>{this.props.data.Department}</a></td>
             </tr>
         );
     }
@@ -22,7 +22,7 @@ var NamList = React.createClass({
         var self = this;
         var namNodes = self.props.data.map(function(nam) {
             return (
-                <Nam onFilter={self.handleFilter} key={nam.id} data={nam} />
+                <Nam onFilter={self.handleFilter} key={nam.NamNumber} data={nam} />
             );
         });
         return (
@@ -45,7 +45,7 @@ var NamList = React.createClass({
 var ListView = React.createClass({
     getInitialState: function () {
         return {
-            data: [{ id: 123, title: "abc" }, { id: 456, title: "def" }, { id: 789, title: "ghi" }],
+            data: [],
             spinning: true
         };
     },
@@ -56,15 +56,13 @@ var ListView = React.createClass({
         console.log("did mount");
     },
     componentDidUpdate: function () {
-        $('#datanams').dataTable();
+        $('#datanams').dataTable({ paging: false });
     },
     loadNamData : function() {
         var self = this;
         self.setState({ spinning: true });
-        $.getJSON('/search/filter?field=building&term=EVERSN', function (data) {
-            console.log(data);
-            self.setState({ spinning: false });
-
+        $.getJSON('/search/filter?field=exactBuilding&term=EVERSN', function (data) {
+            self.setState({ spinning: false, data: data });
         });
     },
     handleFilter : function(type, nam) {
