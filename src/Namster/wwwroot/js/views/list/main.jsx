@@ -1,9 +1,11 @@
-﻿var Nam = React.createClass({
-    filterBuilding: function (type, e) {
+﻿import { getParameterByName } from '../../functions/location'
+
+export class Nam extends React.Component{
+    filterBuilding (type, e) {
         e.preventDefault();
         this.props.onFilter(type, this.props.data);
-    },
-    render: function () {
+    }
+    render() {
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
@@ -12,13 +14,13 @@
             </tr>
         );
     }
-});
+}
 
-var NamList = React.createClass({
-    handleFilter: function (type, nam) {
+export class NamList extends React.Component {
+    handleFilter(type, nam) {
         this.props.onFilter(type, nam);
-    },
-    render: function () {
+    }
+    render() {
         var self = this;
         var namNodes = self.props.data.map(function(nam) {
             return (
@@ -40,36 +42,43 @@ var NamList = React.createClass({
             </table>
         );
     }
-});
+}
 
-var ListView = React.createClass({
-    getInitialState: function () {
-        return {
+export class ListView extends React.Component{
+    constructor(props)
+    {
+        super(props);
+        this.state = {
             data: [],
             spinning: true
         };
-    },
-    componentWillMount: function () {
+        
+    }
+    componentWillMount() {
         this.loadNamData();
-    },
-    componentDidMount: function () {
+    }
+    componentDidMount() {
         console.log("did mount");
-    },
-    componentDidUpdate: function () {
+    }
+    componentDidUpdate() {
         $('#datanams').dataTable({ paging: false });
-    },
-    loadNamData : function() {
+    }
+    loadNamData () {
         var self = this;
         self.setState({ spinning: true });
-        $.getJSON('/search/filter?field=exactBuilding&term=EVERSN', function (data) {
+
+        var field = 'exact' + getParameterByName('field');
+        var term = getParameterByName('term');
+
+        $.getJSON(`/search/filter?field=${field}&term=${term}`, function (data) {
             self.setState({ spinning: false, data: data });
         });
-    },
-    handleFilter : function(type, nam) {
+    }
+    handleFilter(type, nam) {
         this.loadNamData();
         console.log(type, nam);
-    },
-    render: function () {
+    }
+    render() {
         var content = <NamList onFilter={this.handleFilter} data={this.state.data} />;
         if (this.state.spinning) {
             content = <span>Spinner a spining</span>;
@@ -82,7 +91,7 @@ var ListView = React.createClass({
             </div>
         );
     }
-});
+}
 
 ReactDOM.render(
     <ListView />,
