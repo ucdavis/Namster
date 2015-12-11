@@ -68,7 +68,9 @@ export class ListView extends React.Component{
         self.setState({ spinning: true });
 
         var field = 'exact' + getParameterByName('field');
-        var term = getParameterByName('term');
+        var term = encodeURIComponent(getParameterByName('term'));
+
+        console.log(term);
 
         $.getJSON(`/search/filter?field=${field}&term=${term}`, function (data) {
             self.setState({ spinning: false, data: data });
