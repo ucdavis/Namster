@@ -86,3 +86,8 @@ gulp.task("build", ["min:css", "webpack:build"]);
 gulp.task("watch:js", function() {
     gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
 });
+
+gulp.task("watch", function() {
+    gulp.watch([paths.js, paths.jsx], ["webpack:build"]);
+    gulp.watch([paths.sass], ["min:css"]);
+});
