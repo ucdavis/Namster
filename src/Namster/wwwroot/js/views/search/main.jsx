@@ -62,8 +62,6 @@ export class SearchMain extends React.Component {
     }
 
     render() {
-        var value = this.state.value;
-
         var content = null;
         if (this.state.searching) {
             content = <SearchInProgress />;
@@ -72,7 +70,7 @@ export class SearchMain extends React.Component {
             content =  <SearchResultList results={this.state.results} />;
         }
         else {
-            // content = <NoResults />;
+            content = <div></div>;
         }
 
         return (
@@ -84,8 +82,8 @@ export class SearchMain extends React.Component {
               <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
             </div>
             <div className="results-container mdl-grid">
-              <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
-              <div class="mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div className="mdl-cell mdl-cell--8-col">
                   {content}
               </div>
             </div>
