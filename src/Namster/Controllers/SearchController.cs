@@ -27,5 +27,11 @@ namespace Namster.Controllers
             var results = await _searchService.FindByMatchAsync(term, 25);
             return results.Hits.Select(h => h.Source);
         }
+
+        public async Task<IEnumerable<DataNam>> Filter(string field, string term)
+        {
+            var results = await _searchService.FilterByAsync(field, term);
+            return results.Hits.Select(h => h.Source);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Namster.Services
     public interface ISearchService
     {
         Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, int size);
+        Task<ISearchResponse<DataNam>> FilterByAsync(string field, string term, int size = 1000);
     }
 
     public class SearchService : ISearchService
@@ -31,6 +32,13 @@ namespace Namster.Services
             var settings = new ConnectionSettings(connectionString, indexName);
             _client = new ElasticClient(settings);
 
+        }
+
+        public async Task<ISearchResponse<DataNam>> FilterByAsync(string field, string term, int size = 1000)
+        {
+            return
+                await
+                    _client.SearchAsync<DataNam>(s => s.Size(size).Filter(f => f.Term(field, term)));
         }
 
         public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, int size)
