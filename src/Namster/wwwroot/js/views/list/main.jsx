@@ -24,7 +24,7 @@ export class NamList extends React.Component {
             );
         });
         return (
-            <table id="datanams" className="table">
+            <table id="datanams" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                 <thead>
                     <tr>
                         <th>Number</th>
