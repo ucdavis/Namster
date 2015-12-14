@@ -58,21 +58,17 @@ export class ListView extends React.Component{
     componentWillMount() {
         this.loadNamData();
     }
-    componentDidMount() {
-        console.log("did mount");
-    }
     componentDidUpdate() {
         $('#datanams').dataTable({ paging: false });
     }
     loadNamData () {
         var self = this;
-        self.setState({ spinning: true });
 
         var field = getParameterByName('field');
         var term = getParameterByName('term');
 
-        console.log(field, term);
-
+        self.setState({ spinning: true, field: field, term: term });
+        
         if (!field || !term){
             self.setState({message: 'No field selected - go back to the homepage and start over'});
         } else {
@@ -83,7 +79,6 @@ export class ListView extends React.Component{
     }
     handleFilter(type, nam) {
         this.loadNamData();
-        console.log(type, nam);
     }
     render() {
         var content = <NamList onFilter={this.handleFilter} data={this.state.data} />;
@@ -95,7 +90,7 @@ export class ListView extends React.Component{
 
         return (
             <div>
-                <h1>Showing NAMs for CA&ES Dean's Office</h1>
+                <h1>Showing NAMs for the {this.state.field} {this.state.term}</h1>
                 {message}
                 {content}
             </div>
