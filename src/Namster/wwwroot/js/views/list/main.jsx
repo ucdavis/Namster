@@ -1,10 +1,6 @@
 ﻿import { getParameterByName } from '../../functions/location'
 
 export class Nam extends React.Component{
-    filterBuilding (type, e) {
-        e.preventDefault();
-        this.props.onFilter(type, this.props.data);
-    }
     render() {
         return (
             <tr>
@@ -17,14 +13,11 @@ export class Nam extends React.Component{
 }
 
 export class NamList extends React.Component {
-    handleFilter(type, nam) {
-        this.props.onFilter(type, nam);
-    }
     render() {
         var self = this;
         var namNodes = self.props.data.map(function(nam) {
             return (
-                <Nam onFilter={self.handleFilter} key={nam.NamNumber} data={nam} />
+                <Nam key={nam.NamNumber} data={nam} />
             );
         });
         return (
@@ -77,11 +70,8 @@ export class ListView extends React.Component{
             });
         }
     }
-    handleFilter(type, nam) {
-        this.loadNamData();
-    }
     render() {
-        var content = <NamList onFilter={this.handleFilter} data={this.state.data} />;
+        var content = <NamList data={this.state.data} />;
         if (this.state.spinning) {
             content = <span>Spinner a spining</span>;
         }
