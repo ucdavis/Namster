@@ -58,7 +58,12 @@ export class ListView extends React.Component{
         this.loadNamData();
     }
     componentDidUpdate() {
-        $('#datanams').dataTable({ paging: false });
+        $('#datanams').dataTable({ 
+            paging: false, 
+            "language": {
+                "search": "Filter:"
+            } 
+        });
     }
     loadNamData () {
         var self = this;
