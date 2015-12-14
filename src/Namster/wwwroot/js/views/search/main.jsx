@@ -3,6 +3,7 @@
 
 import { SearchResultList } from './results.jsx';
 import { SearchInProgress } from './components.jsx'
+import { FacetList } from './facets.jsx'
 
 import { getParameterByName } from '../../functions/location'
 
@@ -53,8 +54,9 @@ export class SearchMain extends React.Component {
         var self = this;
         self._request = $.get('/search/query?term=' + self.state.query)
             .success(function(data) {
-                self.setState({results: data});
-                window.history.pushState({"results":data},"Search Results", "/search/?term=" + self.state.query);
+                self.setState({results: data.results});
+                self.setState({aggregates: data.aggregates});
+                window.history.pushState({"query":data},"Search Results", "/search/?term=" + self.state.query);
             })
             .done(function() {
                 self.setState({searching: false});
@@ -63,11 +65,13 @@ export class SearchMain extends React.Component {
 
     render() {
         var content = null;
+        var facets = null;
         if (this.state.searching) {
             content = <SearchInProgress />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
+            facets = <FacetList facets={this.state.aggregates} />;
         }
         else {
             content = <div></div>;
@@ -82,7 +86,9 @@ export class SearchMain extends React.Component {
               <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
             </div>
             <div className="results-container mdl-grid">
-              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+                  {facets}
+              </div>
               <div className="mdl-cell mdl-cell--8-col">
                   {content}
               </div>
