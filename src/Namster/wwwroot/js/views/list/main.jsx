@@ -5,6 +5,7 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
+                <td>{this.props.data.Room}</td>
                 <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
                 <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
                 <td><a href={"/home/list?field=vlan&term=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
@@ -27,6 +28,7 @@ export class NamList extends React.Component {
                 <thead>
                     <tr>
                         <th>Number</th>
+                        <th>Room</th>
                         <th>Building</th>
                         <th>Department</th>
                         <th>Vlan</th>
@@ -69,7 +71,7 @@ export class ListView extends React.Component{
         if (!field || !term){
             self.setState({message: 'No field selected - go back to the homepage and start over'});
         } else {
-            if (field !== "vlan"){ //TODO: get rid of hackery for index names
+            if (field !== 'vlan'){ //TODO: get rid of hackery for index names
                 field = "exact" + field;
             }
 
