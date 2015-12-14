@@ -44,18 +44,16 @@ namespace Namster.Services
         public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, int size)
         {
             var baseSearch =
-                Query<DataNam>.MultiMatch(
-                    m =>
-                        m.OnFields(f => f.NamNumber, f => f.Building, f => f.Room,
-                            f => f.Department, f => f.Division).Query(term));
+                Query<DataNam>.MultiMatch(m =>
+                    m.OnFields(f => f.NamNumber, f => f.Building, f => f.Room,
+                        f => f.Department, f => f.Division).Query(term));
 
-            return
-                await
-                    _client.SearchAsync<DataNam>(
-                        s =>
-                            s.Size(size)
-                                .Query(baseSearch)
-                                .Highlight(_highlightDescription));
+            return await _client.SearchAsync<DataNam>(s =>
+                s.Size(size)
+                    .Query(baseSearch)
+                    .Aggregations(a => 
+                        a.Terms("Building", d => d.Field(f => f.ExactBuilding)))
+                    .Highlight(_highlightDescription));
         }
     }
 }
