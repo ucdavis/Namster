@@ -70,17 +70,18 @@ gulp.task("min:css", function () {
         .pipe(sass())                       // compile sass
         .pipe(rename({                      // with new directory, filename ext
             dirname: paths.css,
-            extname: '.css'}))      
+            extname: '.css'}))
         .pipe(sourcemaps.write())           // create sourcemaps
-        .pipe(gulp.dest("."))               // write out compiled files     
+        .pipe(gulp.dest("."))               // write out compiled files
         .pipe(concat(paths.concatCssDest))  // concat + min
         .pipe(cssmin())
         .pipe(gulp.dest("."));
 });
 
-gulp.task("build", ["min:css", "build:js"]);
-
-gulp.task("watch", function() {
-    gulp.watch([paths.js, paths.jsx], ["watch:js"]);
+gulp.task("watch:css", function() {
     gulp.watch([paths.sass], ["min:css"]);
 });
+
+gulp.task("build", ["min:css", "build:js"]);
+
+gulp.task("watch", ["watch:css", "watch:js"]);
