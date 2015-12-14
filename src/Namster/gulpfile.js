@@ -42,7 +42,8 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 gulp.task("webpack:build", function (callback) {
     webpack({
         entry: {
-            search: paths.webroot + "js/views/search/main.jsx"
+            search: paths.webroot + "js/views/search/main.jsx",
+            list: paths.webroot + "js/views/list/main.jsx"
         },
         output: {
             path: paths.webroot + 'js/dist/',

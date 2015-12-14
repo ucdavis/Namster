@@ -9,8 +9,8 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td><a href="#" onClick={this.filterBuilding.bind(this, 'building') }>{this.props.data.Building}</a></td>
-                <td><a href="#" onClick={this.filterBuilding.bind(this, 'department') }>{this.props.data.Department}</a></td>
+                <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
+                <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
             </tr>
         );
     }
@@ -50,6 +50,7 @@ export class ListView extends React.Component{
         super(props);
         this.state = {
             data: [],
+            message: '',
             spinning: true
         };
         
@@ -67,14 +68,18 @@ export class ListView extends React.Component{
         var self = this;
         self.setState({ spinning: true });
 
-        var field = 'exact' + getParameterByName('field');
-        var term = encodeURIComponent(getParameterByName('term'));
+        var field = getParameterByName('field');
+        var term = getParameterByName('term');
 
-        console.log(term);
+        console.log(field, term);
 
-        $.getJSON(`/search/filter?field=${field}&term=${term}`, function (data) {
-            self.setState({ spinning: false, data: data });
-        });
+        if (!field || !term){
+            self.setState({message: 'No field selected - go back to the homepage and start over'});
+        } else {
+            $.getJSON(`/search/filter?field=exact${field}&term=${encodeURIComponent(term)}`, function (data) {
+                self.setState({ spinning: false, data: data });
+            });
+        }
     }
     handleFilter(type, nam) {
         this.loadNamData();
@@ -85,10 +90,13 @@ export class ListView extends React.Component{
         if (this.state.spinning) {
             content = <span>Spinner a spining</span>;
         }
+        
+        var message = this.state.message ? <div className="alert alert-warning">{this.state.message}</div> : '';
 
         return (
             <div>
                 <h1>Showing NAMs for CA&ES Dean's Office</h1>
+                {message}
                 {content}
             </div>
         );
