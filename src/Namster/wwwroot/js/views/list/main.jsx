@@ -24,7 +24,7 @@ export class NamList extends React.Component {
             );
         });
         return (
-            <table id="datanams" className="table">
+            <table id="datanams" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
                 <thead>
                     <tr>
                         <th>Number</th>
@@ -88,14 +88,14 @@ export class ListView extends React.Component{
     render() {
         var content = <NamList data={this.state.data} />;
         if (this.state.spinning) {
-            content = <span>Spinner a spining</span>;
+            content = <div className="mdl-spinner mdl-js-spinner is-active"></div>;
         }
         
         var message = this.state.message ? <div className="alert alert-warning">{this.state.message}</div> : '';
 
         return (
             <div>
-                <h1>Showing NAMs for the {this.state.field} {this.state.term}</h1>
+                <h2>Showing NAMs for the {this.state.field} {this.state.term}</h2>
                 {message}
                 {content}
             </div>
