@@ -22,10 +22,14 @@ namespace Namster.Controllers
             return View();
         }
 
-        public async Task<IEnumerable<DataNam>> Query(string term)
+        public async Task<JsonResult> Query(string term)
         {
             var results = await _searchService.FindByMatchAsync(term, 25);
-            return results.Hits.Select(h => h.Source);
+            return new JsonResult(new
+            {
+                results = results.Hits.Select(h => h.Source),
+                aggregates = results.Aggregations
+            });
         }
 
         public async Task<IEnumerable<DataNam>> Filter(string field, string term)
