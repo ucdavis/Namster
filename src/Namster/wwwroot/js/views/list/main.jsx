@@ -1,0 +1,94 @@
+﻿import { getParameterByName } from '../../functions/location'
+
+export class Nam extends React.Component{
+    render() {
+        return (
+            <tr>
+                <td>{this.props.data.NamNumber}</td>
+                <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
+                <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
+            </tr>
+        );
+    }
+}
+
+export class NamList extends React.Component {
+    render() {
+        var self = this;
+        var namNodes = self.props.data.map(function(nam) {
+            return (
+                <Nam key={nam.NamNumber} data={nam} />
+            );
+        });
+        return (
+            <table id="datanams" className="table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Building</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {namNodes}
+                </tbody>
+            </table>
+        );
+    }
+}
+
+export class ListView extends React.Component{
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            data: [],
+            message: '',
+            spinning: true
+        };
+        
+    }
+    componentWillMount() {
+        this.loadNamData();
+    }
+    componentDidUpdate() {
+        $('#datanams').dataTable({ paging: false });
+    }
+    loadNamData () {
+        var self = this;
+
+        var field = getParameterByName('field');
+        var term = getParameterByName('term');
+
+        self.setState({ spinning: true, field: field, term: term });
+        
+        if (!field || !term){
+            self.setState({message: 'No field selected - go back to the homepage and start over'});
+        } else {
+            $.getJSON(`/search/filter?field=exact${field}&term=${encodeURIComponent(term)}`, function (data) {
+                self.setState({ spinning: false, data: data });
+            });
+        }
+    }
+    render() {
+        var content = <NamList data={this.state.data} />;
+        if (this.state.spinning) {
+            content = <span>Spinner a spining</span>;
+        }
+        
+        var message = this.state.message ? <div className="alert alert-warning">{this.state.message}</div> : '';
+
+        return (
+            <div>
+                <h1>Showing NAMs for the {this.state.field} {this.state.term}</h1>
+                {message}
+                {content}
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <ListView />,
+    document.getElementById('example')
+);

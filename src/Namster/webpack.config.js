@@ -2,7 +2,8 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        search: path.resolve("./wwwroot/js/views/search/main.jsx")
+        search: path.resolve("./wwwroot/js/views/search/main.jsx"),
+        list: path.resolve("./wwwroot/js/views/list/main.jsx")
     },
     output: {
         path: path.resolve("./wwwroot/js/dist/"),

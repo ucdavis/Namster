@@ -1,4 +1,4 @@
-﻿/// <binding Clean='clean' ProjectOpened='webpack-dev-server' />
+/// <binding BeforeBuild='webpack:build, min:css' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -53,12 +53,12 @@ gulp.task("build:js", function (callback) {
     });
 });
 
-gulp.task("watch:webpack", function() {
+gulp.task("watch:js", function() {
     var myConfig = Object.create(webpackConfig);
     myConfig.watch = true;
 
     webpack(myConfig, function (err, stats) {
-        util.log('[watch:webpack]', stats.toString({
+        util.log('[watch:js]', stats.toString({
             colors: true
         }));
     });
@@ -78,10 +78,9 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("watch:css", function() {
+gulp.task("build", ["min:css", "build:js"]);
+
+gulp.task("watch", function() {
+    gulp.watch([paths.js, paths.jsx], ["watch:js"]);
     gulp.watch([paths.sass], ["min:css"]);
 });
-
-gulp.task("watch", ["watch:css", "watch:webpack"]);
-
-gulp.task("build", ["min:css", "build:js"]);

@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "material-design-lite": "^1.0.6",
+    "datatables": "1.10.10",
     "jquery": "2.1.4",
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.4",

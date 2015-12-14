@@ -225,3 +225,4 @@ node_modules/
 ## ASP.Net 5
 #############
 **/wwwroot/lib/
+*.lock.json
