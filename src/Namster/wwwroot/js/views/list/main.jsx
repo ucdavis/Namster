@@ -5,8 +5,11 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
+                <td>{this.props.data.Room}</td>
                 <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
                 <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
+                <td><a href={"/home/list?field=vlan&term=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
+                <td>{this.props.data.Status}</td>
             </tr>
         );
     }
@@ -25,8 +28,11 @@ export class NamList extends React.Component {
                 <thead>
                     <tr>
                         <th>Number</th>
+                        <th>Room</th>
                         <th>Building</th>
                         <th>Department</th>
+                        <th>Vlan</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +58,12 @@ export class ListView extends React.Component{
         this.loadNamData();
     }
     componentDidUpdate() {
-        $('#datanams').dataTable({ paging: false });
+        $('#datanams').dataTable({ 
+            paging: false, 
+            "language": {
+                "search": "Filter:"
+            } 
+        });
     }
     loadNamData () {
         var self = this;
@@ -61,11 +72,15 @@ export class ListView extends React.Component{
         var term = getParameterByName('term');
 
         self.setState({ spinning: true, field: field, term: term });
-        
+                
         if (!field || !term){
             self.setState({message: 'No field selected - go back to the homepage and start over'});
         } else {
-            $.getJSON(`/search/filter?field=exact${field}&term=${encodeURIComponent(term)}`, function (data) {
+            if (field !== 'vlan'){ //TODO: get rid of hackery for index names
+                field = "exact" + field;
+            }
+
+            $.getJSON(`/search/filter?field=${field}&term=${encodeURIComponent(term)}`, function (data) {
                 self.setState({ spinning: false, data: data });
             });
         }
