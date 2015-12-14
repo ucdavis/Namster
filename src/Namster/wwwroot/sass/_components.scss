@@ -3,3 +3,14 @@
         max-width: 100%;
     }
 }
+
+.results-container {
+    max-width: 1600px; 
+}
+
+.result {
+    .mdl-card__title {
+        background-color: #1A3E68; 
+        color: white;
+    }
+}
