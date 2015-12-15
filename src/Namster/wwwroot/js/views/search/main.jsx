@@ -1,5 +1,6 @@
 //import $ from 'jquery';
-//import { Router, Route, Link } from 'react-router'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { SearchResultList } from './results.jsx';
 import { SearchInProgress } from './components.jsx'
