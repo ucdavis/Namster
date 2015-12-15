@@ -28,8 +28,8 @@ paths.sass = paths.webroot + "sass/**/*.scss";
 paths.css = paths.webroot + "css";
 
 paths.concatJsDest = paths.webroot + "js/site.js";
-paths.concatJsMinDest = paths.webroot + "js/site.min.js";
-paths.concatCssDest = paths.webroot + "css/site.min.css";
+paths.concatJsMinDest = paths.webroot + "js/dist/site.min.js";
+paths.concatCssDest = paths.webroot + "css/dist/site.min.css";
 
 gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
@@ -69,7 +69,7 @@ gulp.task("min:css", function () {
         .pipe(sourcemaps.init())            // start source maps
         .pipe(sass())                       // compile sass
         .pipe(rename({                      // with new directory, filename ext
-            dirname: paths.css,
+            dirname: paths.css + '/dist/',
             extname: '.css'}))
         .pipe(sourcemaps.write())           // create sourcemaps
         .pipe(gulp.dest("."))               // write out compiled files
