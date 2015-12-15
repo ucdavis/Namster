@@ -6,10 +6,10 @@
         <title>@ViewData["Title"] - Namster</title>
 
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-blue.min.css" />
-        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+        <!--<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>-->
         <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+        
         <environment names="Development">
             <link rel="stylesheet" href="~/css/site.css" />
         </environment>
@@ -20,32 +20,13 @@
         <script src="~/js/dist/vendor.bundle.js"></script>
     </head>
 <body>
-<div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
-    <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-800">
-        <div class="mdl-layout__header-row">
-            <span class="mdl-layout-title">Namster</span>
-            <div class="mdl-layout-spacer"></div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <input class="mdl-textfield__input" type="text" id="NOT-search">
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
-            </div>
-        </div>
-    </header>
-    <main class="mdl-layout__content">
-
         @RenderBody()
 
-        <footer class="mdl-mini-footer">
+        <!--<footer class="mdl-mini-footer">
             <div class="mdl-mini-footer--left-section">
                 <p>&copy; 2015 - Namster</p>
             </div>
-        </footer>
-    </main>
+        </footer>-->
 </div>
 
     <environment names="Development">
