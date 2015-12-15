@@ -6,31 +6,55 @@ export class FacetItem extends React.Component {
     }
 
     onChange(event) {
-      
+        this.props.onChange(event.target.checked)
     }
 
     render() {
         return (
-            <div className="facet-item">
+            <li className="facet-item">
               <label className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
                 <input type="checkbox" className="mdl-checkbox__input" onChange={this.onChange.bind(this)} />
-                <span className="mdl-checkbox__label">{this.props.name} ({this.props.count})</span>
+                <span className="mdl-checkbox__label">{this.props.name} <span className="small">({this.props.count})</span></span>
               </label>
-            </div>
+            </li>
         )
     }
 }
 
 export class FacetList extends React.Component {
+    onChange(category, key, value) {
+        this.props.onChange(category, key, value);
+    }
+
     render() {
+        var self = this;
+
         return (
             <div className="">
                 <h3>Buildings</h3>
+                <ul>
                 {this.props.facets.Building.Items.map(function(facet) {
                    return (
-                      <FacetItem key={facet.Key} name={facet.Key} count={facet.DocCount} />
+                      <FacetItem key={facet.Key} name={facet.Key} count={facet.DocCount} onChange={self.onChange.bind(self, "building", facet.Key)} />
                    )
                 })}
+                </ul>
+                <h3>Department</h3>
+                <ul>
+                {this.props.facets.Department.Items.map(function(facet) {
+                   return (
+                      <FacetItem key={facet.Key} name={facet.Key} count={facet.DocCount} onChange={self.onChange.bind(self, "department", facet.Key)} />
+                   )
+                })}
+                </ul>
+                <h3>VLAN</h3>
+                <ul>
+                {this.props.facets.VLAN.Items.map(function(facet) {
+                   return (
+                      <FacetItem key={facet.Key} name={facet.Key} count={facet.DocCount} onChange={self.onChange.bind(self, "vlan", facet.Key)} />
+                   )
+                })}
+                </ul>
             </div>
         )
     }
