@@ -33,6 +33,13 @@ export class SearchMain extends React.Component {
         this.setState({results: null});
         this.setState({query: event.target.value});
 
+        // clear out filtering
+        this.setState({
+          building: false,
+          department: false,
+          vlan: false
+        })
+
         // cancel any existing request
         if (this._request) {
             this._request.abort();
