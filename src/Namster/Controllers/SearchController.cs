@@ -22,9 +22,9 @@ namespace Namster.Controllers
             return View();
         }
 
-        public async Task<JsonResult> Query(string term)
+        public async Task<JsonResult> Query(string term, string building, string department, string vlan)
         {
-            var results = await _searchService.FindByMatchAsync(term, 25);
+            var results = await _searchService.FindByMatchAsync(term, building, department, vlan);
             return new JsonResult(new
             {
                 results = results.Hits.Select(h => h.Source),

@@ -8,7 +8,7 @@ namespace Namster.Services
 {
     public interface ISearchService
     {
-        Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, int size);
+        Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, string building, string department, string vlan, int size = 100);
         Task<ISearchResponse<DataNam>> FilterByAsync(string field, string term, int size = 1000);
     }
 
@@ -41,18 +41,31 @@ namespace Namster.Services
                     _client.SearchAsync<DataNam>(s => s.Size(size).Filter(f => f.Term(field, term)));
         }
 
-        public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, int size)
+        public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, string building, string department, string vlan, int size = 100)
         {
-            var baseSearch =
-                Query<DataNam>.MultiMatch(m =>
-                    m.OnFields(f => f.NamNumber, f => f.Building, f => f.Room,
-                        f => f.Department, f => f.Division).Query(term));
+            var query = Query<DataNam>.Filtered(a =>
+            {
+                // build multimatch on term
+                a.Query(q => q.MultiMatch(m =>
+                    m.OnFields(f =>
+                        f.NamNumber, f => f.Building, f => f.Room, f => f.Department, f => f.Division)
+                    .Query(term)));
+
+                // add filters
+                a.Filter(f =>
+                    f.Term(t => t.ExactBuilding, building)
+                    && f.Term(t => t.ExactDepartment, department)
+                    && f.Term(t => t.Vlan, vlan)
+                );
+            });
 
             return await _client.SearchAsync<DataNam>(s =>
                 s.Size(size)
-                    .Query(baseSearch)
-                    .Aggregations(a => 
-                        a.Terms("Building", d => d.Field(f => f.ExactBuilding)))
+                    .Query(query)
+                    .Aggregations(a =>
+                        a.Terms("Building", d => d.Field(f => f.ExactBuilding))
+                         .Terms("Department", d => d.Field(f => f.ExactDepartment))
+                         .Terms("VLAN", d => d.Field(f => f.Vlan)))
                     .Highlight(_highlightDescription));
         }
     }
