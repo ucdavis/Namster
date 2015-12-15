@@ -1,3 +1,5 @@
+import React from 'react'
+
 export class SearchResult extends React.Component {
     render() {
         var building = null;
