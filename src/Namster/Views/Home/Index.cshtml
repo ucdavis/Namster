@@ -14,7 +14,7 @@
 
 <div id="search-wrapper" class="search-wrapper">
     <div class="input-holder">
-        <input id="searchbox" type="text" class="search-input" placeholder="Find the perfect NAM for you" />
+        <input id="searchbox" type="text" class="search-input" placeholder="" />
     </div>
 </div>
 
@@ -23,7 +23,12 @@
 @section scripts{
  <script>
     $(function(){
-        $("#searchbox").on('focus', function(){
+        var placeholders = ['Find the perfect NAM for you', 'What would you like to NAM today?', 'Your ideal NAM is waiting for you...'];
+        
+        var $searchbox = $('#searchbox');
+        $searchbox.attr('placeholder', placeholders[Math.floor(Math.random()*placeholders.length)]);
+        
+        $searchbox.on('focus', function(){
             $("#search-wrapper").addClass('active');
             $("#background").addClass('fadeout hide');
             setTimeout(function(){
