@@ -4,9 +4,6 @@ import Checkbox from 'material-ui/lib/checkbox';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
-import { SelectableContainerEnhance } from 'material-ui/lib/hoc/selectable-enhance';
-
-var SelectableList = SelectableContainerEnhance(List);
 
 export class FacetListItem extends React.Component {
 
@@ -14,14 +11,12 @@ export class FacetListItem extends React.Component {
     if (this.props.onCheck){
       this.props.onCheck(this.props.value, checked)
     }
-
-    this.setState({switched: true})
   }
 
   render() {
     return (
       <ListItem value={this.props.value}
-        leftCheckbox={ <Checkbox value={this.props.value} onCheck={this.onCheck.bind(this)} /> }
+        leftCheckbox={ <Checkbox value={this.props.value} checked={this.props.selected} onCheck={this.onCheck.bind(this)} /> }
         primaryText={ <span>{this.props.value} <span className="small">({this.props.count})</span></span> }
       />
     )
@@ -33,17 +28,23 @@ export class FacetList extends React.Component {
         super(props);
 
         this.state = {
-            buildings: this.props.buildings || [],
-            departments: this.props.departments || [],
-            vlans: this.props.vlans || []
-        }
+            building: this.props.building || '',
+            department: this.props.department || '',
+            vlan: this.props.vlan || ''
+        };
     }
 
     onCheck(category, key, value) {
         this.props.onChange(category, key, value);
-    }
 
-    handleUpdateSelectedIndex(e,index) {
+        var target = {};
+        if (value){
+          target[category] = key;
+        }
+        else {
+          target[category] = false;
+        }
+        this.setState(target);
     }
 
     render() {
@@ -55,23 +56,26 @@ export class FacetList extends React.Component {
 
         return (
             <div className="">
-                <SelectableList subheader="Building" valueLink={{value:this.state.buildings, requestChange:this.handleUpdateSelectedIndex.bind(this)}}>
+                <List subheader="Building" >
                     {this.props.facets.Building.Items.map(function(item) {
-                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} onCheck={self.onCheck.bind(self, "building")} />
+                        var selected = (self.state.building === item.Key);
+                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "building")} />
                     })}
-                </SelectableList>
+                </List>
                 <Divider />
-                <SelectableList subheader="Department" valueLink={{value:this.state.departments, requestChange:this.handleUpdateSelectedIndex.bind(this)}}>
+                <List subheader="Department">
                     {this.props.facets.Department.Items.map(function(item) {
-                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} onCheck={self.onCheck.bind(self, "department")} />
+                        var selected = (self.state.department === item.Key);
+                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "department")} />
                     })}
-                </SelectableList>
+                </List>
                 <Divider />
-                <SelectableList subheader="VLAN" valueLink={{value:this.state.vlans, requestChange:this.handleUpdateSelectedIndex.bind(this)}}>
+                <List subheader="VLAN">
                     {this.props.facets.VLAN.Items.map(function(item) {
-                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} onCheck={self.onCheck.bind(self, "vlan")} />
+                        var selected = (self.state.vlan === item.Key);
+                        return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "vlan")} />
                     })}
-                </SelectableList>
+                </List>
             </div>
         )
     }
