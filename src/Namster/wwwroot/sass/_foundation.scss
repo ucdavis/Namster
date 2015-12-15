@@ -1,9 +1,37 @@
 $search-placeholder-color: white;
 
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+
+    .poster img {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+    }
+}
+
+.homepage-hero-module {
+    padding: 0px; 
+    margin-bottom: 0px; 
+    height: 734px;   
+}
+
+#background.fadeout {
+    opacity: 0;
+    transition: all .3s ease-out;
+}
+
+
 .search-wrapper.active{
     width: 80%;
     transform: translate(-50%, -50%);
-    top:25%;
+    top:10%;
     left:50%;
     transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
 

@@ -2,19 +2,32 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div id="background" class="homepage-hero-module jumbotron">
+    <div class="video-container">
+        <div class="poster">
+            <img src="/images/cows.jpg" alt="">
+        </div>
+    </div>
+</div>
+
 <div id="search-wrapper" class="search-wrapper">
     <div class="input-holder">
         <input id="searchbox" type="text" class="search-input" placeholder="Type to search" />
     </div>
 </div>
 
+<h3>Search Results</h3>
+
 @section scripts{
  <script>
     $(function(){
         $("#searchbox").on('focus', function(){
             $("#search-wrapper").addClass('active');
+            $("#background").addClass('fadeout hide');
+            setTimeout(function(){
+                $("#background").css('height', '150px');
+            }, 333);
         });
     })
-</script>
-   
+ </script>  
 }
