@@ -2,6 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style type="text/css">
+
+</style>
+
 <div id="background" class="homepage-hero-module">
     <div class="video-container">
         <div class="filter"></div>
@@ -10,6 +14,11 @@
             <source src="/media/cows.webm" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
         </video>
     </div>
+</div>
+
+<div id="herotitle" class="title-text">
+    <h1>NamstR</h1>
+    <p style="text-align:right;">a CA&ES DO production</p>
 </div>
 
 <div id="search-wrapper" class="search-wrapper">
@@ -30,7 +39,8 @@
         
         $searchbox.on('focus', function(){
             $("#search-wrapper").addClass('active');
-            $("#background").addClass('fadeout hide');
+            $("#background").addClass('fadeout');
+            $("#herotitle").addClass('fadeout');
             setTimeout(function(){
                 $("#background").css('height', '150px');
             }, 333);

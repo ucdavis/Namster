@@ -24,19 +24,19 @@ $search-placeholder-color: white;
             width:100%;
             max-width: 100%;
             transform: translate(10px, 10px);
-        }
-        
-        .search-input::-webkit-input-placeholder {
-            color: $search-placeholder-color;
-        }
-        
-        .search-input::-moz-placeholder {
-            color: $search-placeholder-color;
-        }
-        
-        .search-input:-ms-input-placeholder {  
-            color: $search-placeholder-color;
-        }
+
+            &::-webkit-input-placeholder {
+                color: $search-placeholder-color;
+            }
+
+            &::-moz-placeholder {
+                color: $search-placeholder-color;
+            }
+            
+            &:-ms-input-placeholder {  
+                color: $search-placeholder-color;
+            }
+        }        
     }
 }
 
@@ -69,6 +69,23 @@ $search-placeholder-color: white;
     }
 }
 
+#herotitle {
+    z-index: 1000;
+    width: 60%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top:25%;
+    left:50%;
+    text-align: center;
+    max-width: 280px;
+    color: white;
+    
+    &.fadeout {
+    opacity: 0;
+    transition: all .1s ease-out;
+    }
+}
+    
 //VIDEO BANNER
 .homepage-hero-module {
     border-right: none;
