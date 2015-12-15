@@ -1,4 +1,5 @@
 var path = require('path');
+var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
     entry: {
@@ -16,7 +17,8 @@ module.exports = {
                 loader: "babel-loader",
                 query: {
                     presets: ["react", "es2015"]
-                }
+                },
+                exclude: [nodeModulesPath]
             }
         ]
     }
