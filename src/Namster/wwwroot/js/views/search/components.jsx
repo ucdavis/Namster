@@ -1,3 +1,5 @@
+import React from 'react'
+
 export class SearchInProgress extends React.Component {
     render() {
         return (

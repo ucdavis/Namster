@@ -1,8 +1,12 @@
 //import $ from 'jquery';
-//import { Router, Route, Link } from 'react-router'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import LinearProgress from 'material-ui/lib/linear-progress'
+import CircularProgress from 'material-ui/lib/circular-progress'
 
 import { SearchResultList } from './results.jsx';
-import { SearchInProgress } from './components.jsx'
+import { FacetList } from './facets.jsx'
 
 import { getParameterByName } from '../../functions/location'
 
@@ -26,10 +30,17 @@ export class SearchMain extends React.Component {
         }
     }
 
-    onChange(event) {
+    onQueryChange(event) {
         // clear out results, update state
         this.setState({results: null});
         this.setState({query: event.target.value});
+
+        // clear out filtering
+        this.setState({
+          building: false,
+          department: false,
+          vlan: false
+        })
 
         // cancel any existing request
         if (this._request) {
@@ -43,6 +54,21 @@ export class SearchMain extends React.Component {
         }
     }
 
+    onFacetSelect(category, key, value) {
+        var target = {};
+
+        if (value){
+            target[category] = key;
+        }
+        else {
+            target[category] = false;
+        }
+
+        this.setState(target)
+        this.setState({searching: true});
+        this._resetSearch();
+    }
+
     // delay start search by 500 ms
     _resetSearch() {
         clearTimeout (this._searchTimer);
@@ -51,10 +77,25 @@ export class SearchMain extends React.Component {
 
     _startSearch() {
         var self = this;
-        self._request = $.get('/search/query?term=' + self.state.query)
+        var terms = 'term=' + encodeURIComponent(self.state.query);
+
+        if (self.state.building) {
+            terms += '&building=' + encodeURIComponent(self.state.building);
+        }
+
+        if (self.state.department) {
+            terms += '&department=' + encodeURIComponent(self.state.department);
+        }
+
+        if (self.state.vlan) {
+            terms += '&vlan=' + encodeURIComponent(self.state.vlan);
+        }
+
+        self._request = $.get('/search/query?' + terms)
             .success(function(data) {
-                self.setState({results: data});
-                window.history.pushState({"results":data},"Search Results", "/search/?term=" + self.state.query);
+                self.setState({results: data.results});
+                self.setState({aggregates: data.aggregates});
+                window.history.pushState({"query":data},"Search Results", '?' + terms);
             })
             .done(function() {
                 self.setState({searching: false});
@@ -64,7 +105,7 @@ export class SearchMain extends React.Component {
     render() {
         var content = null;
         if (this.state.searching) {
-            content = <SearchInProgress />;
+            content = <CircularProgress mode="indeterminate" size={4} />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
@@ -79,10 +120,12 @@ export class SearchMain extends React.Component {
               <span className="input-group-btn">
                 <button className="btn btn-default" type="button"><i className="fa fa-search"></i></button>
               </span>
-              <input type="text" className="form-control" value={this.state.query} onChange={this.onChange.bind(this)} />
+              <input type="text" className="form-control" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
             </div>
             <div className="results-container mdl-grid">
-              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+                  <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
+              </div>
               <div className="mdl-cell mdl-cell--8-col">
                   {content}
               </div>
