@@ -2,8 +2,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import LinearProgress from 'material-ui/lib/linear-progress'
+import CircularProgress from 'material-ui/lib/circular-progress'
+
 import { SearchResultList } from './results.jsx';
-import { SearchInProgress } from './components.jsx'
 import { FacetList } from './facets.jsx'
 
 import { getParameterByName } from '../../functions/location'
@@ -63,6 +65,7 @@ export class SearchMain extends React.Component {
         }
 
         this.setState(target)
+        this.setState({searching: true});
         this._resetSearch();
     }
 
@@ -101,13 +104,11 @@ export class SearchMain extends React.Component {
 
     render() {
         var content = null;
-        var facets = null;
         if (this.state.searching) {
-            content = <SearchInProgress />;
+            content = <CircularProgress mode="indeterminate" size={4} />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
-            facets = <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />;
         }
         else {
             content = <div></div>;
@@ -123,7 +124,7 @@ export class SearchMain extends React.Component {
             </div>
             <div className="results-container mdl-grid">
               <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone">
-                  {facets}
+                  <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
               </div>
               <div className="mdl-cell mdl-cell--8-col">
                   {content}
