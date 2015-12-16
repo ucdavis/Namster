@@ -16,9 +16,15 @@ export class SearchMain extends React.Component {
 
         // check url
         var term = getParameterByName('term');
+        var building = getParameterByName('building');
+        var department = getParameterByName('department');
+        var vlan = getParameterByName('vlan');
 
         this.state = {
             query: props.query || term || '',
+            building: props.building || building || '',
+            department: props.department || department || '',
+            vlan: props.vlan || vlan || '',
             results: props.results || []
         };
 
@@ -124,7 +130,9 @@ export class SearchMain extends React.Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-3">
-                    <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
+                    <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)}
+                        building={this.state.building} department={this.state.department} vlan={this.state.vlan}
+                       />
                 </div>
                 <div className="col-md-9">
                     {content}
