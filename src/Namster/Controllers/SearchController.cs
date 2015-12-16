@@ -27,9 +27,9 @@ namespace Namster.Controllers
             });
         }
 
-        public async Task<IEnumerable<DataNam>> Filter(string field, string term)
+        public async Task<IEnumerable<DataNam>> Filter(string room, string building, string department, string vlan)
         {
-            var results = await _searchService.FilterByAsync(field, term);
+            var results = await _searchService.FilterNamsAsync(room, building, department, vlan);
             return results.Hits.Select(h => h.Source);
         }
     }

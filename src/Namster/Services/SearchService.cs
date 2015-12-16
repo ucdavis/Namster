@@ -10,6 +10,9 @@ namespace Namster.Services
     {
         Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, string building, string department, string vlan, int size = 100);
         Task<ISearchResponse<DataNam>> FilterByAsync(string field, string term, int size = 1000);
+
+        Task<ISearchResponse<DataNam>> FilterNamsAsync(string room, string building, string department,
+            string vlan, int size = 1000);
     }
 
     public class SearchService : ISearchService
@@ -39,6 +42,22 @@ namespace Namster.Services
             return
                 await
                     _client.SearchAsync<DataNam>(s => s.Size(size).Filter(f => f.Term(field, term)));
+        }
+
+        public async Task<ISearchResponse<DataNam>> FilterNamsAsync(string room, string building, string department,
+            string vlan, int size = 1000)
+        {
+            return
+                await
+                    _client.SearchAsync<DataNam>(
+                        s =>
+                            s.Size(size)
+                                .Filter(
+                                    f =>
+                                        f.Term(t => t.ExactRoom, room) &&
+                                        f.Term(t => t.ExactBuilding, building) &&
+                                        f.Term(t => t.ExactDepartment, department) &&
+                                        f.Term(t => t.Vlan, vlan)));
         }
 
         public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, string building, string department, string vlan, int size = 100)
