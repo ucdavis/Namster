@@ -1,5 +1,11 @@
-﻿@import 'foundation';
+﻿// explicit bootstrap components
+@import '../lib/bootstrap/scss/bootstrap-grid';
+@import '../lib/bootstrap/scss/mixins';
+@import '../lib/bootstrap/scss/card';
+
+@import 'foundation';
 @import 'components';			// Reusable pieces, i.e. icons, buttons
+
 
 body {
 }

@@ -1,25 +1,28 @@
 import React from 'react'
 
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+
 export class SearchResult extends React.Component {
     render() {
         var building = null;
         if (this.props.result.Building) {
-          building = <span>Building:  {this.props.result.Building}<br/></span>;
+            building = <ListItem primaryText={this.props.result.Building} leftIcon={<i className="material-icons">account_balance</i>} />;
         }
 
         var room = null;
         if (this.props.result.Room) {
-          room = <span>Room: {this.props.result.Room}<br/></span>
+            room = <ListItem primaryText={this.props.result.Room} leftIcon={<i className="material-icons">hotel</i>} />;
         }
 
         var department = null;
         if (this.props.result.Department) {
-          department = <span>Department: {this.props.result.Department}<br/></span>
+            department = <ListItem primaryText={this.props.result.Department} leftIcon={<i className="material-icons">group</i>} />;
         }
 
         var vlan = null;
         if (this.props.result.Vlan) {
-          vlan = <span>VLAN: {this.props.result.Vlan}<br/></span>
+            vlan = <ListItem primaryText={this.props.result.Vlan} leftIcon={<i className="material-icons">router</i>} />;
         }
 
         return (
@@ -28,12 +31,12 @@ export class SearchResult extends React.Component {
                 <h3 className="mdl-card__title-text"><i className="material-icons">settings_input_hdmi</i>{this.props.result.NamNumber}</h3>
               </div>
               <div className="mdl-card__supporting-text mdl-color-text--grey-600">
-                <p>
+                <List>
                   {building}
                   {room}
                   {department}
                   {vlan}
-                </p>
+                </List>
               </div>
             </div>
         )
