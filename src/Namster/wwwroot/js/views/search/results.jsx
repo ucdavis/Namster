@@ -26,17 +26,17 @@ export class SearchResult extends React.Component {
         }
 
         return (
-            <div className="result mdl-color--white mdl-shadow--4dp mdl-card mdl-color-text--grey-800 mdl-cell mdl-cell--4-col">
-              <div className="mdl-card__title">
-                <h3 className="mdl-card__title-text"><i className="material-icons">settings_input_hdmi</i>{this.props.result.NamNumber}</h3>
-              </div>
-              <div className="mdl-card__supporting-text mdl-color-text--grey-600">
-                <List>
-                  {building}
-                  {room}
-                  {department}
-                  {vlan}
-                </List>
+            <div className="result col-sm-4">
+              <div className="card">
+                <h4 className="card-header"><i className="material-icons">settings_input_hdmi</i>{this.props.result.NamNumber}</h4>
+                <div className="card-block">
+                  <List>
+                    {building}
+                    {room}
+                    {department}
+                    {vlan}
+                  </List>
+                </div>
               </div>
             </div>
         )
@@ -46,7 +46,7 @@ export class SearchResult extends React.Component {
 export class SearchResultList extends React.Component {
     render() {
         return (
-            <div className="mdl-grid">
+            <div className="row">
               {this.props.results.map(function(result) {
                  return (
                     <SearchResult key={result.NamNumber} result={result} />

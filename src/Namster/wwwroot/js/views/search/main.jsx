@@ -115,18 +115,17 @@ export class SearchMain extends React.Component {
         }
 
         return (
-          <div>
-            <div className="input-group" id="search-box">
-              <span className="input-group-btn">
-                <button className="btn btn-default" type="button"><i className="fa fa-search"></i></button>
-              </span>
-              <input type="text" className="form-control" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
+          <div className="container">
+            <div className="row" id="search-box">
+              <div className="form-group">
+                <input type="text" className="" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
+              </div>
             </div>
-            <div className="results-container mdl-grid">
-              <div className="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+            <div className="row">
+              <div className="col-md-3">
                   <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
               </div>
-              <div className="mdl-cell mdl-cell--8-col">
+              <div className="col-md-9">
                   {content}
               </div>
             </div>
