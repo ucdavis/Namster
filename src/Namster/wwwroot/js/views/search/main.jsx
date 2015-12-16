@@ -135,7 +135,7 @@ export class SearchMain extends React.Component {
     render() {
         var content = null;
         if (this.state.searching) {
-            content = <CircularProgress mode="indeterminate" size={4} />;
+            content = <CircularProgress mode="indeterminate" className="search-progress" size={4} />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
@@ -158,7 +158,7 @@ export class SearchMain extends React.Component {
                     onChange={this.onQueryChange.bind(this)} />
               </div>
             </div>
-            <div className="container">
+            <div className="container results-wrapper">
               <div className="row">
                 <div className="col-md-3">
                     <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)}
