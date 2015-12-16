@@ -29,13 +29,8 @@
 
     <script>
     $(function(){
-        var placeholders = ['Find the perfect NAM for you', 'What would you like to NAM today?', 'Your ideal NAM is waiting for you...'];
-        
         var $searchbox = $('#searchbox');
-        $searchbox.attr('placeholder', placeholders[Math.floor(Math.random()*placeholders.length)]);
-        
         $searchbox.on('focus', function(){
-            $("#search-wrapper").addClass('active');
             $("#background").addClass('fadeout');
             $("#herotitle").addClass('fadeout');
             setTimeout(function(){
@@ -43,9 +38,8 @@
             }, 333);
         });
     })
-    
- </script>  
- 
+ </script>
+
  <script>
 /** Document Ready Functions **/
 /********************************************************************/
@@ -58,7 +52,7 @@ $( document ).ready(function() {
     initBannerVideoSize('.video-container .poster img');
     initBannerVideoSize('.video-container .filter');
     initBannerVideoSize('.video-container video');
-        
+
     $(window).on('resize', function() {
         scaleVideoContainer();
         scaleBannerVideoSize('.video-container .poster img');
@@ -80,7 +74,7 @@ function scaleVideoContainer() {
 }
 
 function initBannerVideoSize(element){
-    
+
     $(element).each(function(){
         $(this).data('height', $(this).height());
         $(this).data('width', $(this).width());
@@ -96,7 +90,7 @@ function scaleBannerVideoSize(element){
         windowHeight = $(window).height(),
         videoWidth,
         videoHeight;
-    
+
     console.log(windowHeight);
 
     $(element).each(function(){
@@ -116,7 +110,7 @@ function scaleBannerVideoSize(element){
         $(this).width(videoWidth).height(videoHeight);
 
         $('.homepage-hero-module .video-container video').addClass('fadeIn animated');
-        
+
 
     });
 }

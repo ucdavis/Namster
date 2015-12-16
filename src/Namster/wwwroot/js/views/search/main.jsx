@@ -30,10 +30,34 @@ export class SearchMain extends React.Component {
 
         this._searchTimer = 0;
 
-        if (this.state.query){
-          this.state.searching = true;
-          this._resetSearch();
+        // set random placeholder
+        var placeholders = ['Find the perfect NAM for you', 'What would you like to NAM today?', 'Your ideal NAM is waiting for you...'];
+        this._searchPlaceholder = placeholders[Math.floor(Math.random()*placeholders.length)];
+
+        if (this.state.query) {
+            this.state.searching = true;
+            this._resetSearch();
         }
+    }
+
+    componentDidMount() {
+        if (this.state.query) {
+            this._setSearchActive();
+        }
+    }
+
+    onQueryFocus(event) {
+        this._setSearchActive();
+    }
+
+    _setSearchActive() {
+        this.setState({searchActive: true});
+
+        $("#background").addClass('fadeout');
+        $("#herotitle").addClass('fadeout');
+        setTimeout(function(){
+            $("#background").css('height', '150px');
+        }, 333);
     }
 
     onQueryChange(event) {
@@ -120,11 +144,18 @@ export class SearchMain extends React.Component {
             content = <div></div>;
         }
 
+        var wrapperClass = "search-wrapper";
+        if (this.state.searchActive){
+          wrapperClass += " active";
+        }
+
         return (
           <div>
-            <div id="search-wrapper" className="search-wrapper">
+            <div id="search-wrapper" className={wrapperClass}>
               <div className="input-holder">
-                  <input id="searchbox" type="text" className="search-input" placeholder="" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
+                  <input id="searchbox" type="text" className="search-input" placeholder={this._searchPlaceholder} value={this.state.query}
+                    onFocus={this.onQueryFocus.bind(this)}
+                    onChange={this.onQueryChange.bind(this)} />
               </div>
             </div>
             <div className="container">
