@@ -2,6 +2,7 @@
 
 export class Nam extends React.Component{
     render() {
+        var statusIcon = this.props.data.Status === 'In Service' ? 'fa fa-check text-success' : 'fa fa-close text-danger';
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
@@ -9,7 +10,7 @@ export class Nam extends React.Component{
                 <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
                 <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
                 <td><a href={"/home/list?field=vlan&term=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
-                <td>{this.props.data.Status}</td>
+                <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
     }
