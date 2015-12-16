@@ -5,8 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewData["Title"] - Namster</title>
 
-        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-blue.min.css" />
-        <!--<script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>-->
         <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         
@@ -20,14 +18,7 @@
         <script src="~/js/dist/vendor.bundle.js"></script>
     </head>
 <body>
-        @RenderBody()
-
-        <!--<footer class="mdl-mini-footer">
-            <div class="mdl-mini-footer--left-section">
-                <p>&copy; 2015 - Namster</p>
-            </div>
-        </footer>-->
-</div>
+    @RenderBody()
 
     <environment names="Development">
         <script src="http://localhost:8080/webpack-dev-server.js"></script>

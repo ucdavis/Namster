@@ -2,7 +2,7 @@
   "name": "ASP.NET",
   "private": true,
   "dependencies": {
-    "material-design-lite": "^1.0.6",
+    "bootstrap": "4.0.0-alpha.2",
     "datatables": "1.10.10",
     "jquery": "2.1.4",
     "jquery-validation": "1.14.0",
