@@ -115,26 +115,23 @@ export class SearchMain extends React.Component {
         }
 
         return (
-          <div className="container">
-            <div className="row" id="search-box">
-              <div className="form-group">
-                <input type="text" className="" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
+          <div>
+            <div id="search-wrapper" className="search-wrapper">
+              <div className="input-holder">
+                  <input id="searchbox" type="text" className="search-input" placeholder="" value={this.state.query} onChange={this.onQueryChange.bind(this)} />
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-3">
-                  <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
-              </div>
-              <div className="col-md-9">
-                  {content}
+            <div className="container">
+              <div className="row">
+                <div className="col-md-3">
+                    <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)} />
+                </div>
+                <div className="col-md-9">
+                    {content}
+                </div>
               </div>
             </div>
           </div>
         );
     }
 }
-
-ReactDOM.render(
-  <SearchMain />,
-  document.getElementById('search')
-);
