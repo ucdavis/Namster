@@ -24,7 +24,7 @@ export class NamList extends React.Component {
             );
         });
         return (
-            <table id="datanams" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+            <table id="datanams" className="table table-striped">
                 <thead>
                     <tr>
                         <th>Number</th>
@@ -52,17 +52,17 @@ export class ListView extends React.Component{
             message: '',
             spinning: true
         };
-        
+
     }
     componentWillMount() {
         this.loadNamData();
     }
     componentDidUpdate() {
-        $('#datanams').dataTable({ 
-            paging: false, 
+        $('#datanams').dataTable({
+            paging: false,
             "language": {
                 "search": "Filter:"
-            } 
+            }
         });
     }
     loadNamData () {
@@ -72,7 +72,7 @@ export class ListView extends React.Component{
         var term = getParameterByName('term');
 
         self.setState({ spinning: true, field: field, term: term });
-                
+
         if (!field || !term){
             self.setState({message: 'No field selected - go back to the homepage and start over'});
         } else {
@@ -88,9 +88,9 @@ export class ListView extends React.Component{
     render() {
         var content = <NamList data={this.state.data} />;
         if (this.state.spinning) {
-            content = <div className="mdl-spinner mdl-js-spinner is-active"></div>;
+            content = <i className="fa fa-spinner fa-pulse fa-4x"></i>;
         }
-        
+
         var message = this.state.message ? <div className="alert alert-warning">{this.state.message}</div> : '';
 
         return (
