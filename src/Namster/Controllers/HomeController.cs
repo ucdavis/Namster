@@ -13,11 +13,6 @@ namespace Namster.Controllers
             return View();
         }
 
-        public IActionResult React()
-        {
-            return View();
-        }
-
         public IActionResult List()
         {
             return View();
