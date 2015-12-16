@@ -55,9 +55,6 @@ export class SearchMain extends React.Component {
 
         $("#background").addClass('fadeout');
         $("#herotitle").addClass('fadeout');
-        setTimeout(function(){
-            $("#background").css('height', '150px');
-        }, 333);
     }
 
     onQueryChange(event) {
