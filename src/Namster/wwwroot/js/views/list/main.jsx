@@ -2,6 +2,7 @@
 
 export class Nam extends React.Component{
     render() {
+        var statusIcon = this.props.data.Status === 'In Service' ? 'fa fa-check text-success' : 'fa fa-close text-danger';
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
@@ -9,7 +10,7 @@ export class Nam extends React.Component{
                 <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
                 <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
                 <td><a href={"/home/list?field=vlan&term=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
-                <td>{this.props.data.Status}</td>
+                <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
     }
@@ -24,7 +25,7 @@ export class NamList extends React.Component {
             );
         });
         return (
-            <table id="datanams" className="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+            <table id="datanams" className="table table-striped">
                 <thead>
                     <tr>
                         <th>Number</th>
@@ -52,17 +53,17 @@ export class ListView extends React.Component{
             message: '',
             spinning: true
         };
-        
+
     }
     componentWillMount() {
         this.loadNamData();
     }
     componentDidUpdate() {
-        $('#datanams').dataTable({ 
-            paging: false, 
+        $('#datanams').dataTable({
+            paging: false,
             "language": {
                 "search": "Filter:"
-            } 
+            }
         });
     }
     loadNamData () {
@@ -72,7 +73,7 @@ export class ListView extends React.Component{
         var term = getParameterByName('term');
 
         self.setState({ spinning: true, field: field, term: term });
-                
+
         if (!field || !term){
             self.setState({message: 'No field selected - go back to the homepage and start over'});
         } else {
@@ -88,9 +89,9 @@ export class ListView extends React.Component{
     render() {
         var content = <NamList data={this.state.data} />;
         if (this.state.spinning) {
-            content = <div className="mdl-spinner mdl-js-spinner is-active"></div>;
+            content = <i className="fa fa-spinner fa-pulse fa-4x"></i>;
         }
-        
+
         var message = this.state.message ? <div className="alert alert-warning">{this.state.message}</div> : '';
 
         return (
