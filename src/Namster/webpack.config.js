@@ -5,7 +5,7 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
     entry: {
-        search: path.resolve("./wwwroot/js/views/search/main.jsx"),
+        app: path.resolve(__dirname, "./wwwroot/js/views/app"),
         list: path.resolve("./wwwroot/js/views/list/main.jsx"),
         vendor: ['react', 'material-ui']
     },

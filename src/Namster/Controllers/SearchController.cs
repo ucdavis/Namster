@@ -17,11 +17,6 @@ namespace Namster.Controllers
             _searchService = searchService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<JsonResult> Query(string term, string building, string department, string vlan)
         {
             var results = await _searchService.FindByMatchAsync(term, building, department, vlan);
