@@ -4,13 +4,12 @@
     }
 }
 
-.results-container {
-    max-width: 1600px; 
-}
-
 .result {
-    .mdl-card__title {
+    .card-header {
         background-color: #1A3E68; 
         color: white;
+    }
+    .card-block {
+        padding: 0;
     }
 }
