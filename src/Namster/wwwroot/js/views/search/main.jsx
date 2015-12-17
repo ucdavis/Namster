@@ -58,16 +58,15 @@ export class SearchMain extends React.Component {
     }
 
     onQueryChange(event) {
-        // clear out results, update state
-        this.setState({results: null});
-        this.setState({query: event.target.value});
-
-        // clear out filtering
+        // clear out results, and filters
         this.setState({
+          facets: null,
+          results: null,
+          query: event.target.value,
           building: false,
           department: false,
           vlan: false
-        })
+        });
 
         // cancel any existing request
         if (this._request) {
