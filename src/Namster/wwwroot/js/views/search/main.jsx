@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import LinearProgress from 'material-ui/lib/linear-progress'
 import CircularProgress from 'material-ui/lib/circular-progress'
 
+import { TopNav } from '../shared/components.jsx'
 import { SearchResultList } from './results.jsx';
 import { FacetList } from './facets.jsx'
 
@@ -30,9 +31,7 @@ export class SearchMain extends React.Component {
 
         this._searchTimer = 0;
 
-        // set random placeholder
-        var placeholders = ['Find the perfect NAM for you', 'What would you like to NAM today?', 'Your ideal NAM is waiting for you...'];
-        this._searchPlaceholder = placeholders[Math.floor(Math.random()*placeholders.length)];
+
 
         if (this.state.query) {
             this.state.searching = true;
@@ -55,18 +54,22 @@ export class SearchMain extends React.Component {
 
         $("#background").addClass('fadeout');
         $("#herotitle").addClass('fadeout');
+        setTimeout(function(){
+            $("#background").css('height', '150px');
+        }, 333);
     }
 
     onQueryChange(event) {
-        // clear out results, and filters
+        // clear out results, update state
+        this.setState({results: null});
+        this.setState({query: event.target.value});
+
+        // clear out filtering
         this.setState({
-          facets: null,
-          results: null,
-          query: event.target.value,
           building: false,
           department: false,
           vlan: false
-        });
+        })
 
         // cancel any existing request
         if (this._request) {
@@ -131,7 +134,7 @@ export class SearchMain extends React.Component {
     render() {
         var content = null;
         if (this.state.searching) {
-            content = <CircularProgress mode="indeterminate" className="search-progress" size={4} />;
+            content = <CircularProgress mode="indeterminate" size={4} />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
@@ -147,21 +150,17 @@ export class SearchMain extends React.Component {
 
         return (
           <div>
-            <div id="search-wrapper" className={wrapperClass}>
-              <div className="input-holder">
-                  <input id="searchbox" type="text" className="search-input" placeholder={this._searchPlaceholder} value={this.state.query}
-                    onFocus={this.onQueryFocus.bind(this)}
-                    onChange={this.onQueryChange.bind(this)} />
-              </div>
-            </div>
-            <div className="container results-wrapper">
+            <TopNav query={this.state.query}
+                    onSearchFocus={this.onQueryFocus.bind(this)}
+                    onSearchChange={this.onQueryChange.bind(this)} />
+            <div className="container content-wrapper">
               <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-3 facet-wrapper">
                     <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)}
                         building={this.state.building} department={this.state.department} vlan={this.state.vlan}
                        />
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-9 results-wrapper">
                     {content}
                 </div>
               </div>
