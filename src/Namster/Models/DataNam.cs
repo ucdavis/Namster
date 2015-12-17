@@ -16,6 +16,8 @@ namespace Namster.Models
         public string ExactBuilding => Building;
         public string Building { get; set; }
 
+        [ElasticProperty(Index = FieldIndexOption.NotAnalyzed)]
+        public string ExactRoom => Room;
         public string Room { get; set; }
 
         [ElasticProperty(Index = FieldIndexOption.NotAnalyzed)]

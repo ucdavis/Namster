@@ -6,10 +6,10 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td>{this.props.data.Room}</td>
-                <td><a href={"/home/list?field=Building&term=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
-                <td><a href={"/home/list?field=Department&term=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
-                <td><a href={"/home/list?field=vlan&term=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
+                <td><a href={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</a></td>
+                <td><a href={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
+                <td><a href={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
+                <td><a href={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
                 <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
@@ -69,26 +69,35 @@ export class ListView extends React.Component{
     loadNamData () {
         var self = this;
 
-        var field = getParameterByName('field');
-        var term = getParameterByName('term');
+        var building = getParameterByName('building');
+        var room = getParameterByName('room');
+        var department = getParameterByName('department');
+        var vlan = getParameterByName('vlan');
 
-        self.setState({ spinning: true, field: field, term: term });
+        var title = 'Showing NAMs for ';
+        if (room && building){
+          title += building + ' ' + room;
+        } else if (building){
+          title += building;
+        } else  if (vlan) {
+          title += vlan;
+        } else if (department){
+          title += department;
+        }
 
-        if (!field || !term){
-            self.setState({message: 'No field selected - go back to the homepage and start over'});
+        self.setState({ spinning: true, title: title });
+
+        if (!building && !department && !vlan){
+            self.setState({message: 'No field selected - go back to the homepage and start over', title: '' });
         } else {
-            if (field !== 'vlan'){ //TODO: get rid of hackery for index names
-                field = "exact" + field;
-            }
-
-            $.getJSON(`/search/filter?field=${field}&term=${encodeURIComponent(term)}`, function (data) {
+            $.getJSON(`/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
                 self.setState({ spinning: false, data: data });
             });
         }
     }
     render() {
         var content = <NamList data={this.state.data} />;
-        if (this.state.spinning) {
+        if (this.state.spinning && this.state.title) {
             content = <i className="fa fa-spinner fa-pulse fa-4x"></i>;
         }
 
@@ -96,7 +105,7 @@ export class ListView extends React.Component{
 
         return (
             <div>
-                <h2>Showing NAMs for the {this.state.field} {this.state.term}</h2>
+                <h2>{this.state.title}</h2>
                 {message}
                 {content}
             </div>

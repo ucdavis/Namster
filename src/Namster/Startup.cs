@@ -100,6 +100,11 @@ namespace Namster
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "list",
+                    template: "list",
+                    defaults: new { controller = "Home", action = "List" }
+                );
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
