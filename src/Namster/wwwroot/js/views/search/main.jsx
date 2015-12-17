@@ -55,22 +55,18 @@ export class SearchMain extends React.Component {
 
         $("#background").addClass('fadeout');
         $("#herotitle").addClass('fadeout');
-        setTimeout(function(){
-            $("#background").css('height', '150px');
-        }, 333);
     }
 
     onQueryChange(event) {
-        // clear out results, update state
-        this.setState({results: null});
-        this.setState({query: event.target.value});
-
-        // clear out filtering
+        // clear out results, and filters
         this.setState({
+          facets: null,
+          results: null,
+          query: event.target.value,
           building: false,
           department: false,
           vlan: false
-        })
+        });
 
         // cancel any existing request
         if (this._request) {
@@ -135,7 +131,7 @@ export class SearchMain extends React.Component {
     render() {
         var content = null;
         if (this.state.searching) {
-            content = <CircularProgress mode="indeterminate" size={4} />;
+            content = <CircularProgress mode="indeterminate" className="search-progress" size={4} />;
         }
         else if (this.state.results) {
             content =  <SearchResultList results={this.state.results} />;
@@ -158,7 +154,7 @@ export class SearchMain extends React.Component {
                     onChange={this.onQueryChange.bind(this)} />
               </div>
             </div>
-            <div className="container">
+            <div className="container results-wrapper">
               <div className="row">
                 <div className="col-md-3">
                     <FacetList facets={this.state.aggregates} onChange={this.onFacetSelect.bind(this)}
