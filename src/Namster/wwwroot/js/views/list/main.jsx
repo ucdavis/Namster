@@ -6,7 +6,7 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td><a href={'/home/list?room=' + this.props.data.Room + '&building=' + this.props.data.Building}>{this.props.data.Room}</a></td>
+                <td><a href={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</a></td>
                 <td><a href={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
                 <td><a href={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
                 <td><a href={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
@@ -90,7 +90,7 @@ export class ListView extends React.Component{
         if (!building && !department && !vlan){
             self.setState({message: 'No field selected - go back to the homepage and start over', title: '' });
         } else {
-            $.getJSON(`/search/filter?room=${room}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
+            $.getJSON(`/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
                 self.setState({ spinning: false, data: data });
             });
         }
