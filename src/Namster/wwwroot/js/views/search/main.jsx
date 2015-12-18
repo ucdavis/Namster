@@ -31,8 +31,6 @@ export class SearchMain extends React.Component {
 
         this._searchTimer = 0;
 
-
-
         if (this.state.query) {
             this.state.searching = true;
             this._resetSearch();
@@ -50,7 +48,7 @@ export class SearchMain extends React.Component {
     }
 
     _setSearchActive() {
-        this.setState({searchActive: true});
+        this.setState({searchDirty: true});
 
         $("#background").addClass('fadeout');
         $("#herotitle").addClass('fadeout');
@@ -143,13 +141,10 @@ export class SearchMain extends React.Component {
             content = <div></div>;
         }
 
-        var wrapperClass = "search-wrapper";
-        if (this.state.searchActive){
-          wrapperClass += " active";
-        }
+        var mainClass = this.state.searchDirty ? "search-dirty" : "search-clean";
 
         return (
-          <div>
+          <div className={mainClass}>
             <TopNav query={this.state.query}
                     onSearchFocus={this.onQueryFocus.bind(this)}
                     onSearchChange={this.onQueryChange.bind(this)} />
