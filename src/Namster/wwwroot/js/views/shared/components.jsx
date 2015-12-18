@@ -24,7 +24,7 @@ export class TopNav extends React.Component {
 
     render() {
       return (
-        <nav className="navbar navbar-dark bg-inverse">
+        <nav id="top-nav" className="navbar navbar-dark bg-inverse">
           <a className="navbar-brand" href="/">NamstR</a>
           <form className="form-inline pull-xs-right navbar-search-form">
             <input className="form-control navbar-search-input" type="text" placeholder={this._searchPlaceholder}
