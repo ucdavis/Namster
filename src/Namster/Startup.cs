@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CasAuthenticationMiddleware;
+using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
@@ -39,16 +42,14 @@ namespace Namster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
+            
             services.AddMvc();
 
             // Add app configuration
@@ -93,9 +94,24 @@ namespace Namster
 
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseCookieAuthentication(options =>
+            {
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+                options.LoginPath = new PathString("/home/caslogin");
+            });
 
-            // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
+
+            app.UseCasAuthentication(new CasAuthenticationOptions
+            {
+                AuthenticationScheme = "UCDCAS",
+                AuthorizationEndpoint = "https://cas.ucdavis.edu/cas/",
+                CallbackPath = new PathString("/Home/caslogin"),
+                DisplayName = "CAS",
+                ClaimsIssuer = "Cas",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
 
             app.UseMvc(routes =>
             {
