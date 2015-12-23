@@ -14,6 +14,7 @@ Occasionally (and definitely before first run) you'll need to update the depende
     dnu restore
     npm install
     bower install
+    gulp build
 
 # Troubleshooting
 
