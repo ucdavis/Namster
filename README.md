@@ -15,9 +15,13 @@ Occasionally (and definitely before first run) you'll need to update the depende
     npm install
     bower install
 
-# Installing the ASPNET5 runtime on a Mac
+# Troubleshooting
 
-**Note there is a bug with the Mac mono runtime that may cause an error running the web server.  Hopefully this will be fixed soon**
+There is a bug with the Mac mono runtime that may cause an error running the web server. If you get the error: `IOException: kqueue() FileSystemWatcher has reached the maximum nunmber of files to watch.` then you'll need to add the following line to the top of your ~/.bash_profile file and restart your terminal.
+
+    export MONO_MANAGED_WATCHER=false
+
+# Installing the ASPNET5 runtime on a Mac
 
 Follow the instructions at [Installing ASP.NET 5 On Mac OS X](http://docs.asp.net/en/latest/getting-started/installing-on-mac.html
 ).  You'll need to install the mono runtime which you can do by following the "Install ASP.NET 5 with Visual Studio Code" instructions.
