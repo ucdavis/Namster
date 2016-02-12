@@ -7,7 +7,7 @@ module.exports = {
     entry: {
         app: path.resolve(__dirname, "./wwwroot/js/views/app"),
         list: path.resolve("./wwwroot/js/views/list/main.jsx"),
-        vendor: ['react', 'react-dom', 'material-ui']
+        vendor: ['react', 'react-dom', 'material-ui', 'redux', 'react-redux']
     },
     resolve: {
         alias: {
