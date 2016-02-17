@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 
 ﻿import { getParameterByName } from '../functions/location'
@@ -9,10 +10,10 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td><a href={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</a></td>
-                <td><a href={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
-                <td><a href={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
-                <td><a href={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
+                <td><Link to={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</Link></td>
+                <td><Link to={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</Link></td>
+                <td><Link to={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</Link></td>
+                <td><Link to={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</Link></td>
                 <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
