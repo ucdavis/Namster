@@ -12,7 +12,7 @@ import { FacetList } from '../components/Facets'
 
 import { getParameterByName } from '../functions/location'
 
-import { clearFilters, dirtySearch, setQuery } from '../actions/search'
+import * as SearchActions from '../actions/search'
 
 function loadData(props) {
 
@@ -38,7 +38,7 @@ class SearchMain extends React.Component {
 
     _setSearchActive() {
       const { dispatch } = this.props
-      dispatch(dirtySearch());
+      dispatch(SearchActions.dirtySearch());
 
       $("#background").addClass('fadeout');
       $("#herotitle").addClass('fadeout');
@@ -50,63 +50,59 @@ class SearchMain extends React.Component {
     onQueryChange(event) {
       const { dispatch } = this.props
       var value = event.target.value
-      dispatch(clearFilters())
-      dispatch(setQuery(value))
+      dispatch(SearchActions.clearFilters())
+      dispatch(SearchActions.setQuery(value))
+
+      this._resetSearch()
     }
 
     onFacetSelect(category, key, value) {
-        var target = {};
+        const { dispatch } = this.props
+        var target = value ? key : false
+        dispatch(SearchActions.setFilter(category, target))
 
-        if (value){
-            target[category] = key;
-        }
-        else {
-            target[category] = false;
-        }
-
-        this.setState(target)
-        this.setState({searching: true});
         this._resetSearch();
     }
 
     // delay start search by 500 ms
     _resetSearch() {
+        const { dispatch } = this.props
+        dispatch(SearchActions.setSearching(true));
+
         clearTimeout (this._searchTimer);
         this._searchTimer = setTimeout(this._startSearch.bind(this), 500);
     }
 
     _startSearch() {
-        var self = this;
-        var terms = 'term=' + encodeURIComponent(self.state.query);
+        const { dispatch, query, filters } = this.props
 
-        if (self.state.building) {
-            terms += '&building=' + encodeURIComponent(self.state.building);
+        var terms = 'term=' + encodeURIComponent(query);
+
+        if (filters.building) {
+            terms += '&building=' + encodeURIComponent(filters.building);
         }
 
-        if (self.state.department) {
-            terms += '&department=' + encodeURIComponent(self.state.department);
+        if (filters.department) {
+            terms += '&department=' + encodeURIComponent(filters.department);
         }
 
-        if (self.state.vlan) {
-            terms += '&vlan=' + encodeURIComponent(self.state.vlan);
+        if (filters.vlan) {
+            terms += '&vlan=' + encodeURIComponent(filters.vlan);
         }
 
         self._request = $.get('/search/query?' + terms)
             .success(function(data) {
-                self.setState({results: data.results});
-                self.setState({aggregates: data.aggregates});
+                dispatch(SearchActions.setResults(data.results))
+                dispatch(SearchActions.setAggregates(data.aggregates))
                 window.history.pushState({"query":data},"Search Results", '?' + terms);
             })
             .done(function() {
-                self.setState({searching: false});
+                dispatch(SearchActions.setSearching(false));
             });
     }
 
     render() {
-        const {
-          searching, searchIsDirty, query, results, aggregates,
-          building, department, vlan
-       } = this.props
+        const { searching, searchIsDirty, query, results, aggregates, filters } = this.props
 
         var content = null;
         if (searching) {
@@ -129,9 +125,7 @@ class SearchMain extends React.Component {
             <div className="container content-wrapper">
               <div className="row">
                 <div className="col-md-3 facet-wrapper">
-                    <FacetList facets={aggregates} onChange={this.onFacetSelect.bind(this)}
-                        building={building} department={department} vlan={vlan}
-                       />
+                    <FacetList facets={aggregates} onChange={this.onFacetSelect.bind(this)} filters={filters} />
                 </div>
                 <div className="col-md-9 results-wrapper">
                     {content}
@@ -147,10 +141,9 @@ SearchMain.propTypes = {
   searchIsDirty: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
   query: PropTypes.string,
-  building: PropTypes.string,
-  department: PropTypes.string,
-  vlan: PropTypes.string,
-  results: PropTypes.array
+  results: PropTypes.array,
+  aggregates: PropTypes.object,
+  filters: PropTypes.object
 }
 
 function mapStateToProps(state, props) {
