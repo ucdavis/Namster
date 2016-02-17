@@ -47,7 +47,7 @@ export class NamList extends React.Component {
     }
 }
 
-export class ListView extends React.Component{
+export default class ListView extends React.Component{
     constructor(props)
     {
         super(props);
