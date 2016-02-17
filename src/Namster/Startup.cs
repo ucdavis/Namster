@@ -49,7 +49,7 @@ namespace Namster
                 .AddSqlServer()
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-            
+
             services.AddMvc();
 
             // Add app configuration
@@ -116,13 +116,12 @@ namespace Namster
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "list",
-                    template: "list",
-                    defaults: new { controller = "Home", action = "List" }
-                );
+                    name: "api",
+                    template: "api/{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{*url}",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
 
