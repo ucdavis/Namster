@@ -1,4 +1,7 @@
-﻿import { getParameterByName } from '../../functions/location'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+
+﻿import { getParameterByName } from '../functions/location'
 
 export class Nam extends React.Component{
     render() {
@@ -112,8 +115,3 @@ export class ListView extends React.Component{
         );
     }
 }
-
-ReactDOM.render(
-    <ListView />,
-    document.getElementById('example')
-);
