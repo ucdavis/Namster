@@ -13,8 +13,17 @@ export function clearFilters() {
   }
 }
 
+export const SET_FILTER = 'SET_FILTER'
+export function setFilter(category, value){
+  return {
+    type: SET_FILTER,
+    category,
+    value
+  }
+}
+
 export const SET_RESULTS = 'SET_RESULTS'
-function setResults(results) {
+export function setResults(results) {
   return {
     type: SET_RESULTS,
     results: results
@@ -22,7 +31,7 @@ function setResults(results) {
 }
 
 export const SET_AGGREGATES = 'SET_AGGREGATES'
-function setAggregates(aggregates) {
+export function setAggregates(aggregates) {
   return {
     type: SET_AGGREGATES,
     aggregates: aggregates
@@ -30,7 +39,7 @@ function setAggregates(aggregates) {
 }
 
 export const SET_SEARCHING = 'SET_SEARCHING'
-function setSearching(searching) {
+export function setSearching(searching) {
   return {
     type: SET_SEARCHING,
     searching: searching
