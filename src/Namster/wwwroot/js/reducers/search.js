@@ -50,9 +50,10 @@ const defaultFilters = {
 function filters(state = defaultFilters, action) {
   switch (action.type) {
     case ActionTypes.SET_FILTER:
-      var filter = {};
-      filter[action.category] = action.value
-      return Object.assign({}, state, filter)
+      return Object.assign({}, state, 
+      {
+        [action.category]: action.value || false
+      })
     case ActionTypes.CLEAR_FILTERS:
       return defaultFilters
   }
