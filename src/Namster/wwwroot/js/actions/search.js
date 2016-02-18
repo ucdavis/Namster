@@ -17,7 +17,7 @@ export function clearFilters() {
 }
 
 export const SET_FILTER = 'SET_FILTER'
-export function setFilter(category, value){
+export function setFilter(category, value) {
   return {
     type: SET_FILTER,
     category,
@@ -103,6 +103,9 @@ function fetchResults(state) {
 
 export function fetchResultsIfNeeded() {
   return (dispatch, getState) => {
-    return dispatch(fetchResults(getState()))
+    var state = getState()
+    if (state.search.terms) {
+      return dispatch(fetchResults(getState()))
+    }
   }
 }
