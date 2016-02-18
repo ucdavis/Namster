@@ -14,10 +14,17 @@ import { getParameterByName } from '../functions/location'
 import * as SearchActions from '../actions/search'
 
 class SearchMain extends React.Component {
+    componentDidMount() {
+        const { dispatch } = this.props
+        dispatch(SearchActions.fetchResultsIfNeeded())
+    }
+
     onFacetSelect(category, key, value) {
         const { dispatch } = this.props
         var target = value ? key : false
         dispatch(SearchActions.setFilter(category, target))
+        dispatch(SearchActions.clearResults())
+        dispatch(SearchActions.fetchResultsIfNeeded())
     }
 
     render() {
