@@ -1,15 +1,11 @@
-//import $ from 'jquery';
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import LinearProgress from 'material-ui/lib/linear-progress'
 import CircularProgress from 'material-ui/lib/circular-progress'
 
-import { TopNav } from '../components/TopNav'
 import { SearchResultList } from '../components/Results';
 import { FacetList } from '../components/Facets'
-
-import { getParameterByName } from '../functions/location'
 
 import * as SearchActions from '../actions/search'
 
