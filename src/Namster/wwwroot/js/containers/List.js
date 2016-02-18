@@ -10,10 +10,10 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td><Link to={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</Link></td>
-                <td><Link to={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</Link></td>
-                <td><Link to={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</Link></td>
-                <td><Link to={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</Link></td>
+                <td><Link to={'/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</Link></td>
+                <td><Link to={"/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</Link></td>
+                <td><Link to={"/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</Link></td>
+                <td><Link to={"/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</Link></td>
                 <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
