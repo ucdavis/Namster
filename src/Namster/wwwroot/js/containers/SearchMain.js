@@ -15,7 +15,12 @@ import * as SearchActions from '../actions/search'
 
 class SearchMain extends React.Component {
     componentDidMount() {
-        const { dispatch } = this.props
+        const { dispatch, location } = this.props
+
+        dispatch(SearchActions.setQueryTerms(location.query.term))
+        dispatch(SearchActions.setFilter('building', location.query.building))
+        dispatch(SearchActions.setFilter('department', location.query.department))
+        dispatch(SearchActions.setFilter('vlan', location.query.vlan))
         dispatch(SearchActions.fetchResultsIfNeeded())
     }
 
