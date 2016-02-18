@@ -94,7 +94,7 @@ export default class ListView extends React.Component{
         if (!building && !department && !vlan){
             self.setState({message: 'No field selected - go back to the homepage and start over', title: '' });
         } else {
-            $.getJSON(`/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
+            $.getJSON(`/api/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
                 self.setState({ spinning: false, data: data });
             });
         }
