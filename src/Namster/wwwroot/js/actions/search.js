@@ -1,8 +1,11 @@
-export const SET_QUERY = 'SET_QUERY'
-export function setQuery(query) {
+import fetch from 'isomorphic-fetch'
+import { routeActions } from 'react-router-redux'
+
+export const SET_QUERY_TERMS = 'SET_QUERY_TERMS'
+export function setQueryTerms(terms) {
   return {
-    type: SET_QUERY,
-    query: query
+    type: SET_QUERY_TERMS,
+    terms: terms
   }
 }
 
@@ -30,11 +33,25 @@ export function setResults(results) {
   }
 }
 
+export const CLEAR_RESULTS = 'CLEAR_RESULTS'
+export function clearResults() {
+  return {
+    type: CLEAR_RESULTS
+  }
+}
+
 export const SET_AGGREGATES = 'SET_AGGREGATES'
 export function setAggregates(aggregates) {
   return {
     type: SET_AGGREGATES,
     aggregates: aggregates
+  }
+}
+
+export const CLEAR_AGGREGATES = 'CLEAR_AGGREGATES'
+export function clearAggregates() {
+  return {
+    type: CLEAR_AGGREGATES
   }
 }
 
@@ -49,22 +66,43 @@ export function setSearching(searching) {
 export const DIRTY_SEARCH = 'DIRTY_SEARCH'
 export function dirtySearch() {
   return {
-    type: DIRTY_SEARCH,
+    type: DIRTY_SEARCH
   }
 }
 
-export function searchQuery() {
-  return (dispatch, getState) => {
-    var state = getState()
-    var terms = 'term=' + encodeURIComponent(state.query)
-    $.get('/search/query?' + terms)
-        .success(function(data) {
-          window.history.pushState({"query":data},"Search Results", '?' + terms)
-          dispatch(setResults(data.results))
-          dispatch(setAggregates(data.aggregates))
-        })
-        .done(function() {
-          dispatch(setSearching(false))
-        });
+function fetchResults(state) {
+  return (dispatch) => {
+    const { terms, filters } = state.search
+
+    var query = 'term=' + encodeURIComponent(terms);
+
+    if (filters.building) {
+        query += '&building=' + encodeURIComponent(filters.building);
     }
+
+    if (filters.department) {
+        query += '&department=' + encodeURIComponent(filters.department);
+    }
+
+    if (filters.vlan) {
+        query += '&vlan=' + encodeURIComponent(filters.vlan);
+    }
+
+    dispatch(setSearching(true))
+    dispatch(routeActions.push('/search?' + query))
+
+    return fetch('/api/search/query?' + query)
+        .then(res => res.json())
+        .then(json => {
+            dispatch(setResults(json.results))
+            dispatch(setAggregates(json.aggregates))
+        })
+        .then(() => setSearching(false))
+  }
+}
+
+export function fetchResultsIfNeeded() {
+  return (dispatch, getState) => {
+    return dispatch(fetchResults(getState()))
+  }
 }
