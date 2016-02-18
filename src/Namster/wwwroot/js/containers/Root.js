@@ -16,8 +16,8 @@ class Root extends React.Component {
     }
 
     componentDidMount() {
-      const { query } = this.props
-      if (query) {
+      const { location } = this.props
+      if (location.pathname !== '/') {
           this._setSearchActive();
       }
     }
@@ -41,7 +41,9 @@ class Root extends React.Component {
       const { dispatch } = this.props
       var value = event.target.value
       dispatch(SearchActions.clearFilters())
-      dispatch(SearchActions.setQuery(value))
+      dispatch(SearchActions.clearResults())
+      dispatch(SearchActions.clearAggregates())
+      dispatch(SearchActions.setQueryTerms(value))
 
       this._resetSearch()
     }
@@ -56,40 +58,17 @@ class Root extends React.Component {
     }
 
     _startSearch() {
-        const { dispatch, query, filters } = this.props
-
-        var terms = 'term=' + encodeURIComponent(query);
-
-        if (filters.building) {
-            terms += '&building=' + encodeURIComponent(filters.building);
-        }
-
-        if (filters.department) {
-            terms += '&department=' + encodeURIComponent(filters.department);
-        }
-
-        if (filters.vlan) {
-            terms += '&vlan=' + encodeURIComponent(filters.vlan);
-        }
-
-        self._request = $.get('/search/query?' + terms)
-            .success(function(data) {
-                dispatch(SearchActions.setResults(data.results))
-                dispatch(SearchActions.setAggregates(data.aggregates))
-                window.history.pushState({"query":data},"Search Results", '?' + terms);
-            })
-            .done(function() {
-                dispatch(SearchActions.setSearching(false));
-            });
+        const { dispatch } = this.props
+        dispatch(SearchActions.fetchResultsIfNeeded())
     }
 
     render() {
-        const { children, query, searchIsDirty } = this.props
+        const { children, terms, searchIsDirty } = this.props
 
         var mainClass = searchIsDirty ? "search-dirty" : "search-clean"
         return (
           <div className={mainClass}>
-            <TopNav query={query}
+            <TopNav terms={terms}
                     onSearchFocus={this.onQueryFocus.bind(this)}
                     onSearchChange={this.onQueryChange.bind(this)} />
             {children}
@@ -101,7 +80,8 @@ class Root extends React.Component {
 Root.propTypes = {
   searchIsDirty: PropTypes.bool,
   dispatch: PropTypes.func.isRequired,
-  query: PropTypes.string,
+  terms: PropTypes.string,
+  location: PropTypes.object,
   // Injected by React Router
   children: PropTypes.node
 }

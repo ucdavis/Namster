@@ -11,10 +11,10 @@ function searchIsDirty(state = false, action) {
   return state
 }
 
-function query(state = '', action) {
+function terms(state = '', action) {
   switch (action.type){
-    case ActionTypes.SET_QUERY:
-      return action.query
+    case ActionTypes.SET_QUERY_TERMS:
+      return action.terms
   }
 
   return state
@@ -24,6 +24,8 @@ function results(state = [], action) {
   switch (action.type){
     case ActionTypes.SET_RESULTS:
       return action.results
+    case ActionTypes.CLEAR_RESULTS:
+      return []
   }
 
   return state
@@ -33,6 +35,8 @@ function aggregates(state = {}, action) {
   switch (action.type) {
     case ActionTypes.SET_AGGREGATES:
       return action.aggregates
+    case ActionTypes.CLEAR_AGGREGATES:
+      return {}
   }
 
   return state
@@ -49,6 +53,8 @@ function filters(state = defaultFilters, action) {
       var filter = {};
       filter[action.category] = action.value
       return Object.assign({}, state, filter)
+    case ActionTypes.CLEAR_FILTERS:
+      return defaultFilters
   }
 
   return state
@@ -56,7 +62,7 @@ function filters(state = defaultFilters, action) {
 
 const searchReducer = combineReducers({
   searchIsDirty,
-  query,
+  terms,
   results,
   aggregates,
   filters
