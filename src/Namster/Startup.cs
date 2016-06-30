@@ -67,11 +67,11 @@ namespace Namster
 
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(options =>
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                options.AutomaticAuthenticate = true;
-                options.AutomaticChallenge = true;
-                options.LoginPath = new PathString("/home/caslogin");
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                LoginPath = new PathString("/home/caslogin")
             });
 
 
