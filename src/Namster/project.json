@@ -35,10 +35,11 @@
   },
 
   "frameworks": {
-    "dnx451": {
-      "dependencies": {
-        "Microsoft.WindowsAzure.ConfigurationManager": "3.1.0"
-      }
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
     }
   },
 
