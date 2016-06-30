@@ -25,7 +25,7 @@ namespace Namster
                 builder.AddUserSecrets();
             }
 
-            builder.AddEnvironmentVariables();
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
