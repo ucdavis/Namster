@@ -62,7 +62,6 @@ namespace Namster
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
