@@ -38,6 +38,7 @@ namespace Namster
 
             // Add framework services.
             services.AddMvc();
+            services.AddApplicationInsightsTelemetry(Configuration);
 
         }
 
