@@ -74,6 +74,6 @@
   "scripts": {
     "prepublish": [ "npm install", "bower install", "dotnet bundle", "gulp clean", "gulp build" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-  }
+  },
   "userSecretsId": "aspnet-Namster-20160630032042"
 }
