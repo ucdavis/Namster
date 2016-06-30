@@ -63,6 +63,7 @@ namespace Namster
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
+            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
