@@ -49,6 +49,8 @@ namespace Namster
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseApplicationInsightsRequestTelemetry();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
