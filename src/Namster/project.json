@@ -1,5 +1,4 @@
 {
-  "userSecretsId": "aspnet5-Namster-b0fb0be8-f762-49f9-9a29-4f4951dbbb9a",
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -76,4 +75,5 @@
     "prepublish": [ "npm install", "bower install", "dotnet bundle", "gulp clean", "gulp build" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
+  "userSecretsId": "aspnet-Namster-20160630032042"
 }
