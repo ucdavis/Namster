@@ -1,7 +1,11 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true
+    "emitEntryPoint": true,
+    "copyToOutput": [
+      "appsettings.json",
+      "project.json"
+    ]
   },
 
   "dependencies": {
@@ -10,10 +14,9 @@
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "Microsoft.NETCore.App": {
-      "type": "platform",
       "version": "1.0.0"
     },
-    "NEST": "2.3.3",
+    "NEST": "2.4.1",
     "Microsoft.Extensions.DependencyInjection": "1.0.0"
   },
 
@@ -22,12 +25,8 @@
       "imports": "dnxcore50"
     }
   },
-
-  //"publishOptions": {
-  //  "includeFiles": [
-  //    "appsettings.json",
-  //    "project.json"
-  //  ]
-  //},
+  "runtimes": {
+    "win7-x64": {}
+  },
   "userSecretsId": "aspnet-Namster.Jobs.ElasticSync-20160707011005"
 }
