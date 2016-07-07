@@ -33,9 +33,8 @@ namespace Namster.Jobs.ElasticSync
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IConfiguration>(_configuration);
             services.AddTransient<NamSearchUploader, NamSearchUploader>();
         }
-
     }
 }
