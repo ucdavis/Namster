@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Dapper": "1.50.0-rc3",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0"
+    },
+    "NEST": "2.3.3",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
+  },
+
+  //"publishOptions": {
+  //  "includeFiles": [
+  //    "appsettings.json",
+  //    "project.json"
+  //  ]
+  //},
+  "userSecretsId": "aspnet-Namster.Jobs.ElasticSync-20160707011005"
+}
