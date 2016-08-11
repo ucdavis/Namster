@@ -1,7 +1,6 @@
-﻿using System;
-using Nest;
+﻿using Nest;
 
-namespace Namster.Models
+namespace Namster.Jobs.ElasticSync.Models
 {
     [ElasticsearchType(Name = "datanam", IdProperty = "NamNumber")]
     public class DataNam
