@@ -224,6 +224,7 @@
     "no-bitwise": 1,                 // disallow use of bitwise operators (off by default)
     "no-plusplus": 0,                // disallow use of unary operators, ++ and -- (off by default)
 
+    "react/require-extension": "off", // doesn't work on windows
     "react/display-name": 0,
     "react/jsx-boolean-value": 0,
     "react/jsx-no-duplicate-props": 2,
