@@ -11,35 +11,35 @@ export class SearchResult extends React.Component {
         };
 
         var building = null;
-        if (this.props.result.Building) {
-            var buildingUrl = '/list?building=' + encodeURIComponent(this.props.result.Building)
+        if (this.props.result.building) {
+            var buildingUrl = '/list?building=' + encodeURIComponent(this.props.result.building)
             var buildingLink = <Link to={buildingUrl} />
             building = <ListItem containerElement={buildingLink} innerDivStyle={innerDivStyle}
-              primaryText={this.props.result.Building} leftIcon={<i className="material-icons">account_balance</i>} />
+              primaryText={this.props.result.building} leftIcon={<i className="material-icons">account_balance</i>} />
         }
 
         var room = null;
-        if (this.props.result.Room) {
-            var roomUrl = '/list?building=' + encodeURIComponent(this.props.result.Building) + '&room=' + encodeURIComponent(this.props.result.Room)
+        if (this.props.result.room) {
+            var roomUrl = '/list?building=' + encodeURIComponent(this.props.result.building) + '&room=' + encodeURIComponent(this.props.result.room)
             var roomLink = <Link to={roomUrl} />
             room = <ListItem containerElement={roomLink} innerDivStyle={innerDivStyle}
-              primaryText={this.props.result.Room} leftIcon={<i className="material-icons">hotel</i>} />
+              primaryText={this.props.result.room} leftIcon={<i className="material-icons">hotel</i>} />
         }
 
         var department = null;
-        if (this.props.result.Department) {
-            var departmentUrl = '/list?department=' + encodeURIComponent(this.props.result.Department)
+        if (this.props.result.department) {
+            var departmentUrl = '/list?department=' + encodeURIComponent(this.props.result.department)
             var departmentLink = <Link to={departmentUrl} />
             department = <ListItem containerElement={departmentLink} innerDivStyle={innerDivStyle}
-              primaryText={this.props.result.Department} leftIcon={<i className="material-icons">group</i>} />
+              primaryText={this.props.result.department} leftIcon={<i className="material-icons">group</i>} />
         }
 
         var vlan = null;
-        if (this.props.result.Vlan) {
-            var vlanUrl = '/list?vlan=' + encodeURIComponent(this.props.result.Vlan)
+        if (this.props.result.vlan) {
+            var vlanUrl = '/list?vlan=' + encodeURIComponent(this.props.result.vlan)
             var vlanLink = <Link to={vlanUrl} />
             vlan = <ListItem containerElement={vlanLink} innerDivStyle={innerDivStyle}
-              primaryText={this.props.result.Vlan} leftIcon={<i className="material-icons">router</i>} />
+              primaryText={this.props.result.vlan} leftIcon={<i className="material-icons">router</i>} />
         }
 
         return (
@@ -47,7 +47,7 @@ export class SearchResult extends React.Component {
               <div className="card">
                 <h4 className="card-header" style={{position: "relative"}}>
                   <i className="material-icons" style={{position: "absolute"}}>settings_input_hdmi</i>
-                  <span style={{paddingLeft: "2rem"}}>{this.props.result.NamNumber}</span></h4>
+                  <span style={{paddingLeft: "2rem"}}>{this.props.result.namNumber}</span></h4>
                 <div className="card-block">
                   <List>
                     {building}
