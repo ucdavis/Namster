@@ -1,20 +1,16 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React from 'react';
+import { Link } from 'react-router';
 
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 
 export class SearchResult extends React.Component {
     render() {
-        var innerDivStyle = {
-          paddingLeft: "4rem"
-        };
-
         var building = null;
         if (this.props.result.building) {
             var buildingUrl = '/list?building=' + encodeURIComponent(this.props.result.building)
             var buildingLink = <Link to={buildingUrl} />
-            building = <ListItem containerElement={buildingLink} innerDivStyle={innerDivStyle}
+            building = <ListItem containerElement={buildingLink} innerDivStyle={styles.result}
               primaryText={this.props.result.building} leftIcon={<i className="material-icons">account_balance</i>} />
         }
 
@@ -22,7 +18,7 @@ export class SearchResult extends React.Component {
         if (this.props.result.room) {
             var roomUrl = '/list?building=' + encodeURIComponent(this.props.result.building) + '&room=' + encodeURIComponent(this.props.result.room)
             var roomLink = <Link to={roomUrl} />
-            room = <ListItem containerElement={roomLink} innerDivStyle={innerDivStyle}
+            room = <ListItem containerElement={roomLink} innerDivStyle={styles.result}
               primaryText={this.props.result.room} leftIcon={<i className="material-icons">hotel</i>} />
         }
 
@@ -30,7 +26,7 @@ export class SearchResult extends React.Component {
         if (this.props.result.department) {
             var departmentUrl = '/list?department=' + encodeURIComponent(this.props.result.department)
             var departmentLink = <Link to={departmentUrl} />
-            department = <ListItem containerElement={departmentLink} innerDivStyle={innerDivStyle}
+            department = <ListItem containerElement={departmentLink} innerDivStyle={styles.result}
               primaryText={this.props.result.department} leftIcon={<i className="material-icons">group</i>} />
         }
 
@@ -38,7 +34,7 @@ export class SearchResult extends React.Component {
         if (this.props.result.vlan) {
             var vlanUrl = '/list?vlan=' + encodeURIComponent(this.props.result.vlan)
             var vlanLink = <Link to={vlanUrl} />
-            vlan = <ListItem containerElement={vlanLink} innerDivStyle={innerDivStyle}
+            vlan = <ListItem containerElement={vlanLink} innerDivStyle={styles.result}
               primaryText={this.props.result.vlan} leftIcon={<i className="material-icons">router</i>} />
         }
 
@@ -47,7 +43,7 @@ export class SearchResult extends React.Component {
               <div className="card">
                 <h4 className="card-header" style={{position: "relative"}}>
                   <i className="material-icons" style={{position: "absolute"}}>settings_input_hdmi</i>
-                  <span style={{paddingLeft: "2rem"}}>{this.props.result.namNumber}</span></h4>
+                  <span style={styles.result}>{this.props.result.namNumber}</span></h4>
                 <div className="card-block">
                   <List>
                     {building}
@@ -63,15 +59,19 @@ export class SearchResult extends React.Component {
 }
 
 export class SearchResultList extends React.Component {
-    render() {
-        return (
-            <div className="row">
-              {this.props.results.map(function(result) {
-                 return (
-                    <SearchResult key={result.NamNumber} result={result} />
-                 )
-              })}
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="row">
+        {this.props.results.map((result) => <SearchResult key={result.NamNumber} result={result} />)}
+      </div>
+    );
+  }
 }
+
+const styles = {
+  searchResult: {
+    innerDiv: {
+      paddingLeft: '4rem'
+    }
+  }
+};
