@@ -1,4 +1,8 @@
-﻿import { getParameterByName } from '../../functions/location'
+import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+
+﻿import { getParameterByName } from '../functions/location'
 
 export class Nam extends React.Component{
     render() {
@@ -6,10 +10,10 @@ export class Nam extends React.Component{
         return (
             <tr>
                 <td>{this.props.data.NamNumber}</td>
-                <td><a href={'/home/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</a></td>
-                <td><a href={"/home/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</a></td>
-                <td><a href={"/home/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</a></td>
-                <td><a href={"/home/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</a></td>
+                <td><Link to={'/list?room=' + encodeURIComponent(this.props.data.Room) + '&building=' + encodeURIComponent(this.props.data.Building)}>{this.props.data.Room}</Link></td>
+                <td><Link to={"/list?building=" + encodeURIComponent(this.props.data.Building)}>{this.props.data.Building}</Link></td>
+                <td><Link to={"/list?department=" + encodeURIComponent(this.props.data.Department)}>{this.props.data.Department}</Link></td>
+                <td><Link to={"/list?vlan=" + encodeURIComponent(this.props.data.Vlan)}>{this.props.data.Vlan}</Link></td>
                 <td><i className={statusIcon}></i> {this.props.data.Status}</td>
             </tr>
         );
@@ -44,7 +48,7 @@ export class NamList extends React.Component {
     }
 }
 
-export class ListView extends React.Component{
+export default class ListView extends React.Component{
     constructor(props)
     {
         super(props);
@@ -90,7 +94,7 @@ export class ListView extends React.Component{
         if (!building && !department && !vlan){
             self.setState({message: 'No field selected - go back to the homepage and start over', title: '' });
         } else {
-            $.getJSON(`/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
+            $.getJSON(`/api/search/filter?room=${encodeURIComponent(room)}&building=${encodeURIComponent(building)}&department=${encodeURIComponent(department)}&vlan=${encodeURIComponent(vlan)}`, function (data) {
                 self.setState({ spinning: false, data: data });
             });
         }
@@ -112,8 +116,3 @@ export class ListView extends React.Component{
         );
     }
 }
-
-ReactDOM.render(
-    <ListView />,
-    document.getElementById('example')
-);

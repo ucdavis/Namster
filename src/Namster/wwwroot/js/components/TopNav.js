@@ -28,7 +28,7 @@ export class TopNav extends React.Component {
           <a className="navbar-brand" href="/">NamstR</a>
           <form className="form-inline pull-xs-right navbar-search-form">
             <input className="form-control navbar-search-input" type="text" placeholder={this._searchPlaceholder}
-              value={this.props.query}
+              value={this.props.terms}
               onFocus={this._onSearchFocus.bind(this)}
               onChange={this._onSearchChange.bind(this)} />
           </form>

@@ -5,9 +5,8 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
     entry: {
-        app: path.resolve(__dirname, "./wwwroot/js/views/app"),
-        list: path.resolve("./wwwroot/js/views/list/main.jsx"),
-        vendor: ['react', 'react-dom', 'material-ui']
+        app: path.resolve(__dirname, "./wwwroot/js/app"),
+        vendor: ['react', 'react-dom', 'material-ui', 'redux', 'react-redux']
     },
     resolve: {
         alias: {
