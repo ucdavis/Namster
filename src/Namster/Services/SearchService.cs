@@ -63,9 +63,9 @@ namespace Namster.Services
                         q.Term(t => t.ExactDepartment, department) &&
                         q.Term(t => t.Vlan, vlan))
                     .Aggregations(a =>
-                        a.Terms("Building", d => d.Field(f => f.ExactBuilding))
-                         .Terms("Department", d => d.Field(f => f.ExactDepartment))
-                         .Terms("VLAN", d => d.Field(f => f.Vlan)))
+                        a.Terms("building", d => d.Field(f => f.ExactBuilding))
+                         .Terms("department", d => d.Field(f => f.ExactDepartment))
+                         .Terms("vlan", d => d.Field(f => f.Vlan)))
                     .Highlight(h => 
                         h.Fields(
                             f => f.Field(x => x.Building).PreTags("<mark>").PostTags("</mark>"),
