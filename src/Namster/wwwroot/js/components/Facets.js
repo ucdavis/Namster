@@ -49,34 +49,34 @@ export class FacetList extends React.Component {
         }
 
         var buildings = null;
-        if (facets.Building && facets.Building.Items && facets.Building.Items.length) {
+        if (facets.building && facets.building.items && facets.building.items.length) {
             buildings =
               <List subheader="Building" >
-                  {facets.Building.Items.map(function(item) {
-                      var selected = (filters.building === item.Key);
-                      return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "building")} />
+                  {facets.building.items.map(function(item) {
+                      var selected = (filters.building === item.key);
+                      return <FacetListItem key={item.key} value={item.key} count={item.docCount} selected={selected} onCheck={self.onCheck.bind(self, "building")} />
                   })}
               </List>
         }
 
         var departments = null;
-        if (facets.Departments && facets.Departments.Items && facets.Departments.Items.length) {
+        if (facets.department && facets.department.items && facets.department.items.length) {
             departments =
               <List subheader="Department" >
-                  {facets.Departments.Items.map(function(item) {
-                      var selected = (filters.department === item.Key);
-                      return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "department")} />
+                  {facets.department.items.map(function(item) {
+                      var selected = (filters.department === item.key);
+                      return <FacetListItem key={item.key} value={item.key} count={item.docCount} selected={selected} onCheck={self.onCheck.bind(self, "department")} />
                   })}
               </List>
         }
 
         var vlans = null;
-        if (facets.Vlan && facets.Vlan.Items && facets.Vlan.Items.length) {
+        if (facets.vlan && facets.vlan.items && facets.vlan.items.length) {
             vlans =
               <List subheader="VLAN" >
-                  {facets.Vlan.Items.map(function(item) {
-                      var selected = (filters.vlan === item.Key);
-                      return <FacetListItem key={item.Key} value={item.Key} count={item.DocCount} selected={selected} onCheck={self.onCheck.bind(self, "vlan")} />
+                  {facets.vlan.items.map(function(item) {
+                      var selected = (filters.vlan === item.key);
+                      return <FacetListItem key={item.key} value={item.key} count={item.docCount} selected={selected} onCheck={self.onCheck.bind(self, "vlan")} />
                   })}
               </List>
         }
