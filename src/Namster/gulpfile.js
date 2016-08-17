@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='webpack:build, min:css' Clean='clean' />
+/// <binding BeforeBuild='build' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
