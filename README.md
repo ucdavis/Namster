@@ -2,19 +2,25 @@
 
 # Running/Developing the app
 
-You need to run these two commands at the same time, so open up to terminal windows and run
+Within ~/Namster/src/Namster, run:
 
-    dnx web
-    gulp watch
+```
+dotnet restore
+dotnet build
+dotnet run
+```
+
+This requires that [.NET Core be installed](#dotnet-core-installation).
+
 
 # Updating dependencies
 
-Occasionally (and definitely before first run) you'll need to update the dependencies and download new libraries.  Run these commands:
+Occasionally (and definitely before first run) you'll need to update the dependencies and download new libraries.  Run these commands in ~/Namster/src/Namster:
 
-    dnu restore
     npm install
     bower install
     gulp build
+
 
 # Troubleshooting
 
@@ -22,25 +28,17 @@ There is a bug with the Mac mono runtime that may cause an error running the web
 
     export MONO_MANAGED_WATCHER=false
 
-# Installing the ASPNET5 runtime on a Mac
+# Installing .NET Core on a Mac <a id="dotnet-core-installation"></a>
 
-Follow the instructions at [Installing ASP.NET 5 On Mac OS X](http://docs.asp.net/en/latest/getting-started/installing-on-mac.html
-).  You'll need to install the mono runtime which you can do by following the "Install ASP.NET 5 with Visual Studio Code" instructions.
+
+Follow the instructions at [Install for Mac OS X 10.11](https://www.microsoft.com/net/core#macos).
 
 OR
 
-I like to install via command line, which requires a few steps:
+I like to install via command line:
 
-Install DNVM
+Install .Net Core
 
-    curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
-
-Install mono
-
-    brew install mono
-
-Install dnx for mono
-
-    dnvm upgrade -r mono
+```brew cask install dotnet```
 
 And you're good to go!

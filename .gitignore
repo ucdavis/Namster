@@ -226,3 +226,6 @@ node_modules/
 #############
 **/wwwroot/lib/
 *.lock.json
+
+# vscode
+*.vscode
