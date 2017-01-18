@@ -9,10 +9,10 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <environment names="Development">
-            <link rel="stylesheet" href="~/css/dist/site.css" />
+            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
         </environment>
         <environment names="Staging,Production">
-            <link rel="stylesheet" href="~/css/dist/site.min.css" asp-append-version="true"/>
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         </environment>
         
         @RenderSection("styles", required: false)
