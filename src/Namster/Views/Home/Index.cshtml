@@ -4,6 +4,25 @@
 
 <div id="app"></div>
 
-@section scripts{
-    <script type="text/javascript" src="~/js/dist/app.js"></script>
+@section styles {
+    <environment names="Development">
+        <link rel="stylesheet" href="http://localhost:8080/bundle.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/dist/bundle.css" />
+    </environment>
+
 }
+
+@section scripts{
+    <environment names="Development">
+        <script type="text/javascript" src="http://localhost:8080/vendor.bundle.js"></script>
+        <script type="text/javascript" src="http://localhost:8080/app.js"></script>
+        <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+        <script type="text/javascript" src="http://localhost:8080/client.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script type="text/javascript" src="~/dist/vendor.bundle.js"></script>
+        <script type="text/javascript" src="~/dist/app.js"></script>
+    </environment>
+}   
