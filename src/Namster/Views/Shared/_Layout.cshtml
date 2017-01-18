@@ -17,15 +17,10 @@
         
         @RenderSection("styles", required: false)
 
-        <script src="~/js/dist/vendor.bundle.js"></script>
         @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
     </head>
 <body>
     @RenderBody()
-
-    <environment names="Development">
-        <script src="http://localhost:8080/webpack-dev-server.js"></script>
-    </environment>
 
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
