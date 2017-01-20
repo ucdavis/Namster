@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SearchInput from './searchInput';
+
 import styles from './splash.scss';
 
 export default class Splash extends React.Component {
@@ -12,7 +14,9 @@ export default class Splash extends React.Component {
           <h1 className={styles.title}>NamstR</h1>
         </div>
 
-        {this.props.children}
+        <div className={styles.searchContainer}>
+          <SearchInput />
+        </div>
 
         <div className={styles.footer}>
           <p className={styles.subTitle}>a CA&ES DO production</p>
