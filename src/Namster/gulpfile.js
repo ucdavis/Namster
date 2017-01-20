@@ -31,6 +31,12 @@ gulp.task('webpack-dev-server', (callback) => {
     output: {
       publicPath: 'http://localhost:8080/'
     },
+    module: {
+      loaders: [{
+        test: /\.(jpe?g|gif|png)$/,
+        loader: 'file-loader?emitFile=false&name=[path][name].[ext]'
+      }]
+    },
     plugins: [
       new webpack.HotModuleReplacementPlugin()
     ]
