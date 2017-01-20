@@ -1,9 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 
-import styles from './searchInput.scss';
+import styles from './input.scss';
 
-const searchInput = class SearchInput extends React.Component {
+const input = class Input extends React.Component {
 
   constructor(props) {
     super(props);
@@ -52,7 +52,7 @@ const searchInput = class SearchInput extends React.Component {
 
   render() {
     return (
-      <form className="" onSubmit={this._onSubmit}>
+      <form className={styles.form} onSubmit={this._onSubmit}>
         <input
           className={styles.input} type="text"
           placeholder={this.state.placeholder}
@@ -66,4 +66,4 @@ const searchInput = class SearchInput extends React.Component {
   }
 };
 
-export default withRouter(searchInput);
+export default withRouter(input);
