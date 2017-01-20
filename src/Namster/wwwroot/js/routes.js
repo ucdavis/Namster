@@ -1,15 +1,12 @@
-import React from 'react'
-import { Route, IndexRoute } from 'react-router'
-import Root from './containers/Root'
-
-import SplashVideo from './components/SplashVideo'
-import SearchMain from './containers/SearchMain'
-import ListView from './containers/List'
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+import AppLayout from './layout';
+import Home from './components/home';
+import Splash from './components/splash'
 
 export default (
-  <Route path="/" component={Root}>
-    <IndexRoute component={SplashVideo} />
-    <Route path="search" component={SearchMain} />
-    <Route path="list" component={ListView} />
+  <Route path="/" component={AppLayout}>
+    <IndexRoute component={Splash} />
+    <Route path="home" component={Home} />
   </Route>
-)
+);
