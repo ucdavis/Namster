@@ -29,7 +29,7 @@ module.exports = {
         loaders: ['react-hot', 'babel']
       }, {
         test: /(\.scss|\.css)$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
+        loader: 'style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'
       }
     ]
   },
@@ -39,7 +39,7 @@ module.exports = {
     includePaths: [path.resolve(__dirname, './wwwroot')]
   },
   plugins: [
-    new ExtractTextPlugin('bundle.css', { allChunks: true }),
+    // new ExtractTextPlugin('bundle.css', { allChunks: true }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
