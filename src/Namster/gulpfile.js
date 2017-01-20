@@ -44,7 +44,10 @@ gulp.task('webpack-dev-server', (callback) => {
 
   const compiler = webpack(config);
   new WebpackDevServer(compiler, {
-    hot: true
+    hot: true,
+    proxy: {
+      '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
+    }
   }).listen(8080, 'localhost', (err) => {
     if (err) {
       throw new util.PluginError('webpack-dev-server', err);
