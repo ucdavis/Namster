@@ -1,9 +1,14 @@
 .form {
+  width: 100%;
 }
 
 .input {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.7rem;
   text-align: center;
   box-sizing: border-box;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  border-style: solid;
+  border-radius: 3px;
 }
