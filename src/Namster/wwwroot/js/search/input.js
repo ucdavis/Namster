@@ -1,28 +1,30 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
+import * as SearchActions from '../actions/search';
 import styles from './input.scss';
 
-const input = class Input extends React.Component {
+class Input extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
+      value: this.props.value || '',
       placeholder: this.getRandomPlaceholder()
     };
   }
+
+  getRandomPlaceholder = () => (
+    this._placeholders[Math.floor(Math.random() * this._placeholders.length)] || ''
+  )
 
   _placeholders = [
     'Find the perfect NAM for you',
     'What would you like to NAM today?',
     'Your ideal NAM is waiting for you...'
   ];
-
-  getRandomPlaceholder = () => (
-    this._placeholders[Math.floor(Math.random() * this._placeholders.length)] || ''
-  )
 
   _handleFocus = (event) => {
     this.setState({
@@ -45,9 +47,9 @@ const input = class Input extends React.Component {
   _onSubmit = (event) => {
     event.preventDefault();
 
-    this.props.router.push('/search', {
-      query: this.state.value
-    });
+    if (this.props.onSearch) {
+      this.props.onSearch(this.state.value);
+    }
   }
 
   render() {
@@ -64,6 +66,14 @@ const input = class Input extends React.Component {
       </form>
     );
   }
-};
+}
 
-export default withRouter(input);
+function mapStateToProps(state, props) {
+  return {
+    value: props.params.terms || ''
+  };
+}
+
+export default withRouter(connect(
+  mapStateToProps
+)(Input));
