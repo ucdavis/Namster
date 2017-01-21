@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SearchInput from './searchInput';
+import SearchInput from '../search/input';
 
 import styles from './splash.scss';
 
