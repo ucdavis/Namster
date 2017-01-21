@@ -7,6 +7,6 @@ import Search from './search';
 export default (
   <Route path="/" component={AppLayout}>
     <IndexRoute component={Splash} />
-    <Route path="search" component={Search} />
+    <Route path="search/:terms" component={Search} />
   </Route>
 );
