@@ -5,6 +5,14 @@ import SearchInput from '../search/input';
 import styles from './splash.scss';
 
 export default class Splash extends React.Component {
+
+  _onSearch = (terms) => {
+    const { router, location } = this.props;
+    router.push(...location, {
+      pathname: `/search/${terms}`
+    });
+  }
+
   render() {
     return (
       <div className={styles.main}>
@@ -15,7 +23,7 @@ export default class Splash extends React.Component {
         </div>
 
         <div className={styles.searchContainer}>
-          <SearchInput />
+          <SearchInput onSearch={this._onSearch} />
         </div>
 
         <div className={styles.footer}>
