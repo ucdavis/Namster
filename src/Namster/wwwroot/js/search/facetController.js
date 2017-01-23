@@ -11,14 +11,15 @@ export default class FacetController extends React.Component {
   }
 
   render() {
-    const { facets } = this.props;
+    const { facets, selected } = this.props;
 
     let buildings = null;
     if (facets.building && facets.building.items && facets.building.items.length) {
       buildings = (
         <Facet
-          subheader="Building"
+          subHeader="Building"
           items={facets.building.items}
+          selectedKey={selected.building}
           onChange={(value) => this._onChange('building', value)}
         />
       );
@@ -28,8 +29,9 @@ export default class FacetController extends React.Component {
     if (facets.department && facets.department.items && facets.department.items.length) {
       departments = (
         <Facet
-          subheader="Department"
+          subHeader="Department"
           items={facets.department.items}
+          selectedKey={selected.department}
           onChange={(value) => this._onChange('department', value)}
         />
       );
@@ -39,8 +41,9 @@ export default class FacetController extends React.Component {
     if (facets.vlan && facets.vlan.items && facets.vlan.items.length) {
       vlans = (
         <Facet
-          subheader="VLAN"
+          subHeader="VLAN"
           items={facets.vlan.items}
+          selectedKey={selected.vlan}
           onChange={(value) => this._onChange('vlan', value)}
         />
       );
