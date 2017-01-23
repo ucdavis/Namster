@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as SearchService from '../services/search';
+import { BuildSearch } from '../util/navigation';
 
 import SearchInput from './input';
 import FacetController from './facetController';
@@ -13,22 +14,30 @@ export default class Index extends React.Component {
 
     this.state = {
       aggregates: {},
-      results: []
+      results: [],
     };
   }
 
   componentDidMount() {
-    this._searchIfNeeded();
+    this._searchIfNeeded(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this._searchIfNeeded();
+    this._searchIfNeeded(nextProps);
+  }
+
+  _onClearFacets = () => {
+    const { router, location } = this.props;
+    router.push({
+      pathname: location.pathname
+    });
   }
 
   _onFacetSelect = (category, key) => {
     const { router, location } = this.props;
     const query = { ...location.query, [category]: key };
-    router.push(...location, {
+    router.push({
+      pathname: location.pathname,
       query
     });
   }
@@ -40,29 +49,31 @@ export default class Index extends React.Component {
     });
   }
 
-  _searchIfNeeded() {
-    const { params, location } = this.props;
+  _searchIfNeeded(props) {
+    const { params, location } = props;
     SearchService.fetchResults({
-      terms: params.terms,
-      building: location.query.building,
+      terms:      params.terms,
+      building:   location.query.building,
       department: location.query.department,
-      vlan: location.query.vlan
+      vlan:       location.query.vlan
     })
     .then((r) => {
       this.setState({
         aggregates: r.aggregates,
-        results: r.results
+        results:    r.results
       });
     });
   }
 
   render() {
+    const { location } = this.props;
     const { aggregates } = this.state;
 
     return (
       <div className={styles.main}>
         <div className={styles.facets}>
-          <FacetController facets={aggregates} onChange={this._onFacetSelect} />
+          <h2 className={styles.facetClear} onClick={this._onClearFacets}>Clear Filters</h2>
+          <FacetController facets={aggregates} onChange={this._onFacetSelect} selected={location.query} />
         </div>
         <div className={styles.panel}>
           <SearchInput className={styles.inputContainer} onSearch={this._onSearch} />
