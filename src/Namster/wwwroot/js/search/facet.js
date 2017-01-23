@@ -3,20 +3,9 @@ import Checkbox from 'react-toolbox/lib/checkbox';
 
 export default class Facet extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedKey: props.selectedKey || ''
-    };
-  }
-
   _onCheck = (key, value) => {
     // if unchecking, clear selected key
     const selectedKey = value ? key : '';
-    this.setState({
-      selectedKey
-    });
 
     if (this.props.onChange) {
       this.props.onChange(selectedKey);
@@ -24,7 +13,7 @@ export default class Facet extends React.Component {
   }
 
   renderFacet(item) {
-    const selected = (this.state.selectedKey === item.key);
+    const selected = (this.props.selectedKey === item.key);
     return (
       <Checkbox
         key={item.key}
