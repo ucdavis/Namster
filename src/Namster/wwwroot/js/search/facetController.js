@@ -2,6 +2,8 @@ import React from 'react';
 
 import Facet from './facet';
 
+import styles from './facetController.scss';
+
 export default class FacetController extends React.Component {
 
   _onChange = (category, value) => {
@@ -16,36 +18,42 @@ export default class FacetController extends React.Component {
     let buildings = null;
     if (facets.building && facets.building.items && facets.building.items.length) {
       buildings = (
-        <Facet
-          subHeader="Building"
-          items={facets.building.items}
-          selectedKey={selected.building}
-          onChange={(value) => this._onChange('building', value)}
-        />
+        <div className={styles.facet}>
+          <Facet
+            header="Building"
+            items={facets.building.items}
+            selectedKey={selected.building}
+            onChange={(value) => this._onChange('building', value)}
+          />
+        </div>
       );
     }
 
     let departments = null;
     if (facets.department && facets.department.items && facets.department.items.length) {
       departments = (
-        <Facet
-          subHeader="Department"
-          items={facets.department.items}
-          selectedKey={selected.department}
-          onChange={(value) => this._onChange('department', value)}
-        />
+        <div className={styles.facet}>
+          <Facet
+            header="Department"
+            items={facets.department.items}
+            selectedKey={selected.department}
+            onChange={(value) => this._onChange('department', value)}
+          />
+        </div>
       );
     }
 
     let vlans = null;
     if (facets.vlan && facets.vlan.items && facets.vlan.items.length) {
       vlans = (
-        <Facet
-          subHeader="VLAN"
-          items={facets.vlan.items}
-          selectedKey={selected.vlan}
-          onChange={(value) => this._onChange('vlan', value)}
-        />
+        <div className={styles.facet}>
+          <Facet
+            header="VLAN"
+            items={facets.vlan.items}
+            selectedKey={selected.vlan}
+            onChange={(value) => this._onChange('vlan', value)}
+          />
+        </div>
       );
     }
 
