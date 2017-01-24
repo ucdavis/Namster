@@ -1,0 +1,44 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.collapseToggle {
+  transform: rotate(0);
+  transition: transform 200ms ease-in;
+}
+
+.facetContainer {
+  transition: transform 200ms ease-in;
+}
+
+.collapsed {
+  .collapseToggle {
+    transform: rotate(180deg);
+  }
+
+  .facetContainer {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+.labelContainer {
+  width: 100%;
+  display: inline-flex;
+  margin-top: 2px;
+}
+
+.label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 2.5rem;
+}
+
+.labelCount {
+  font-size: 0.9rem;
+  color: #616161;
+}
