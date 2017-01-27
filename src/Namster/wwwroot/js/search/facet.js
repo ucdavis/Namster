@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox';
 import Checkbox from 'react-toolbox/lib/checkbox';
 import ClassNames from 'classnames';
 
@@ -10,7 +11,8 @@ export default class Facet extends React.Component {
     super(props);
 
     this.state = {
-      collapsed: false
+      collapsed: false,
+      expanded: false
     };
   }
 
@@ -29,6 +31,12 @@ export default class Facet extends React.Component {
     });
   }
 
+  _toggleExpand = (event) => {
+    this.setState({
+      expanded: !this.state.expanded
+    });
+  }
+
   renderFacet(item) {
     const selected = (this.props.selectedKey === item.key);
 
@@ -38,7 +46,7 @@ export default class Facet extends React.Component {
         checked={selected}
         label={
           <div className={styles.label}>
-            <div>{item.key}</div>
+            <div className={styles.labelText} title={item.key}>{item.key}</div>
             <div className={styles.labelCount}>({item.docCount})</div>
           </div>
         }
@@ -48,19 +56,34 @@ export default class Facet extends React.Component {
     );
   }
 
+  renderExpando() {
+    if (this.props.items.length <= 5) {
+      return null;
+    }
+
+    const text = this.state.expanded ? 'Show Less' : 'Show More';
+    return (
+      <span className={styles.expandToggle} onClick={this._toggleExpand}>{text}</span>
+    );
+  }
+
   render() {
-    const { items } = this.props;
+    let { items } = this.props;
+    if (items.length > 5 && !this.state.expanded) {
+      items = items.slice(0, 5);
+    }
 
     return (
-      <div className={ClassNames({ [styles.collapsed]: this.state.collapsed })}>
-        <div className={styles.headerContainer} onClick={this._toggleCollapse}>
+      <Card className={ClassNames({ [styles.collapsed]: this.state.collapsed })}>
+        <CardTitle className={styles.headerContainer} onClick={this._toggleCollapse}>
           <h2>{this.props.header}</h2>
           <i className={ClassNames('material-icons', styles.collapseToggle)}>keyboard_arrow_up</i>
-        </div>
-        <div className={styles.facetContainer}>
+        </CardTitle>
+        <CardText className={styles.facetContainer}>
           {items.map((item) => this.renderFacet(item))}
-        </div>
-      </div>
+          { this.renderExpando() }
+        </CardText>
+      </Card>
     );
   }
 }

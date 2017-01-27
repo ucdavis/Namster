@@ -1,12 +1,22 @@
-.headerContainer {
+.headerContainer > div {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  width: 100%;
+
+  h2 {
+    margin: 0;
+  }
 }
 
 .collapseToggle {
   transform: rotate(0);
   transition: transform 200ms ease-in;
+}
+
+.expandToggle {
+  display: block;
+  text-align: center;
 }
 
 .facetContainer {
@@ -20,6 +30,7 @@
 
   .facetContainer {
     height: 0;
+    display: none;
     overflow: hidden;
   }
 }
@@ -36,6 +47,12 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 2.5rem;
+}
+
+.labelText {
+  max-width: 10rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .labelCount {
