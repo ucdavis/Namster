@@ -14,13 +14,13 @@ const NamModel = {
   division: { type: String }
 };
 
-export default class Facet extends React.Component {
+export default class ResultsTable extends React.Component {
 
   render() {
     return (
       <Table
         model={NamModel}
-        selectable
+        selectable={false}
         source={this.props.results}
       />
     );
