@@ -1,10 +1,11 @@
 import React from 'react';
+import { Card, Drawer } from 'react-toolbox';
 
 import * as SearchService from '../services/search';
-import { BuildSearch } from '../util/navigation';
 
 import SearchInput from './input';
 import FacetController from './facetController';
+import Results from './table';
 import styles from './index.scss';
 
 export default class Index extends React.Component {
@@ -67,7 +68,7 @@ export default class Index extends React.Component {
 
   render() {
     const { location } = this.props;
-    const { aggregates } = this.state;
+    const { aggregates, results } = this.state;
 
     return (
       <div className={styles.main}>
@@ -76,8 +77,12 @@ export default class Index extends React.Component {
           <FacetController facets={aggregates} onChange={this._onFacetSelect} selected={location.query} />
         </div>
         <div className={styles.panel}>
-          <SearchInput className={styles.inputContainer} onSearch={this._onSearch} />
-          {this.props.children}
+          <div className={styles.inputContainer}>
+            <SearchInput onSearch={this._onSearch} />
+          </div>
+          <Card>
+            <Results className={styles.resultsContainer} results={results} />
+          </Card>
         </div>
       </div>
     );
