@@ -1,6 +1,11 @@
 import React from 'react';
+import AppBar from 'react-toolbox/lib/app_bar';
+import Navigation from 'react-toolbox/lib/navigation';
+import Link from 'react-toolbox/lib/Link';
 
-export class TopNav extends React.Component {
+import styles from './topNav.scss';
+
+export default class TopNav extends React.Component {
 
   constructor(props) {
     super(props);
@@ -24,17 +29,12 @@ export class TopNav extends React.Component {
 
   render() {
     return (
-      <nav id="top-nav" className="navbar navbar-dark bg-inverse">
-        <a className="navbar-brand" href="/">NamstR</a>
-        <form className="form-inline pull-xs-right navbar-search-form">
-          <input
-            className="form-control navbar-search-input" type="text" placeholder={this._searchPlaceholder}
-            value={this.props.terms}
-            onFocus={this._onSearchFocus}
-            onChange={this._onSearchChange}
-          />
-        </form>
-      </nav>
+      <AppBar title="" leftIcon="menu" className={styles.topNav}>
+        <Navigation type="horizontal">
+          <Link href="http://" label="Inbox" icon="inbox" />
+          <Link href="http://" active label="Profile" icon="person" />
+        </Navigation>
+      </AppBar>
     );
   }
 }
