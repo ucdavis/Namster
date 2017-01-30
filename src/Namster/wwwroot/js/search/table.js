@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-toolbox';
+import { Table, TableHead, TableRow, TableCell } from 'react-toolbox';
 
 const NamModel = {
   namNumber: { type: Number },
@@ -16,13 +16,22 @@ const NamModel = {
 
 export default class ResultsTable extends React.Component {
 
+  renderRow(item) {
+    return (
+      <TableRow key={item.namNumber}>
+        <TableCell>{item.namNumber}</TableCell>
+      </TableRow>
+    );
+  }
+
   render() {
     return (
-      <Table
-        model={NamModel}
-        selectable={false}
-        source={this.props.results}
-      />
+      <Table selectable={false}>
+        <TableHead>
+          <TableCell>NAM</TableCell>
+        </TableHead>
+        {this.props.results.map(this.renderRow)}
+      </Table>
     );
   }
 }
