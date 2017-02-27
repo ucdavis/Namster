@@ -25,37 +25,37 @@ gulp.task('build', (callback) => {
 });
 
 gulp.task('webpack-dev-server', (callback) => {
-  let config = Object.create(webpackConfig);
-  config = webpackMerge(config, {
-    devtool: 'inline-source-map',
-    output: {
-      publicPath: 'http://localhost:8080/'
-    },
-    module: {
-      loaders: [{
-        test: /\.(jpe?g|gif|png)$/,
-        loader: 'file-loader?emitFile=false&name=[path][name].[ext]'
-      }]
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  });
+  try {
+    let config = Object.create(webpackConfig);
+    config = webpackMerge(config, {
+      plugins: [
+        new webpack.HotModuleReplacementPlugin()
+      ]
+    });
 
-  const compiler = webpack(config);
-  new WebpackDevServer(compiler, {
-    hot: true,
-    proxy: {
-      '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
-    }
-  }).listen(8080, 'localhost', (err) => {
-    if (err) {
-      throw new util.PluginError('webpack-dev-server', err);
-    }
-    // Server listening
-    util.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/');
-
-    // keep the server alive or continue?
-    // callback();
-  });
+    const compiler = webpack(config);
+    const server = new WebpackDevServer(compiler, {
+      hot: true,
+      proxy: {
+        '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
+      },
+      publicPath: 'http://localhost:8080/',
+      stats: 'verbose',
+      setup: (app) => {
+        app.on('listening', () => {
+          util.log('listening fired');
+        });
+        app.on('err', (err) => {
+          throw new util.PluginError('webpack-dev-server', err);
+        });
+        app.on('close', () => {
+          util.log('close fired');
+          callback();
+        });
+      }
+    }).listen(8080, 'localhost');
+    return server.app;
+  } catch (err) {
+    throw new util.PluginError('webpack-dev-server', err);
+  }
 });

@@ -1,46 +1,90 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  context: __dirname,
   entry: {
-    app: path.resolve(__dirname, './wwwroot/js/app'),
+    app: path.resolve(__dirname, './wwwroot/js/index'),
     vendor: ['react', 'react-dom', 'redux', 'react-redux', 'react-toolbox'],
-    client: ['webpack/hot/only-dev-server']
-  },
-  resolve: {
-    extensions: ['', '.jsx', '.js', '.css', '.scss', '.json'],
-    modulesDirectories: [
-      'node_modules',
-      path.resolve(__dirname, './node_modules')
+    client: [
+      'react-hot-loader/patch',
+      // activate HMR for React
+
+      'webpack-dev-server/client?http://localhost:8080',
+      // bundle the client for webpack-dev-server
+      // and connect to the provided endpoint
+
+      'webpack/hot/only-dev-server',
+      // bundle the client for hot reloading
+      // only- means to only hot reload for successful updates
     ]
   },
   output: {
     path: path.resolve('./wwwroot/dist/'),
     filename: '[name].js'
   },
+  context: __dirname,
+  devtool: 'inline-source-map',
+  devServer: {
+    quiet: false,
+    hot: true,
+    // enable HMR on the server
+  },
+  target: 'web',
+  resolve: {
+    extensions: ['.jsx', '.js', '.css', '.scss', '.json'],
+    modules: [
+      'node_modules',
+      //path.resolve(__dirname, './node_modules')
+    ]
+  },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
-        loaders: ['react-hot', 'babel']
+        use: ['babel-loader']
       }, {
         test: /(\.scss|\.css)$/,
-        loader: 'style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 2
+            }
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return [
+                  require('postcss-cssnext')
+                ];
+              }
+            }
+          // }, {
+          //   loader: 'sass-loader',
+          //   options: {
+          //     //context: '/',
+          //     //data: '@import "theme/_config.scss";',
+          //     includePaths: [path.resolve(__dirname, './wwwroot')]
+          //   }
+          }
+        ]
+      }, {
+        test: /\.(jpe?g|gif|png)$/,
+        use: 'file-loader?emitFile=false&name=[path][name].[ext]'
       }
     ]
   },
-  postcss: [autoprefixer],
-  sassLoader: {
-    data: '@import "theme/_config.scss";',
-    includePaths: [path.resolve(__dirname, './wwwroot')]
-  },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    // enable HMR globally
+
+    new webpack.NamedModulesPlugin(),
+    // prints more readable module names in the browser console on HMR updates
+
     // new ExtractTextPlugin('bundle.css', { allChunks: true }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: 'vendor.bundle.js',

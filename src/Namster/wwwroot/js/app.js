@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 
@@ -10,9 +9,10 @@ import styles from './app.scss';
 
 const store = configureStore();
 
-ReactDOM.render(
-  <Provider store={store}>
+const App = () => (
+  <Provider store={store} className={styles.app}>
     <Router history={browserHistory} routes={routes} />
-  </Provider>,
-  document.getElementById('app')
+  </Provider>
 );
+
+export default App;
