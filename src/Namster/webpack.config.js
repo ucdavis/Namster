@@ -34,7 +34,6 @@ module.exports = {
     extensions: ['.jsx', '.js', '.css', '.scss', '.json'],
     modules: [
       'node_modules',
-      //path.resolve(__dirname, './node_modules')
     ]
   },
   module: {
@@ -51,7 +50,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              importLoaders: 2
+              importLoaders: 1
             }
           }, {
             loader: 'postcss-loader',
@@ -62,18 +61,18 @@ module.exports = {
                 ];
               }
             }
-          // }, {
-          //   loader: 'sass-loader',
-          //   options: {
-          //     //context: '/',
-          //     //data: '@import "theme/_config.scss";',
-          //     includePaths: [path.resolve(__dirname, './wwwroot')]
-          //   }
           }
         ]
       }, {
         test: /\.(jpe?g|gif|png)$/,
-        use: 'file-loader?emitFile=false&name=[path][name].[ext]'
+        use: {
+          loader: 'file-loader',
+          options: {
+            context: path.resolve(__dirname, 'wwwroot'),
+            emitFile: false,
+            name: '[path][name].[ext]'
+          }
+        }
       }
     ]
   },
@@ -84,7 +83,6 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     // prints more readable module names in the browser console on HMR updates
 
-    // new ExtractTextPlugin('bundle.css', { allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: 'vendor.bundle.js',
