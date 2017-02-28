@@ -28,6 +28,7 @@
     "gulp": "^3.9.1",
     "isomorphic-fetch": "^2.2.1",
     "merge-stream": "^1.0.1",
+    "normalize.css": "^5.0.0",
     "postcss": "^5.2.15",
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.1.0",
