@@ -49,21 +49,27 @@ module.exports = {
       }, {
         test: /(\.scss|\.css)$/,
         use: [
-          'style-loader',
           {
+            loader: 'style-loader',
+            options: {
+              sourceMap: true
+            }
+          }, {
             loader: 'css-loader',
             options: {
               modules: true,
               importLoaders: 1
+              sourceMap: true
             }
           }, {
             loader: 'postcss-loader',
             options: {
-              plugins: function () {
-                return [
-                  require('postcss-cssnext')
-                ];
-              }
+              sourceMap: true,
+              plugins: () => ([
+                /* eslint-disable */
+                require('postcss-cssnext'),
+                /* eslint-enable */
+              ])
             }
           }
         ]
