@@ -23,12 +23,6 @@ gulp.task('build', (callback) => {
 gulp.task('webpack-dev-server', (callback) => {
   const compiler = webpack(webpackConfig);
   const server = new WebpackDevServer(compiler, {
-    hot: true,
-    proxy: {
-      '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
-    },
-    publicPath: 'http://localhost:8080/',
-    stats: 'verbose',
     setup: (app) => {
       app.on('listening', () => {
         util.log('listening fired');

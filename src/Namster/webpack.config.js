@@ -20,14 +20,18 @@ module.exports = {
   },
   output: {
     path: path.resolve('./wwwroot/dist/'),
-    filename: '[name].js'
+    filename: '[name].js',
+    publicPath: 'http://localhost:8080/',
   },
   context: __dirname,
   devtool: 'inline-source-map',
   devServer: {
     quiet: false,
-    hot: true,
-    // enable HMR on the server
+    hot: true, // enable HMR on the server
+    // publicPath: 'http://localhost:8080/',
+    proxy: {
+      '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
+    },
   },
   target: 'web',
   resolve: {
