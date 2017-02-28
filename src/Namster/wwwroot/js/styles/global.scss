@@ -1,0 +1,111 @@
+html {
+  font-size: 62.5%;
+}
+
+body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  font-size: 1.6rem;
+  -webkit-touch-callout: none;
+  * {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+}
+
+a, abbr, address, article, aside, audio, b, blockquote, body, caption, cite,
+code, dd, del, dfn, dialog, div, dl, dt, em, fieldset, figure, footer, form, h1,
+h2, h3, h4, h5, h6, header, hgroup, hr, html, i, iframe, img, ins, kbd, label,
+legend, li, mark, menu, nav, object, ol, p, pre, q, samp, section, small, span,
+strong, sub, sup, table, tbody, td, tfoot, th, thead, time, tr, ul, var, video {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, label, p, button, abbr, a, span, small {
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+input:not([type="checkbox"]):not([type="radio"]), button {
+  outline: none;
+  appearance: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+/* Remove firefox default style for required inputs */
+input[required]:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/* Unlike the React-Toolbox 1.x commons.scss, these do not set font-family or letter-spacing: */
+
+$unit: 1rem !default; /* 1rem = 10px */
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+  font-size: $unit * 5.6;
+  font-weight: 400;
+  line-height: 1.35;
+  opacity: .54;
+}
+
+h1 {
+  font-size: $unit * 5.6;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+h2 {
+  font-size: $unit * 4.5;
+  font-weight: 400;
+  line-height: $unit * 4.8;
+}
+
+h3 {
+  font-size: $unit * 3.4;
+  font-weight: 400;
+  line-height: $unit * 4;
+}
+
+h4 {
+  font-size: $unit * 2.4;
+  font-weight: 400;
+  line-height: $unit * 3.2;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h5 {
+  font-size: $unit * 2;
+  font-weight: 500;
+  line-height: 1;
+}
+
+h6 {
+  font-size: $unit * 1.6;
+  font-weight: 400;
+  line-height: $unit * 2.4;
+}
+
+p {
+  font-size: $unit * 1.4;
+  font-weight: 400;
+  line-height: $unit * 2.4;
+}
