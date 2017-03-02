@@ -22,7 +22,6 @@ render(App);
 
 // Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('./app', () => {
-    render(App);
-  });
+  module.hot.accept();
+  render(App);
 }
