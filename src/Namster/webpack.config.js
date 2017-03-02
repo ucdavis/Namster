@@ -1,5 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const debug = (process.env.NODE_ENV !== 'production');
 
 module.exports = {
   entry: {
@@ -24,13 +27,15 @@ module.exports = {
     publicPath: 'http://localhost:8080/',
   },
   context: __dirname,
-  devtool: 'inline-source-map',
+  devtool: debug ? 'inline-source-map' : false,
   devServer: {
     quiet: false,
     hot: true, // enable HMR on the server
-    // publicPath: 'http://localhost:8080/',
+    publicPath: 'http://localhost:8080/',
     proxy: {
-      '/api/*': 'http://localhost:51041' // calls to the api should be passed back to iis
+      // calls to the api should be passed back to iis
+      '/api/*': 'http://localhost:51041',
+      '/images/*': 'http://localhost:51041'
     },
   },
   target: 'web',
@@ -48,24 +53,25 @@ module.exports = {
         use: ['babel-loader']
       }, {
         test: /(\.scss|\.css)$/,
-        use: [
-          {
+        use: ExtractTextPlugin.extract({
+          fallback: {
             loader: 'style-loader',
             options: {
               sourceMap: true
             }
-          }, {
+          },
+          use: [{
             loader: 'css-loader',
             options: {
               modules: true,
               importLoaders: 1,
               localIdentName: '[path][name]__[local]--[hash:base64:5]',
-              sourceMap: true
+              sourceMap: debug
             }
           }, {
             loader: 'postcss-loader',
             options: {
-              sourceMap: true,
+              // sourceMap: debug,
               plugins: () => ([
                 /* eslint-disable */
                 require('postcss-import'),
@@ -74,8 +80,8 @@ module.exports = {
                 /* eslint-enable */
               ])
             }
-          }
-        ]
+          }]
+        })
       }, {
         test: /\.(jpe?g|gif|png)$/,
         use: {
@@ -100,6 +106,12 @@ module.exports = {
       name: 'vendor',
       filename: 'vendor.bundle.js',
       minChunks: Infinity
+    }),
+
+    new ExtractTextPlugin({
+      filename: 'bundle.css',
+      allChunks: true,
+      disable: debug
     })
   ]
 };
