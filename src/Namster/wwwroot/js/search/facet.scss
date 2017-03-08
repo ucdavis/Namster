@@ -1,0 +1,62 @@
+.headerContainer > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+
+  h2 {
+    margin: 0;
+    font-size: calc(1.5 * var(--unit));
+  }
+}
+
+.collapseToggle {
+  transform: rotate(0);
+  transition: transform 200ms ease-in;
+}
+
+.expandToggle {
+  display: block;
+  text-align: center;
+}
+
+.facetContainer {
+  transition: transform 200ms ease-in;
+}
+
+.collapsed {
+  .collapseToggle {
+    transform: rotate(180deg);
+  }
+
+  .facetContainer {
+    height: 0;
+    display: none;
+    overflow: hidden;
+  }
+}
+
+.labelContainer {
+  width: 100%;
+  display: inline-flex;
+  margin-top: 2px;
+}
+
+.label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 2.5rem;
+}
+
+.labelText {
+  max-width: 10rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.labelCount {
+  font-size: 0.9rem;
+  color: #616161;
+}

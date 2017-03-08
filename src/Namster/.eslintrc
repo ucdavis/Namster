@@ -178,6 +178,11 @@
     "no-restricted-modules": 1,      // restrict usage of specified node modules (off by default)
     "no-sync": 0,                    // disallow use of synchronous methods (off by default)
 
+    "import/no-extraneous-dependencies": ["warn", {
+      "devDependencies": [
+        "gulpfile.js", "webpack.config.js", "**/*.test.js", "**/*.spec.js"]
+    }],
+
   // Stylistic Issues
   // These rules are purely matters of style and are quite subjective.
 

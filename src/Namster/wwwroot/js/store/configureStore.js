@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware } from 'redux'
-import { browserHistory } from 'react-router'
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import { browserHistory } from 'react-router';
+import { syncHistory } from 'react-router-redux';
 
-import rootReducer from '../reducers'
-import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
-import { syncHistory, routeReducer } from 'react-router-redux'
+import rootReducer from '../reducers';
 
-const loggerMiddleware = createLogger()
-const reduxRouterMiddleware = syncHistory(browserHistory)
+const loggerMiddleware = createLogger();
+const reduxRouterMiddleware = syncHistory(browserHistory);
 
 export default function configureStore(initialState) {
   return createStore(
@@ -18,5 +18,5 @@ export default function configureStore(initialState) {
       loggerMiddleware // neat middleware that logs actions
     ),
     initialState
-  )
+  );
 }

@@ -1,0 +1,12 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: -1rem;
+}
+
+.card {
+  max-width: 20rem;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  padding: 5rem;
+}
+
+.facetClear {
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.facets {
+  // flex: 1;
+  padding: 1rem;
+}
+
+.panel {
+  flex: 1;
+  padding: 1rem;
+}
+
+.inputContainer {
+  margin-bottom: 1rem;
+}
