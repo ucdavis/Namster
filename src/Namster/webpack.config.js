@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const debug = (process.env.NODE_ENV !== 'production');
+const production = (process.env.NODE_ENV === 'production');
 
-module.exports = {
+const config = {
   entry: {
     app: path.resolve(__dirname, './wwwroot/js/index'),
     vendor: ['react', 'react-dom', 'redux', 'react-redux', 'react-toolbox']
@@ -15,12 +16,12 @@ module.exports = {
     publicPath: '/'
   },
   context: __dirname,
-  devtool: debug ? 'inline-source-map' : false,
+  devtool: production ? false : 'inline-source-map',
   target: 'web',
   resolve: {
     extensions: ['.jsx', '.js', '.css', '.scss', '.json'],
     modules: [
-      'node_modules',
+      'node_modules'
     ]
   },
   module: {
@@ -44,12 +45,11 @@ module.exports = {
               modules: true,
               importLoaders: 1,
               localIdentName: '[path][name]__[local]--[hash:base64:5]',
-              sourceMap: debug
+              sourceMap: !production
             }
           }, {
             loader: 'postcss-loader',
             options: {
-              // sourceMap: debug,
               plugins: () => ([
                 /* eslint-disable */
                 require('postcss-import'),
@@ -85,14 +85,27 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.bundle.js',
+      filename: 'vendor.js',
       minChunks: Infinity
     }),
 
     new ExtractTextPlugin({
-      filename: 'bundle.css',
+      filename: '[name].css',
       allChunks: true,
-      disable: debug
+      ignoreOrder: true
     })
   ]
 };
+
+if (production) {
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }));
+
+  config.plugins.push(new UglifyJsPlugin({
+  }));
+}
+
+module.exports = config;

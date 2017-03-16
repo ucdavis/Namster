@@ -46,6 +46,8 @@
     "redux-logger": "^2.7.4",
     "redux-thunk": "^1.0.3",
     "style-loader": "^0.13.1",
+    "uglify-js": "^2.8.13",
+    "uglifyjs-webpack-plugin": "^0.3.0",
     "webpack": "^2.2.1"
   }
 }
