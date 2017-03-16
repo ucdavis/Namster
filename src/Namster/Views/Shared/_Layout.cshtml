@@ -8,13 +8,6 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <environment names="Development">
-            <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-        </environment>
-        <environment names="Staging,Production">
-            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        </environment>
-        
         @RenderSection("styles", required: false)
 
         @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
@@ -22,12 +15,6 @@
 <body>
     @RenderBody()
 
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    
     @RenderSection("scripts", required: false)
 </body>
 </html>
