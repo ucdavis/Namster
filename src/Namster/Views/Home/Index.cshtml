@@ -15,13 +15,6 @@
 }
 
 @section scripts{
-    <environment names="Development">
-        <script type="text/javascript" src="http://localhost:8080/vendor.bundle.js"></script>
-        <script type="text/javascript" src="http://localhost:8080/client.js"></script>
-        <script type="text/javascript" src="http://localhost:8080/app.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script type="text/javascript" src="~/dist/vendor.bundle.js"></script>
-        <script type="text/javascript" src="~/dist/app.js"></script>
-    </environment>
+    <script type="text/javascript" src="~/dist/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/app.js"></script>
 }
