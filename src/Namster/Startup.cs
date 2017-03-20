@@ -55,6 +55,7 @@ namespace Namster
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+                app.UseWebpackDevMiddleware();
             }
             else
             {

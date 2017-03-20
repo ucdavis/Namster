@@ -13,7 +13,7 @@ const config = {
   output: {
     path: path.resolve('./wwwroot/dist/'),
     filename: '[name].js',
-    publicPath: '/'
+    publicPath: '/dist/'
   },
   context: __dirname,
   devtool: production ? false : 'inline-source-map',

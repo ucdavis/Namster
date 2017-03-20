@@ -9,6 +9,8 @@
     "graceful-fs": "^4.1.11"
   },
   "devDependencies": {
+    "aspnet-webpack": "^1.0.28",
+    "aspnet-webpack-react": "^1.0.5",
     "babel-core": "^6.21.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.10",
