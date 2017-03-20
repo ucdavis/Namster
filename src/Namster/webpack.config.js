@@ -72,7 +72,7 @@ const config = {
           loader: 'file-loader',
           options: {
             context: path.resolve(__dirname, 'wwwroot'),
-            emitFile: false,
+            // emitFile: false,
             name: '[path][name].[ext]'
           }
         }
