@@ -25,9 +25,6 @@ namespace Namster
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
-
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
             }
             Configuration = builder.Build();
         }
@@ -45,7 +42,6 @@ namespace Namster
 
             // Add framework services.
             services.AddMvc();
-            services.AddApplicationInsightsTelemetry(Configuration);
 
         }
 
@@ -54,8 +50,6 @@ namespace Namster
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
             {
@@ -66,8 +60,6 @@ namespace Namster
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
