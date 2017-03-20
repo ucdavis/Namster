@@ -10,3 +10,7 @@ export default (
     <Route path="search/:terms" component={Search} />
   </Route>
 );
+
+if (module.hot) {
+  module.hot.accept();
+}

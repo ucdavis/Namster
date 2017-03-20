@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -54,8 +55,14 @@ namespace Namster
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
+
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware();
+
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                    ReactHotModuleReplacement = true
+                });
             }
             else
             {
@@ -88,9 +95,9 @@ namespace Namster
                 routes.MapRoute(
                     name: "api",
                     template: "api/{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                    name: "default",
-                    template: "{*url}",
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
         }
