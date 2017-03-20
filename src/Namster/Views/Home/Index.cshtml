@@ -2,26 +2,14 @@
     ViewData["Title"] = "Search";
 }
 
-<div id="app"></div>
-
 @section styles {
-    <environment names="Development">
-        <link rel="stylesheet" href="http://localhost:8080/bundle.css" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/dist/bundle.css" />
-    </environment>
-
+    <link rel="stylesheet" href="~/dist/vendor.css" />
+    <link rel="stylesheet" href="~/dist/app.css" />
 }
 
+<div id="app"></div>
+
 @section scripts{
-    <environment names="Development">
-        <script type="text/javascript" src="http://localhost:8080/vendor.bundle.js"></script>
-        <script type="text/javascript" src="http://localhost:8080/client.js"></script>
-        <script type="text/javascript" src="http://localhost:8080/app.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script type="text/javascript" src="~/dist/vendor.bundle.js"></script>
-        <script type="text/javascript" src="~/dist/app.js"></script>
-    </environment>
+    <script type="text/javascript" src="~/dist/vendor.js"></script>
+    <script type="text/javascript" src="~/dist/app.js"></script>
 }

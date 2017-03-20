@@ -1,48 +1,27 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const debug = (process.env.NODE_ENV !== 'production');
+const production = (process.env.NODE_ENV === 'production');
 
-module.exports = {
+const config = {
   entry: {
     app: path.resolve(__dirname, './wwwroot/js/index'),
-    vendor: ['react', 'react-dom', 'redux', 'react-redux', 'react-toolbox'],
-    client: [
-      'react-hot-loader/patch',
-      // activate HMR for React
-
-      'webpack-dev-server/client?http://localhost:8080',
-      // bundle the client for webpack-dev-server
-      // and connect to the provided endpoint
-
-      'webpack/hot/only-dev-server',
-      // bundle the client for hot reloading
-      // only- means to only hot reload for successful updates
-    ]
+    vendor: ['react', 'react-dom', 'redux', 'react-redux', 'react-toolbox']
   },
   output: {
     path: path.resolve('./wwwroot/dist/'),
     filename: '[name].js',
-    publicPath: 'http://localhost:8080/',
+    publicPath: '/dist/'
   },
   context: __dirname,
-  devtool: debug ? 'inline-source-map' : false,
-  devServer: {
-    quiet: false,
-    hot: true, // enable HMR on the server
-    publicPath: 'http://localhost:8080/',
-    proxy: {
-      // calls to the api should be passed back to iis
-      '/api/*': 'http://localhost:51041',
-      '/images/*': 'http://localhost:51041'
-    },
-  },
+  devtool: production ? false : 'inline-source-map',
   target: 'web',
   resolve: {
     extensions: ['.jsx', '.js', '.css', '.scss', '.json'],
     modules: [
-      'node_modules',
+      'node_modules'
     ]
   },
   module: {
@@ -66,12 +45,11 @@ module.exports = {
               modules: true,
               importLoaders: 1,
               localIdentName: '[path][name]__[local]--[hash:base64:5]',
-              sourceMap: debug
+              sourceMap: !production
             }
           }, {
             loader: 'postcss-loader',
             options: {
-              // sourceMap: debug,
               plugins: () => ([
                 /* eslint-disable */
                 require('postcss-import'),
@@ -94,7 +72,7 @@ module.exports = {
           loader: 'file-loader',
           options: {
             context: path.resolve(__dirname, 'wwwroot'),
-            emitFile: false,
+            // emitFile: false,
             name: '[path][name].[ext]'
           }
         }
@@ -102,22 +80,32 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    // enable HMR globally
-
     new webpack.NamedModulesPlugin(),
     // prints more readable module names in the browser console on HMR updates
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.bundle.js',
+      filename: 'vendor.js',
       minChunks: Infinity
     }),
 
     new ExtractTextPlugin({
-      filename: 'bundle.css',
+      filename: '[name].css',
       allChunks: true,
-      disable: debug
+      ignoreOrder: true
     })
   ]
 };
+
+if (production) {
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }));
+
+  config.plugins.push(new UglifyJsPlugin({
+  }));
+}
+
+module.exports = config;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,9 +26,6 @@ namespace Namster
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
-
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
             }
             Configuration = builder.Build();
         }
@@ -45,7 +43,6 @@ namespace Namster
 
             // Add framework services.
             services.AddMvc();
-            services.AddApplicationInsightsTelemetry(Configuration);
 
         }
 
@@ -55,19 +52,22 @@ namespace Namster
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
+
                 app.UseDeveloperExceptionPage();
+
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                    ReactHotModuleReplacement = true
+                });
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 
@@ -95,9 +95,9 @@ namespace Namster
                 routes.MapRoute(
                     name: "api",
                     template: "api/{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                    name: "default",
-                    template: "{*url}",
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
         }
