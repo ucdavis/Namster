@@ -19,9 +19,9 @@ export default class ResultsTable extends React.Component {
     renderRow = (item) => {
         var source = "";
         if (item.status == "In Service") {
-            source = "http://orig11.deviantart.net/4ffe/f/2015/059/9/0/checkmark_by_toast_horse-d8jwdb3.gif";
+            source = "done";
         } else {
-            source = "http://orig14.deviantart.net/07ba/f/2015/059/6/4/x_by_toast_horse-d8jwdhf.gif";
+            source = "clear";
         }
         return (
             <TableRow key={item.namNumber}>
@@ -29,7 +29,7 @@ export default class ResultsTable extends React.Component {
                 <TableCell>{item.vlan}</TableCell>
                 <TableCell>{item.building}</TableCell>
                 <TableCell>{item.room}</TableCell>
-                <TableCell><img src={source}></img></TableCell>
+                <TableCell><i className="material-icons">{source}</i></TableCell>
             </TableRow>
         );
     }
