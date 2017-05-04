@@ -55,16 +55,13 @@ namespace Namster.Services
                 s.Size(size)
                     .Query(q => // search on term
                         (q.Term(t => t.Room, term) ||
+                        q.Term(t => t.NamNumber, term) ||
                         q.Term(t => t.Building, term) ||
                         q.Term(t => t.Department, term) ||
                         q.Term(t => t.Vlan, term)) &&
                         (q.Term(t => t.ExactBuilding, building) &&
                         q.Term(t => t.ExactDepartment, department) &&
                         q.Term(t => t.Vlan, vlan)))
-                    /*.Query(q => // filter on exact
-                        q.Term(t => t.ExactBuilding, building) &&
-                        q.Term(t => t.ExactDepartment, department) &&
-                        q.Term(t => t.Vlan, vlan))*/
                     .Aggregations(a =>
                         a.Terms("building", d => d.Field(f => f.ExactBuilding))
                          .Terms("department", d => d.Field(f => f.ExactDepartment))
