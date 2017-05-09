@@ -26,23 +26,26 @@ export default class ResultsTable extends React.Component {
         active: false
     };
 
-    handleToggle = () => {
-        console.log("Toggling");
-        this.setState({ active: !this.state.active });
+    handleToggle = (item) => {
+        console.log("Toggling ", item);
+        if (item === null) {
+            this.setState({ selectedNam: null });
+        } else {
+            this.setState({ selectedNam: item });
+        }
     }
 
     actions = [
-        { label: "Close", onClick: this.handleToggle },
+        { label: "Close", onClick: () => this.handleToggle(null) },
     ];
 
     renderDialog = (item) => {
-        console.log("Rendering: " + item.namNumber);
         return (
             <Dialog
                 actions={this.actions}
-                active={this.state.active}
-                onEscKeyDown={this.handleToggle}
-                onOverlayClick={this.handleToggle}
+                active={this.state.selectedNam === item.namNumber}
+                onEscKeyDown={() => this.handleToggle(null)}
+                onOverlayClick={() => this.handleToggle(null)}
                 title='Details'
             >
                 <b>NAM Number:</b> {item.namNumber}<br />
@@ -69,7 +72,7 @@ export default class ResultsTable extends React.Component {
         }
 
         return (
-            <TableRow key={item.namNumber} onClick={this.handleToggle.bind(this)}>
+            <TableRow key={item.namNumber} onClick={() => this.handleToggle(item.namNumber)}>
                 <TableCell>{item.namNumber}</TableCell>
                 <TableCell>{item.vlan}</TableCell>
                 <TableCell>{item.building}</TableCell>
