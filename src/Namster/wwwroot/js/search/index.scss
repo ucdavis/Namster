@@ -23,3 +23,10 @@
 .inputContainer {
   margin-bottom: 1rem;
 }
+
+@media (max-width: 600px) {
+    .main {
+        flex-direction: column;
+        padding: 1rem;
+    } 
+}

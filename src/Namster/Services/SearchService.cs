@@ -54,19 +54,19 @@ namespace Namster.Services
             return await _client.SearchAsync<DataNam>(s =>
                 s.Size(size)
                     .Query(q => // search on term
-                        q.Term(t => t.ExactRoom, term) ||
-                        q.Term(t => t.ExactBuilding, term) ||
-                        q.Term(t => t.ExactDepartment, term) ||
-                        q.Term(t => t.Vlan, term))
-                    .Query(q => // filter on exact
-                        q.Term(t => t.ExactBuilding, building) &&
+                        (q.Term(t => t.Room, term) ||
+                        q.Term(t => t.NamNumber, term) ||
+                        q.Term(t => t.Building, term) ||
+                        q.Term(t => t.Department, term) ||
+                        q.Term(t => t.Vlan, term)) &&
+                        (q.Term(t => t.ExactBuilding, building) &&
                         q.Term(t => t.ExactDepartment, department) &&
-                        q.Term(t => t.Vlan, vlan))
+                        q.Term(t => t.Vlan, vlan)))
                     .Aggregations(a =>
                         a.Terms("building", d => d.Field(f => f.ExactBuilding))
                          .Terms("department", d => d.Field(f => f.ExactDepartment))
                          .Terms("vlan", d => d.Field(f => f.Vlan)))
-                    .Highlight(h => 
+                    .Highlight(h =>
                         h.Fields(
                             f => f.Field(x => x.Building).PreTags("<mark>").PostTags("</mark>"),
                             f => f.Field(x => x.Room).PreTags("<mark>").PostTags("</mark>"),
