@@ -18,7 +18,6 @@ const NamModel = {
 export default class ResultsTable extends React.Component {
     constructor(props) {
         super(props);
-        //this.renderDialog = this.renderDialog.bind(this);
         this.handleToggle = this.handleToggle.bind(this)
     }
 
@@ -84,17 +83,23 @@ export default class ResultsTable extends React.Component {
     }
 
     render() {
-        return (
-            <Table selectable={false}>
-                <TableHead>
-                    <TableCell>NAM</TableCell>
-                    <TableCell>VLAN</TableCell>
-                    <TableCell>Building</TableCell>
-                    <TableCell>Room</TableCell>
-                    <TableCell>Status</TableCell>
-                </TableHead>
-                {this.props.results.map(this.renderRow)}
-            </Table>
-        );
+        if (this.props.results.length === 0) {
+            return (
+                <div><center><h3>No NAMs found</h3></center></div>
+                );
+        } else {
+            return (
+                <Table selectable={false}>
+                    <TableHead>
+                        <TableCell>NAM</TableCell>
+                        <TableCell>VLAN</TableCell>
+                        <TableCell>Building</TableCell>
+                        <TableCell>Room</TableCell>
+                        <TableCell>Status</TableCell>
+                    </TableHead>
+                    {this.props.results.map(this.renderRow)}
+                </Table>
+            );
+        }
     }
 }

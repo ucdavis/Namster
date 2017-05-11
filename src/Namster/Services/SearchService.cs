@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using Namster.Models;
 using Nest;
+using System.Collections.Generic;
 
 namespace Namster.Services
 {
@@ -51,14 +52,27 @@ namespace Namster.Services
 
         public async Task<ISearchResponse<DataNam>> FindByMatchAsync(string term, string building, string department, string vlan, int size = 100)
         {
+            term = term.ToLower();
+            var searchTerms = term.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+
             return await _client.SearchAsync<DataNam>(s =>
                 s.Size(size)
-                    .Query(q => // search on term
-                        (q.Term(t => t.Room, term) ||
-                        q.Term(t => t.NamNumber, term) ||
-                        q.Term(t => t.Building, term) ||
-                        q.Term(t => t.Department, term) ||
-                        q.Term(t => t.Vlan, term)) &&
+                    .Query(q => q// search on term
+                        .Terms(c => c 
+                            .Field(p=> p.Room)
+                            .Terms(searchTerms)) ||
+                        q.Terms(c => c
+                            .Field(p => p.NamNumber)
+                            .Terms(searchTerms)) ||
+                        q.Terms(c => c
+                            .Field(p => p.Building)
+                            .Terms(searchTerms)) ||
+                        q.Terms(c => c
+                            .Field(p => p.Department)
+                            .Terms(searchTerms)) ||
+                        q.Terms(c => c
+                            .Field(p => p.Vlan)
+                            .Terms(searchTerms)) ||
                         (q.Term(t => t.ExactBuilding, building) &&
                         q.Term(t => t.ExactDepartment, department) &&
                         q.Term(t => t.Vlan, vlan)))
