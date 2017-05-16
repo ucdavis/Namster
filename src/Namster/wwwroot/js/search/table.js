@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import Dialog from 'react-toolbox/lib/dialog';
+import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 const NamModel = {
     namNumber: { type: Number },
@@ -83,10 +84,11 @@ export default class ResultsTable extends React.Component {
     }
 
     render() {
+        if (this.props.displaySpinner === true) {
+            return (<center><ProgressBar type='circular' mode='indeterminate' multicolor /></center>);
+        }
         if (this.props.results.length === 0) {
-            return (
-                <div><center><h3>No NAMs found</h3></center></div>
-                );
+            return (<div><center><h3>No NAMs found</h3></center></div>);
         } else {
             return (
                 <Table selectable={false}>

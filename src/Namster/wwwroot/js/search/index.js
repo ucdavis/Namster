@@ -16,6 +16,7 @@ export default class Index extends React.Component {
     this.state = {
       aggregates: {},
       results: [],
+      isSearching: false
     };
   }
 
@@ -51,7 +52,8 @@ export default class Index extends React.Component {
   }
 
   _searchIfNeeded(props) {
-    const { params, location } = props;
+      const { params, location } = props;
+      this.setState({ isSearching: true });
     SearchService.fetchResults({
       terms:      params.terms,
       building:   location.query.building,
@@ -61,15 +63,15 @@ export default class Index extends React.Component {
     .then((r) => {
       this.setState({
         aggregates: r.aggregates,
-        results:    r.results
+        results: r.results,
+        isSearching: false
       });
     });
   }
 
   render() {
     const { location } = this.props;
-    const { aggregates, results } = this.state;
-
+    const { aggregates, results, isSearching } = this.state;
     return (
       <div className={styles.main}>
         <div className={styles.facets}>
@@ -81,7 +83,7 @@ export default class Index extends React.Component {
             <SearchInput onSearch={this._onSearch} />
           </div>
           <Card>
-            <Results className={styles.resultsContainer} results={results} />
+            <Results className={styles.resultsContainer} displaySpinner={isSearching} results={results} />
           </Card>
         </div>
       </div>
