@@ -13,7 +13,12 @@ const NamModel = {
     status: { type: String },
     caanZone: { type: String },
     billingId: { type: String },
-    division: { type: String }
+    division: { type: String },
+    email: { type: String },
+    subnet: { type: String },
+    mask: { type: String },
+    techContact: { type: String },
+    phone: { type: String }
 };
 
 export default class ResultsTable extends React.Component {
@@ -57,20 +62,25 @@ export default class ResultsTable extends React.Component {
                 <b>Status:</b> {item.status}<br />
                 <b>Caan Zone:</b> {item.caanZone}<br />
                 <b>Billing ID:</b> {item.billingId}<br />
+                <b>Id:</b> {item.id}<br/>
                 <b>Division:</b> {item.division}<br />
+                <b>Subnet:</b> {item.subnet}<br />
+                <b>Mask:</b> {item.mask}<br/>
+                <b>Tech Contact:</b> {item.techContact} <br />
+                <b>Email:</b> {item.email} <br/>
+                <b>Phone:</b> {item.phone}
             </Dialog>
 
         );
     }
 
     renderRow = (item) => {
-        var source = "";
+        var source = "";    
         if (item.status == "In Service") {
             source = "done";
         } else {
             source = "clear";
         }
-
         return (
             <TableRow key={item.namNumber} onClick={() => this.handleToggle(item.namNumber)}>
                 <TableCell>{item.namNumber}</TableCell>

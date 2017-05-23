@@ -27,7 +27,7 @@ namespace Namster.Jobs.ElasticSync
         {
             using (var conn = _dbService.GetDbConnection())
             {
-                var nams = conn.Query<DataNam>("select * from DataNamsFlattened");
+                var nams = conn.Query<DataNam>("select * from DataNamsFlattened inner join VLanContactsFlattened on DataNamsFlattened.Vlan = VLanContactsFlattened.Vlan");
 
                 Console.WriteLine("Nams retrieved from DB");
 
