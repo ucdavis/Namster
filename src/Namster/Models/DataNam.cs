@@ -37,5 +37,26 @@ namespace Namster.Models
         public string Division { get; set; }
 
         public string Status { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string College { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string Subnet { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string Id { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string Mask { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string TechContact { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string Email { get; set; }
+
+        [String(Index = FieldIndexOption.No, Store = true)]
+        public string Phone { get; set; }
     }
 }
