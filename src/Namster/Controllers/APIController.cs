@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Namster.Models;
 using Namster.Services;
+using Namster.Attributes;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Namster.Controllers
 {
@@ -12,15 +15,25 @@ namespace Namster.Controllers
     public class APIController : Controller
     {
         private readonly ISearchService _searchService;
-
-        public APIController(ISearchService searchService)
+        private readonly IAuthTokenFilter _authClass;
+        public APIController(ISearchService searchService, IAuthTokenFilter authServ)
         {
             _searchService = searchService;
+            _authClass = authServ;
         }
 
-        [HttpGet("{term}")]
-        public async Task<JsonResult> Get(string term, string building, string department, string vlan)
+        [HttpGet]
+        [Route("/api/search/{term}/{key?}")]
+        public async Task<JsonResult> Get(string term, string key, string building, string department, string vlan)
         {
+            var auth = key;
+            var authorized = _authClass.checkAuth(key);
+            if (!authorized)
+            {
+                return new JsonResult (new
+                {
+                });
+            }
             var results = await _searchService.FindByMatchAsync(term, building, department, vlan);
             return new JsonResult(new
             {
