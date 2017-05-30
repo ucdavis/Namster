@@ -25,20 +25,14 @@ namespace Namster.Attributes
 
         public Boolean checkAuth(string key)
         {
-            //First check the preferred token header
             var tokenHeader = key;
-
             string[] tokens = _validTokens.Split(',');
-
-            foreach (string t in tokens)
+            if (tokens.Contains(key))
             {
-                if (t == key)
-                {
-                    return true;
-                }
+                return true;
             }
 
-            //Nothing is valid, so reject
+            //Not a valid key
             return false;
         }
     }

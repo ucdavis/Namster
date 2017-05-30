@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace Namster.Controllers
 {
-    [Route("[controller]")]
+    [AllowAnonymous]
     public class APIController : Controller
     {
         private readonly ISearchService _searchService;
@@ -22,8 +22,7 @@ namespace Namster.Controllers
             _authClass = authServ;
         }
 
-        [HttpGet]
-        [Route("/apisearch/{term}")]
+        [HttpGet("/api/{term}")]
         public async Task<JsonResult> Get(string term, string key, string building, string department, string vlan)
         {
             var auth = key;

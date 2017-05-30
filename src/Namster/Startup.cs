@@ -95,8 +95,8 @@ namespace Namster
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "api",
-                    template: "api/{controller=Home}/{action=Index}/{id?}");
+                    name: "search",
+                    template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
