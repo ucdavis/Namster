@@ -23,7 +23,7 @@ namespace Namster.Controllers
         }
 
         [HttpGet]
-        [Route("/api/search/{term}/{key?}")]
+        [Route("/api/search/{term}")]
         public async Task<JsonResult> Get(string term, string key, string building, string department, string vlan)
         {
             var auth = key;
