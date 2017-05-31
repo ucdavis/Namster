@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Namster.Services;
+using Namster.Attributes;
 
 namespace Namster
 {
@@ -40,6 +41,7 @@ namespace Namster
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             services.AddTransient<ISearchService, SearchService>();
+            services.AddTransient<IAuthTokenFilter, AuthTokenFilter>();
 
             // Add framework services.
             services.AddMvc();
@@ -93,8 +95,8 @@ namespace Namster
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "api",
-                    template: "api/{controller=Home}/{action=Index}/{id?}");
+                    name: "search",
+                    template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",

@@ -57,8 +57,8 @@ namespace Namster.Services
 
             return await _client.SearchAsync<DataNam>(s =>
                 s.Size(size)
-                    .Query(q => q// search on term
-                        .Terms(c => c 
+                    .Query(q => 
+                        (q.Terms(c => c 
                             .Field(p=> p.Room)
                             .Terms(searchTerms)) ||
                         q.Terms(c => c
@@ -72,7 +72,7 @@ namespace Namster.Services
                             .Terms(searchTerms)) ||
                         q.Terms(c => c
                             .Field(p => p.Vlan)
-                            .Terms(searchTerms)) ||
+                            .Terms(searchTerms))) &&
                         (q.Term(t => t.ExactBuilding, building) &&
                         q.Term(t => t.ExactDepartment, department) &&
                         q.Term(t => t.Vlan, vlan)))

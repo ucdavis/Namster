@@ -17,6 +17,6 @@ export function fetchResults(parameters) {
     query += `&vlan=${encodeURIComponent(vlan)}`;
   }
 
-  return fetch(`/api/search/query?${query}`)
+  return fetch(`/search/query?${query}`)
     .then(res => res.json());
 }
