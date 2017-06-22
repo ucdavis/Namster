@@ -1,8 +1,7 @@
-using AspNetCore.Security.CAS;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +37,8 @@ namespace Namster
         {
             services.AddSingleton<IConfiguration>(_ => Configuration);
 
+            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            
             services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IAuthTokenFilter, AuthTokenFilter>();
 
@@ -70,7 +71,21 @@ namespace Namster
 
             app.UseStaticFiles();
 
-            app.UseCasAuthentication(new CasOptions { CasServerUrlBase = "https://cas.ucdavis.edu/cas/" });
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                LoginPath = new PathString("/signin-cas")
+            });
+
+            app.UseCasAuthentication(new CasOptions
+            {
+                AuthenticationScheme = "UCDCAS",
+                AutomaticChallenge = true,
+                AutomaticAuthenticate = true,
+                CasServerUrlBase = "https://cas.ucdavis.edu/cas/",
+                CallbackPath = new PathString("/signin-cas")
+            });
 
             app.UseMvc(routes =>
             {
