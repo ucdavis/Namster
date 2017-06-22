@@ -1,4 +1,4 @@
-﻿using CasAuthenticationMiddleware;
+using AspNetCore.Security.CAS;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -38,14 +38,11 @@ namespace Namster
         {
             services.AddSingleton<IConfiguration>(_ => Configuration);
 
-            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-
             services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IAuthTokenFilter, AuthTokenFilter>();
 
             // Add framework services.
             services.AddMvc();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,24 +70,7 @@ namespace Namster
 
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                LoginPath = new PathString("/home/caslogin")
-            });
-
-
-            app.UseCasAuthentication(new CasAuthenticationOptions
-            {
-                AuthenticationScheme = "UCDCAS",
-                AuthorizationEndpoint = "https://cas.ucdavis.edu/cas/",
-                CallbackPath = new PathString("/Home/caslogin"),
-                DisplayName = "CAS",
-                ClaimsIssuer = "Cas",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true
-            });
+            app.UseCasAuthentication(new CasOptions { CasServerUrlBase = "https://cas.ucdavis.edu/cas/" });
 
             app.UseMvc(routes =>
             {
