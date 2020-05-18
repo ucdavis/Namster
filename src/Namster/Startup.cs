@@ -1,68 +1,72 @@
+using AspNetCore.Security.CAS;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Namster.Services;
 using Namster.Attributes;
+using Namster.Models;
+using SpaCliMiddleware;
 
 namespace Namster
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(_ => Configuration);
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
-            
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/signin-cas");
+                })
+                .AddCAS(options =>
+                {
+                    options.CasServerUrlBase = Configuration["Authentication:CasBaseUrl"];   // Set in `appsettings.json` file.
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                });
+
             services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IAuthTokenFilter, AuthTokenFilter>();
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
 
                 app.UseDeveloperExceptionPage();
-
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                    ReactHotModuleReplacement = true
-                });
             }
             else
             {
@@ -70,32 +74,30 @@ namespace Namster
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            app.UseEndpoints(routes =>
             {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                LoginPath = new PathString("/signin-cas")
-            });
-
-            app.UseCasAuthentication(new CasOptions
-            {
-                AuthenticationScheme = "UCDCAS",
-                AutomaticChallenge = true,
-                AutomaticAuthenticate = true,
-                CasServerUrlBase = "https://cas.ucdavis.edu/cas/",
-                CallbackPath = new PathString("/signin-cas")
-            });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     name: "search",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                if (env.IsDevelopment())
+                {
+                    routes.MapToSpaCliProxy(
+                        "{*path}",
+                        new SpaOptions { SourcePath = "wwwroot/dist" },
+                        npmScript: "devpack",
+                        port: default(int), // Allow webpack to find own port
+                        regex: "Project is running",
+                        forceKill: true, // kill anything running on our webpack port
+                        useProxy: true // proxy webpack requests back through our aspnet server
+                    );
+                }
+
+                routes.MapFallbackToController("Index", "Home");
             });
         }
     }
