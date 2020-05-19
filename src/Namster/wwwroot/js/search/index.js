@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Drawer } from 'react-toolbox';
+import { Card } from 'react-toolbox';
 
 import * as SearchService from '../services/search';
 
@@ -24,7 +24,7 @@ export default class Index extends React.Component {
     this._searchIfNeeded(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this._searchIfNeeded(nextProps);
   }
 

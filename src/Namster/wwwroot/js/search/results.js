@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox';
+import { Card, CardTitle, CardText } from 'react-toolbox';
 
 import styles from './results.scss';
 

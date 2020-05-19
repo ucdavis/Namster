@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
+import { Layout, Panel } from 'react-toolbox';
 
 import styles from './index.scss';
 

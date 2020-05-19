@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
-import * as SearchActions from '../actions/search';
 import styles from './input.scss';
 
 class Input extends React.Component {
