@@ -29,6 +29,8 @@ namespace Namster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AuthSettings>(Configuration.GetSection("Authentication"));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -42,7 +44,7 @@ namespace Namster
                 })
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new PathString("/signin-cas");
+                    options.LoginPath = new PathString("/login");
                 })
                 .AddCAS(options =>
                 {
