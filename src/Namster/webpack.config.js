@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -19,7 +20,7 @@ module.exports = env => {
           },
           entry: [
             isDevBuild && require.resolve('webpack-dev-server/client') + '?/',
-            './wwwroot/js/index'
+            './ClientApp/index'
             //app: path.resolve(__dirname, './wwwroot/js/index'),
             //vendor: ['react', 'react-dom', 'redux', 'react-redux', 'react-toolbox']
           ].filter(Boolean),
@@ -31,6 +32,7 @@ module.exports = env => {
               path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
           },
           devServer: {
+            clientLogLevel: 'info',
             compress: true,
             port: process.env.DEV_SERVER_PORT || 8080,
             injectClient: false,
@@ -49,8 +51,27 @@ module.exports = env => {
             rules: [
               {
                 test: /\.jsx?$/,
-                exclude: /(node_modules)/,
-                use: ['babel-loader']
+                include: /ClientApp|node_modules[\/\\](react-toolbox)/,
+                use: [
+                  {
+                    loader: 'babel-loader',
+                    options: {
+                      "presets": [
+                        "@babel/preset-react",
+                        "@babel/preset-env"
+                      ],
+                      "plugins": [
+                        [
+                          "@babel/plugin-proposal-class-properties",
+                          {
+                            "loose": true
+                          }
+                        ],
+                        "@babel/plugin-proposal-export-default-from"
+                      ]
+                    }
+                  }
+                ]
               }, 
               {
                 test: /\.css$/,
@@ -70,6 +91,7 @@ module.exports = env => {
               },
               {
                 test: /\.scss$/,
+                //include: /ClientApp|node_modules[\/\\](react-toolbox)/,
                 use: [
                   !isDevBuild
                     ? MiniCssExtractPlugin.loader
