@@ -69,7 +69,7 @@ class Input extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    value: props.params.terms || ''
+      value: (props.params || {}).terms || ''
   };
 }
 

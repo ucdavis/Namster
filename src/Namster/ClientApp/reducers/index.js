@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { routeReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 
 import searchReducer from './search';
 
-const rootReducer = combineReducers({
+const createRootReducer = (history) => combineReducers({
+  router: connectRouter(history),
   search: searchReducer,
-  routing: routeReducer
 });
 
-export default rootReducer;
+export default createRootReducer ;

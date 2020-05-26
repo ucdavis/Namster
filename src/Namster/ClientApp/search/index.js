@@ -1,4 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Card } from 'react-toolbox';
 
 import * as SearchService from '../services/search';
@@ -8,7 +11,7 @@ import FacetController from './facetController';
 import Results from './table';
 import styles from './index.scss';
 
-export default class Index extends React.Component {
+class Index extends React.Component {
 
   constructor(props) {
     super(props);
@@ -29,31 +32,29 @@ export default class Index extends React.Component {
   }
 
   _onClearFacets = () => {
-    const { router, location } = this.props;
-    router.push({
-      pathname: location.pathname
-    });
+    const { push, location } = this.props;
+    push(location.pathname);
   }
 
   _onFacetSelect = (category, key) => {
-    const { router, location } = this.props;
     const query = { ...location.query, [category]: key };
-    router.push({
+    const { push, location } = this.props;
+    push({
       pathname: location.pathname,
       query
     });
   }
 
   _onSearch = (terms) => {
-    const { router, location } = this.props;
-    router.push(...location, {
+    const { push, location } = this.props;
+    push(...location, {
       pathname: `/search/${terms}`
     });
   }
 
   _searchIfNeeded(props) {
-      const { params, location } = props;
-      this.setState({ isSearching: true });
+      const { location, match: { params } } = props;
+    this.setState({ isSearching: true });
     SearchService.fetchResults({
       terms:      params.terms,
       building:   location.query.building,
@@ -70,8 +71,8 @@ export default class Index extends React.Component {
   }
 
   render() {
-    const { location } = this.props;
-    const { aggregates, results, isSearching } = this.state;
+      const { aggregates, results, isSearching } = this.state || {};
+      const { location } = this.props;
     return (
       <div className={styles.main}>
         <div className={styles.facets}>
@@ -90,3 +91,9 @@ export default class Index extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+    location: state.router.location,
+});
+
+export default withRouter(connect(mapStateToProps, { push })(Index));

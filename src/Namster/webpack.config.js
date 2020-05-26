@@ -74,24 +74,34 @@ module.exports = env => {
                 ]
               }, 
               {
-                test: /\.css$/,
-                use: [
-                  !isDevBuild
-                    ? MiniCssExtractPlugin.loader
-                    : {
-                        loader: 'style-loader'
+                  test: /\.css$/,
+                  include: /ClientApp|node_modules[\/\\](react-toolbox)/,
+                  //  include: /ClientApp/,
+                  use: [
+                      !isDevBuild
+                      ? MiniCssExtractPlugin.loader
+                      : {
+                          loader: 'style-loader'
                       },
-                  {
-                    loader: 'css-loader',
-                    options: {
-                      sourceMap: true
-                    }
-                  }
-                ]
+                      {
+                          loader: 'css-loader',
+                          options: {
+                              sourceMap: isDevBuild,
+                              modules: true,
+                              importLoaders: 1,
+                              modules: {
+                                  localIdentName: "[name]--[local]--[hash:base64:8]"
+                              }
+                          }
+                      },
+                      "postcss-loader", // has separate config, see postcss.config.js
+                  ]
               },
+
               {
-                test: /\.scss$/,
-                //include: /ClientApp|node_modules[\/\\](react-toolbox)/,
+                test: /\.s(a|c)ss$/,
+                include: /ClientApp|node_modules[\/\\](react-toolbox)/,
+                //  include: /ClientApp/,
                 use: [
                   !isDevBuild
                     ? MiniCssExtractPlugin.loader
@@ -101,13 +111,19 @@ module.exports = env => {
                   {
                     loader: 'css-loader',
                     options: {
-                      sourceMap: true
+                        sourceMap: isDevBuild,
+                        modules: true,
+                        importLoaders: 2,
+                        modules: {
+                            localIdentName: "[name]--[local]--[hash:base64:8]"
+                        }
                     }
-                  },
+                    },
+                  "postcss-loader", // has separate config, see postcss.config.js
                   {
                     loader: 'sass-loader',
                     options: {
-                      sourceMap: true
+                        sourceMap: isDevBuild
                     }
                   }
                 ]

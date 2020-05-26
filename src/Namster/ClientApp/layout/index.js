@@ -1,5 +1,7 @@
 import React from 'react'
 import { Layout, Panel } from 'react-toolbox';
+import { Route, Switch } from 'react-router-dom';
+import Search from '../search';
 
 import styles from './index.scss';
 
@@ -9,7 +11,9 @@ export default class AppLayout extends React.Component {
       <div>
         <Layout className={styles.main}>
           <Panel>
-            {this.props.children}
+            <Switch>
+              <Route path="/search/:terms?"> <Search /></Route>
+            </Switch>
           </Panel>
         </Layout>
       </div>

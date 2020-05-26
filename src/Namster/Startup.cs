@@ -90,16 +90,17 @@ namespace Namster
                 {
                     routes.MapToSpaCliProxy(
                         "{*path}",
-                        new SpaOptions { SourcePath = "wwwroot/dist" },
+                        options: new SpaOptions { SourcePath = "wwwroot/dist" },
                         npmScript: "devpack",
-                        port: default(int), // Allow webpack to find own port
+                        port: /*default(int)*/ 8080, // Allow webpack to find own port
                         regex: "Project is running",
                         forceKill: true, // kill anything running on our webpack port
-                        useProxy: true // proxy webpack requests back through our aspnet server
+                        useProxy: true, // proxy webpack requests back through our aspnet server
+                        runner: ScriptRunnerType.Npm
                     );
                 }
 
-                routes.MapFallbackToController("Index", "Home");
+                //routes.MapFallbackToController("Index", "Home");
             });
         }
     }

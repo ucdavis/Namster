@@ -7,19 +7,19 @@
     "devpack": "webpack-dev-server --config webpack.config.js --hot",
     "webpack": "node node_modules/webpack/bin/webpack.js --env.dev --watch",
     "test": "karma start",
-    "lint": "eslint ClientApp --ext .tsx,.ts,.js,.jsx"
+    "lint": "node node_modules/eslint/bin/eslint.js ClientApp --ext .tsx,.ts,.js,.jsx"
   },
   "optionalDependencies": {
     "graceful-fs": "^4.2.4"
   },
   "dependencies": {
     "babel-eslint": "^10.1.0",
+    "connected-react-router": "^6.8.0",
     "react": "^16.13.1",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
-    "react-router": "^5.2.0",
-    "react-router-redux": "^4.0.8",
+    "react-router-dom": "^5.2.0",
     "react-style-proptype": "^3.2.2",
     "react-toolbox": "^2.0.0-beta.13",
     "redux": "^4.0.5",
@@ -42,23 +42,29 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.2",
+    "fibers": "^5.0.0",
     "file-loader": "^6.0.0",
     "isomorphic-fetch": "2.2.1",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-each": "^0.10.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-mixins": "^6.2.3",
     "react-hot-loader": "^4.12.21",
+    "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
-    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.11.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.24.0"
   },
   "eslintConfig": {
     "extends": [
