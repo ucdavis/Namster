@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
 
@@ -16,7 +16,11 @@ module.exports = env => {
     return [
         {
           stats: {
-            modules: false
+            modules: false,
+            warningsFilter: [
+              /ClientApp[\\/]styles[\\/]variables.css is empty/,
+              /variable '--unit' is undefined/  
+            ]
           },
           entry: [
             isDevBuild && require.resolve('webpack-dev-server/client') + '?/',
@@ -138,7 +142,7 @@ module.exports = env => {
             minimizer: isDevBuild
               ? []
               : [
-                  new UglifyJsPlugin({
+                  new TerserPlugin({
                     cache: true,
                     parallel: true,
                     sourceMap: true
