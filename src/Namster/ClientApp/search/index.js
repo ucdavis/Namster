@@ -55,12 +55,12 @@ class Index extends React.Component {
   }
 
   _searchIfNeeded(props) {
-    const { location, match: { params } } = props;
+    const { location, terms } = props;
     this.setState({ isSearching: true });
     const parsed = queryString.parse(location.search);
     SearchService.fetchResults({
       ...parsed,
-      terms: params.terms,
+      terms: terms,
     })
     .then((r) => {
       this.setState({
@@ -73,7 +73,7 @@ class Index extends React.Component {
 
   render() {
       const { aggregates, results, isSearching } = this.state || {};
-      const { location } = this.props;
+      const { location, terms } = this.props;
       const query = queryString.parse(location.search);
     return (
       <div className={styles.main}>
@@ -83,7 +83,8 @@ class Index extends React.Component {
         </div>
         <div className={styles.panel}>
           <div className={styles.inputContainer}>
-            <SearchInput onSearch={this._onSearch} />
+            <SearchInput onSearch={this._onSearch} value={terms} key={terms} /> 
+            {/* key={terms} forces creation of new SearchInput on change in terms, resulting in matching internal value state */}
           </div>
           <Card>
             <Results className={styles.resultsContainer} displaySpinner={isSearching} results={results} />
@@ -94,8 +95,12 @@ class Index extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-    location: state.router.location,
-});
+const mapStateToProps = (state, props) => {
+    const { match: { params: { terms = '' } = {} } = {} } = props;
+    return {
+        location: state.router.location,
+        terms
+    };
+};
 
 export default withRouter(connect(mapStateToProps, { push })(Index));
