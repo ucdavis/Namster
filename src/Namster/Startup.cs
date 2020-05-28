@@ -84,8 +84,15 @@ namespace Namster
             app.UseEndpoints(routes =>
             {
                 routes.MapControllerRoute(
-                    name: "search",
+                    name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                // The search route is for catching requests that result from refreshes or direct links to a search page, since we
+                // don't want those going through the SpaCliProxy...
+                routes.MapControllerRoute(
+                    name: "search",
+                    pattern: "search/{terms?}",
+                    defaults: new { controller = "Home", action = "Index" });
 
                 if (env.IsDevelopment())
                 {
@@ -100,8 +107,6 @@ namespace Namster
                         runner: ScriptRunnerType.Npm
                     );
                 }
-
-                //routes.MapFallbackToController("Index", "Home");
             });
         }
     }
