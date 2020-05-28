@@ -10,6 +10,7 @@ import SearchInput from './input';
 import FacetController from './facetController';
 import Results from './table';
 import styles from './index.scss';
+import queryString from 'query-string';
 
 class Index extends React.Component {
 
@@ -37,29 +38,29 @@ class Index extends React.Component {
   }
 
   _onFacetSelect = (category, key) => {
-    const query = { ...location.query, [category]: key };
     const { push, location } = this.props;
+    const parsed = queryString.parse(location.search);
+    const query = { ...parsed, [category]: key };
     push({
-      pathname: location.pathname,
-      query
+      ...location,
+      search: queryString.stringify(query)
     });
   }
 
   _onSearch = (terms) => {
     const { push, location } = this.props;
-    push(...location, {
+    push({ ...location,
       pathname: `/search/${terms}`
     });
   }
 
   _searchIfNeeded(props) {
-      const { location, match: { params } } = props;
+    const { location, match: { params } } = props;
     this.setState({ isSearching: true });
+    const parsed = queryString.parse(location.search);
     SearchService.fetchResults({
-      terms:      params.terms,
-      building:   location.query.building,
-      department: location.query.department,
-      vlan:       location.query.vlan
+      ...parsed,
+      terms: params.terms,
     })
     .then((r) => {
       this.setState({
@@ -73,11 +74,12 @@ class Index extends React.Component {
   render() {
       const { aggregates, results, isSearching } = this.state || {};
       const { location } = this.props;
+      const query = queryString.parse(location.search);
     return (
       <div className={styles.main}>
         <div className={styles.facets}>
           <h2 className={styles.facetClear} onClick={this._onClearFacets}>Clear Filters</h2>
-          <FacetController facets={aggregates} onChange={this._onFacetSelect} selected={location.query} />
+          <FacetController facets={aggregates} onChange={this._onFacetSelect} selected={query} />
         </div>
         <div className={styles.panel}>
           <div className={styles.inputContainer}>
