@@ -1,0 +1,80 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- swe/NetCore3.1
+
+name: 1.1.$(Date:yyMM).$(build.buildId)
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+stages:
+- stage: Build
+  jobs:
+  - job:
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core 3.1 sdk'
+      inputs:
+       packageType: sdk
+       version: 3.1.100
+       installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Namster project'
+      inputs:
+        command: 'build'
+        projects: './src/Namster/Namster.csproj'
+        arguments: '--configuration $(BuildConfiguration) /property:Version=$(build.buildNumber)'
+
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'Run Server Tests'
+    #   inputs:
+    #     command: 'test'
+
+- stage: Publish
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/swe/NetCore3.1')
+  jobs:
+    - job:
+      steps:
+        - task: CmdLine@2
+          inputs:
+            script: 'dotnet tool restore'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'Publish Namster project'
+          inputs:
+            command: 'publish'
+            publishWebProjects: true
+            zipAfterPublish: false
+            modifyOutputPath: false
+            projects: './src/Namster/Namster.csproj'
+            arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/build'
+
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'Assemble Namster.Jobs.ElasticSync'
+        #   inputs:
+        #     command: 'publish'
+        #     publishWebProjects: false
+        #     zipAfterPublish: false
+        #     projects: './src/Namster.Jobs.ElasticSync/Namster.Jobs.ElasticSync.csproj'
+        #     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/build/app_data/jobs/triggered'
+
+        # - task: PublishBuildArtifacts@1
+        #   displayName: 'Publish Artifact'
+        #   inputs:
+        #     PathtoPublish: '$(build.artifactstagingdirectory)'
