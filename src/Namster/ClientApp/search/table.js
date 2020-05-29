@@ -3,24 +3,6 @@ import { Table, TableHead, TableRow, TableCell } from 'react-toolbox/lib/table';
 import Dialog from 'react-toolbox/lib/dialog';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
-const NamModel = {
-    namNumber: { type: Number },
-    building: { type: String },
-    room: { type: String },
-    vlan: { type: String },
-    department: { type: String },
-    departmentNumber: { type: String },
-    status: { type: String },
-    caanZone: { type: String },
-    billingId: { type: String },
-    division: { type: String },
-    email: { type: String },
-    subnet: { type: String },
-    mask: { type: String },
-    techContact: { type: String },
-    phone: { type: String }
-};
-
 export default class ResultsTable extends React.Component {
     constructor(props) {
         super(props);
@@ -76,7 +58,7 @@ export default class ResultsTable extends React.Component {
 
     renderRow = (item) => {
         var source = "";    
-        if (item.status == "In Service") {
+        if (item.status === "In Service") {
             source = "done";
         } else {
             source = "clear";

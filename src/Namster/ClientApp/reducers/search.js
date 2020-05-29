@@ -5,10 +5,10 @@ import * as ActionTypes from '../actions/search';
 function terms(state = '', action) {
   switch (action.type) {
   case ActionTypes.SET_QUERY_TERMS:
-    return action.terms;
+          return action.terms;
+  default:
+          return state;
   }
-
-  return state;
 }
 
 function results(state = [], action) {
@@ -17,9 +17,9 @@ function results(state = [], action) {
     return action.results;
   case ActionTypes.CLEAR_RESULTS:
     return [];
+  default:
+    return state;
   }
-
-  return state;
 }
 
 function aggregates(state = {}, action) {
@@ -28,9 +28,9 @@ function aggregates(state = {}, action) {
     return action.aggregates;
   case ActionTypes.CLEAR_AGGREGATES:
     return {};
+  default:
+    return state;
   }
-
-  return state;
 }
 
 const defaultFilters = {
@@ -47,9 +47,9 @@ function filters(state = defaultFilters, action) {
       });
   case ActionTypes.CLEAR_FILTERS:
     return defaultFilters;
+  default:
+    return state;
   }
-
-  return state;
 }
 
 const searchReducer = combineReducers({
