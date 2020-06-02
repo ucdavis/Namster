@@ -60,7 +60,7 @@ stages:
           inputs:
             command: 'publish'
             publishWebProjects: true
-            zipAfterPublish: false
+            zipAfterPublish: true
             modifyOutputPath: false
             projects: './src/Namster/Namster.csproj'
             arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/build'
@@ -70,7 +70,7 @@ stages:
           inputs:
             command: 'publish'
             publishWebProjects: false
-            zipAfterPublish: false
+            zipAfterPublish: true
             projects: './src/Namster.Jobs.ElasticSync/Namster.Jobs.ElasticSync.csproj'
             arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/build/app_data/jobs/triggered'
 
