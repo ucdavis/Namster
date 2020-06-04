@@ -3,8 +3,10 @@
 }
 
 @section styles {
-    @*<link rel="stylesheet" href="~/dist/vendor.css" />
-    <link rel="stylesheet" href="~/dist/app.css" />*@
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/dist/site.min.css" />
+        <link rel="stylesheet" href="~/dist/1.site.min.css" />
+    </environment>
 }
 
 <div id="app"></div>
