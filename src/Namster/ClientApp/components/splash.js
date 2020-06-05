@@ -1,16 +1,15 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import SearchInput from '../search/input';
 
 import styles from './splash.scss';
 
-export default class Splash extends React.Component {
+class Splash extends React.Component {
 
   _onSearch = (terms) => {
-    const { router, location } = this.props;
-    router.push(...location, {
-      pathname: `/search/${terms}`
-    });
+    const { push } = this.props;
+    push(`/search/${terms}`);
   }
 
   render() {
@@ -33,3 +32,5 @@ export default class Splash extends React.Component {
     );
   }
 }
+
+export default connect(null, { push })(Splash)

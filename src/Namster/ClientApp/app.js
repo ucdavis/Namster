@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { ConnectedRouter } from 'connected-react-router'
 
-import routes from './routes';
-import configureStore from './store/configureStore';
+import Routes from './routes';
+import configureStore, { history } from './store/configureStore';
 
 import styles from './app.scss';
 
@@ -11,7 +11,9 @@ const store = configureStore();
 
 const App = () => (
   <Provider store={store} className={styles.app}>
-    <Router history={browserHistory} routes={routes} />
+    <ConnectedRouter history={history} >
+      <Routes />
+    </ConnectedRouter>
   </Provider>
 );
 

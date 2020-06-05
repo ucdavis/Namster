@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
-import * as SearchActions from '../actions/search';
 import styles from './input.scss';
 
 class Input extends React.Component {
@@ -53,27 +52,20 @@ class Input extends React.Component {
   }
 
   render() {
+    const { value: stateValue, placeholder } = this.state;
     return (
       <form className={styles.form} onSubmit={this._onSubmit}>
         <input
-          className={styles.input} type="text"
-          placeholder={this.state.placeholder}
-          value={this.state.value}
-          onFocus={this._handleFocus}
-          onBlur={this._handleBlur}
-          onChange={this._handleChange}
-        />
+                className={styles.input} type="text"
+                placeholder={placeholder}
+                value={stateValue}
+                onFocus={this._handleFocus}
+                onBlur={this._handleBlur}
+                onChange={this._handleChange}
+                />
       </form>
     );
   }
 }
 
-function mapStateToProps(state, props) {
-  return {
-    value: props.params.terms || ''
-  };
-}
-
-export default withRouter(connect(
-  mapStateToProps
-)(Input));
+export default withRouter(connect(null)(Input));
