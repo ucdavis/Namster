@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- NetCore3.1
+- master
 
 name: 1.1.$(Date:yyMM).$(build.buildId)
 
@@ -47,7 +47,7 @@ stages:
     #     command: 'test'
 
 - stage: Publish
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/NetCore3.1')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
     - job:
       steps:
