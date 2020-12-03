@@ -20,10 +20,17 @@ namespace Namster.Controllers
         public async Task<JsonResult> Query(string term, string building, string department, string vlan)
         {
             var results = await _searchService.FindByMatchAsync(term, building, department, vlan);
+
+            var aggregates = new Dictionary<string, dynamic>();
+
+            foreach (var key in results.Aggregations.Keys) {
+                aggregates.Add(key, new { items = results.Aggregations.Terms(key).Buckets.Select(b => new { key = b.Key, docCount = b.DocCount}).ToArray() });
+            }
+
             return new JsonResult(new
             {
                 results = results.Hits.Select(h => h.Source),
-                aggregates = results.Aggregations
+                aggregates
             });
         }
 
