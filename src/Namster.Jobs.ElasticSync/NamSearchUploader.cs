@@ -55,9 +55,7 @@ namespace Namster.Jobs.ElasticSync
                     client.Bulk(b => b.IndexMany(bucket));
                 }
 
-                Console.WriteLine("Indexing complete, press any key to end");
-
-                Console.ReadKey();
+                Console.WriteLine("Indexing complete, exiting");
             }
         }
     }
