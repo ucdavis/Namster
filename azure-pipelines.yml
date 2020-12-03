@@ -60,19 +60,19 @@ stages:
           inputs:
             command: 'publish'
             publishWebProjects: true
-            zipAfterPublish: true
+            zipAfterPublish: false
             modifyOutputPath: false
             projects: './src/Namster/Namster.csproj'
-            arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/build'
+            arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
 
         - task: DotNetCoreCLI@2
           displayName: 'Assemble Namster.Jobs.ElasticSync'
           inputs:
             command: 'publish'
             publishWebProjects: false
-            zipAfterPublish: true
+            zipAfterPublish: false
             projects: './src/Namster.Jobs.ElasticSync/Namster.Jobs.ElasticSync.csproj'
-            arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/build/app_data/jobs/triggered'
+            arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/app_data/jobs/triggered'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact'
