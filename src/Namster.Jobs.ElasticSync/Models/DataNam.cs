@@ -2,61 +2,61 @@
 
 namespace Namster.Jobs.ElasticSync.Models
 {
-    [ElasticsearchType(Name = "datanam", IdProperty = "NamNumber")]
+    [ElasticsearchType(RelationName = "datanam", IdProperty = "NamNumber")]
     public class DataNam
     {
-        [String(Index = FieldIndexOption.NotAnalyzed)]
+        [Keyword]
         public string NamNumber { get; set; }
 
-        [String(Index = FieldIndexOption.NotAnalyzed)]
+        [Keyword]
         public string ExactBuilding => Building;
         public string Building { get; set; }
 
-        [String(Index = FieldIndexOption.NotAnalyzed)]
+        [Keyword]
         public string ExactRoom => Room;
         public string Room { get; set; }
 
-        [String(Index = FieldIndexOption.NotAnalyzed)]
+        [Keyword]
         public string ExactDepartment => Department;
 
         public string Department { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string CaanZone { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string BillingId { get; set; }
 
-        [String(Index = FieldIndexOption.NotAnalyzed)]
+        [Keyword]
         public string Vlan { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string DepartmentNumber { get; set; }
 
         public string Division { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string College { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Subnet { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Id { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Mask { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string TechContact { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Email { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Phone { get; set; }
 
-        [String(Index = FieldIndexOption.No, Store = true)]
+        [Keyword]
         public string Status { get; set; }
     }
 }

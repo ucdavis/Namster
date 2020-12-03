@@ -36,16 +36,14 @@ namespace Namster.Jobs.ElasticSync
 
                 var client = new ElasticClient(settings);
 
-                if (client.IndexExists(_indexName).Exists)
+                
+
+                if (client.Indices.Exists(_indexName).Exists)
                 {
-                    client.DeleteIndex(_indexName);
+                    client.Indices.Delete(_indexName);
                 }
 
-                client.CreateIndex(_indexName, c => c.Mappings(m =>
-                {
-                    m.Map<DataNam>(td => td.AutoMap());
-                    return m;
-                }));
+                client.Indices.Create(_indexName, c => c.Map<DataNam>(m => m.AutoMap()));
                 
                 Console.WriteLine("Index recreated, starting indexing");
 
