@@ -17,7 +17,7 @@ namespace Namster.Jobs.ElasticSync
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddUserSecrets()
+                // .AddUserSecrets()
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
