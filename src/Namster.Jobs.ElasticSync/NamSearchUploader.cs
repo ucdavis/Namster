@@ -14,18 +14,20 @@ namespace Namster.Jobs.ElasticSync
 
         private readonly string _indexName;
         private readonly Uri _connectionString;
+        private readonly string _dbConnectionString;
 
         public NamSearchUploader(IConfiguration configuration)
         {
             _dbService = new DbService();
 
+            _dbConnectionString = configuration["Data:DefaultConnection:ConnectionString"];
             _connectionString = new Uri(configuration["Search:Url"]);
             _indexName = configuration["Search:IndexName"];
         }
 
         public void Run()
         {
-            using (var conn = _dbService.GetDbConnection())
+            using (var conn = _dbService.GetDbConnection(_dbConnectionString))
             {
                 var nams = conn.Query<DataNam>("select * from DataNamsFlattened inner join VLanContactsFlattened on DataNamsFlattened.Vlan = VLanContactsFlattened.Vlan");
 
@@ -36,16 +38,12 @@ namespace Namster.Jobs.ElasticSync
 
                 var client = new ElasticClient(settings);
 
-                if (client.IndexExists(_indexName).Exists)
+                if (client.Indices.Exists(_indexName).Exists)
                 {
-                    client.DeleteIndex(_indexName);
+                    client.Indices.Delete(_indexName);
                 }
 
-                client.CreateIndex(_indexName, c => c.Mappings(m =>
-                {
-                    m.Map<DataNam>(td => td.AutoMap());
-                    return m;
-                }));
+                client.Indices.Create(_indexName, c => c.Map<DataNam>(m => m.AutoMap()));
                 
                 Console.WriteLine("Index recreated, starting indexing");
 
