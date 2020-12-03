@@ -4,9 +4,9 @@ namespace Namster.Jobs.ElasticSync.Services
 {
     public class DbService
     {
-        public SqlConnection GetDbConnection()
+        public SqlConnection GetDbConnection(string connection)
         {
-            var conn = new SqlConnection("Data Source=terry;Initial Catalog=MothraDataMart;Integrated Security=True;");
+            var conn = new SqlConnection(connection);
             return conn;
         }
     }

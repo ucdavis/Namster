@@ -14,18 +14,20 @@ namespace Namster.Jobs.ElasticSync
 
         private readonly string _indexName;
         private readonly Uri _connectionString;
+        private readonly string _dbConnectionString;
 
         public NamSearchUploader(IConfiguration configuration)
         {
             _dbService = new DbService();
 
+            _dbConnectionString = configuration["Data:DefaultConnection:ConnectionString"];
             _connectionString = new Uri(configuration["Search:Url"]);
             _indexName = configuration["Search:IndexName"];
         }
 
         public void Run()
         {
-            using (var conn = _dbService.GetDbConnection())
+            using (var conn = _dbService.GetDbConnection(_dbConnectionString))
             {
                 var nams = conn.Query<DataNam>("select * from DataNamsFlattened inner join VLanContactsFlattened on DataNamsFlattened.Vlan = VLanContactsFlattened.Vlan");
 
@@ -35,8 +37,6 @@ namespace Namster.Jobs.ElasticSync
                 settings.DefaultIndex(_indexName);
 
                 var client = new ElasticClient(settings);
-
-                
 
                 if (client.Indices.Exists(_indexName).Exists)
                 {
