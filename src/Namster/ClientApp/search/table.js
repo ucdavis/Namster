@@ -86,7 +86,6 @@ export default class ResultsTable extends React.Component {
       >
         <TableCell>{item.namNumber}</TableCell>
         <TableCell>{item.vlan}</TableCell>
-        {/* <TableCell>{item.building}</TableCell> */}
         <TableCell>
           <div dangerouslySetInnerHTML={{ __html: building }} />
         </TableCell>
