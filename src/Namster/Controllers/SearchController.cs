@@ -30,6 +30,7 @@ namespace Namster.Controllers
             return new JsonResult(new
             {
                 results = results.Hits.Select(h => h.Source),
+                highlights = results.Hits.Select(h => h.Highlight),
                 aggregates
             });
         }
