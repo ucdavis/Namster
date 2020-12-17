@@ -59,10 +59,17 @@ export default class ResultsTable extends React.Component {
     renderRow = (item, index) => {
         var source = ""; 
         const highlights = this.props.highlights;
-        const building =
-          highlights[index].building !== undefined
+        const firstKey = Object.keys(highlights[index])[0];
+        let highlightedObject = "";
+
+        if (firstKey === "room") {
+            highlightedObject = highlights[index].room[0];
+        } else if (firstKey === "building" || firstKey === "department") {
+            highlightedObject = highlights[index].building !== undefined
             ? highlights[index].building[0]
             : highlights[index].department[0];
+        }
+
         if (item.status === "In Service") {
             source = "done";
         } else {
@@ -72,10 +79,16 @@ export default class ResultsTable extends React.Component {
             <TableRow key={item.namNumber} onClick={() => this.handleToggle(item.namNumber)}>
                 <TableCell>{item.namNumber}</TableCell>
                 <TableCell>{item.vlan}</TableCell>
-                <TableCell>
-                    <div dangerouslySetInnerHTML={{ __html: building }} />
-                </TableCell>
-                <TableCell>{item.room}</TableCell>
+                {firstKey === "building" || firstKey === "department" ? 
+                    <TableCell>
+                        <div dangerouslySetInnerHTML={{ __html: highlightedObject }} />
+                    </TableCell> : 
+                    <TableCell>{item.building}</TableCell>}
+                {firstKey === "room" ? 
+                    <TableCell>
+                        <div dangerouslySetInnerHTML={{ __html: highlightedObject }} />
+                    </TableCell> : 
+                    <TableCell>{item.room}</TableCell>}
                 <TableCell><i className="material-icons">{source}</i></TableCell>
                 {(this.renderDialog(item))}
             </TableRow>
