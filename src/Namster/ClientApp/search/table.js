@@ -56,8 +56,33 @@ export default class ResultsTable extends React.Component {
         );
     }
 
-    renderRow = (item) => {
-        var source = "";    
+    renderHighlights = (highlights, index) => {
+        const keys = Object.keys(highlights[index]);
+        let highlightedObjects = {
+            highlightedBuilding: null,
+            highlightedRoom: null
+        }
+
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i] === "room") {
+                highlightedObjects.highlightedRoom = highlights[index].room[0];
+            }
+    
+            if (keys[i] === "building" || keys[i] === "department") {
+                highlightedObjects.highlightedBuilding = highlights[index].building !== undefined
+                ? highlights[index].building[0]
+                : highlights[index].department[0];
+            }
+        }
+
+        return highlightedObjects;
+    }
+
+    renderRow = (item, index) => {
+        var source = ""; 
+        const highlights = this.props.highlights;
+        const { highlightedBuilding, highlightedRoom } = this.renderHighlights(highlights, index);
+
         if (item.status === "In Service") {
             source = "done";
         } else {
@@ -67,8 +92,16 @@ export default class ResultsTable extends React.Component {
             <TableRow key={item.namNumber} onClick={() => this.handleToggle(item.namNumber)}>
                 <TableCell>{item.namNumber}</TableCell>
                 <TableCell>{item.vlan}</TableCell>
-                <TableCell>{item.building}</TableCell>
-                <TableCell>{item.room}</TableCell>
+                {highlightedBuilding !== null ? 
+                    <TableCell>
+                        <div dangerouslySetInnerHTML={{ __html: highlightedBuilding }} />
+                    </TableCell> : 
+                    <TableCell>{item.building}</TableCell>}
+                {highlightedRoom !== null ? 
+                    <TableCell>
+                        <div dangerouslySetInnerHTML={{ __html: highlightedRoom }} />
+                    </TableCell> : 
+                    <TableCell>{item.room}</TableCell>}
                 <TableCell><i className="material-icons">{source}</i></TableCell>
                 {(this.renderDialog(item))}
             </TableRow>

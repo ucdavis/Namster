@@ -20,6 +20,7 @@ class Index extends React.Component {
     this.state = {
       aggregates: {},
       results: [],
+      highlights: [],
       isSearching: false
     };
   }
@@ -66,13 +67,14 @@ class Index extends React.Component {
       this.setState({
         aggregates: r.aggregates,
         results: r.results,
+        highlights: r.highlights,
         isSearching: false
       });
     });
   }
 
   render() {
-      const { aggregates, results, isSearching } = this.state || {};
+      const { aggregates, results, highlights, isSearching } = this.state || {};
       const { location, terms } = this.props;
       const query = queryString.parse(location.search);
     return (
@@ -87,7 +89,7 @@ class Index extends React.Component {
             {/* key={terms} forces creation of new SearchInput on change in terms, resulting in matching internal value state */}
           </div>
           <Card>
-            <Results className={styles.resultsContainer} displaySpinner={isSearching} results={results} />
+            <Results className={styles.resultsContainer} displaySpinner={isSearching} results={results} highlights={highlights} />
           </Card>
         </div>
       </div>
